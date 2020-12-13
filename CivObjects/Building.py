@@ -2,6 +2,7 @@ from CivObjects.BusinessObject import BusinessObject
 from Drawing import ImageHandler
 from Drawing.DrawCivObjects import DrawCivObjects
 
+
 """
 class Building inherits by BusinessObject
 with it all properties of each building can be defined
@@ -16,6 +17,8 @@ with it all properties of each building can be defined
 * costs and alternative costs
 * pointer to image
 """
+
+
 class Building(BusinessObject):
 
     def __init__(self, b):
@@ -31,7 +34,6 @@ class Building(BusinessObject):
         self.upgrade = False
         self.costs = b.getCosts()
         self.costsAlternative = b.getCostsAlternative()
-        # self.img = pygame.image.load("Material/Buildings/" + b.getImgName(self.upgrade) + ".png")
         self.img = ImageHandler.getImageOfBuilding(self.bType, False)
 
     def draw(self, window, rotation, pos, resize):

@@ -1,9 +1,8 @@
-import pygame
-
 from CivEnums.EPermission import EPermissionTerrain
 from CivObjects.Position import Position
 from Drawing.DrawCivObjects import DrawCivObjects
 from Drawing import ImageHandler
+
 
 """
 with it all properties of each figure - army and pioneer - can be defined
@@ -15,6 +14,8 @@ with it all properties of each figure - army and pioneer - can be defined
 * permission for each terrain
 * pointer to image
 """
+
+
 class Figure:
 
     def __init__(self, ftype, civ, col):
@@ -24,7 +25,6 @@ class Figure:
         self.position = None
         self.foundingCity = False
         self.permissionTerrain = EPermissionTerrain.ALL_EXCEPT_WATER
-        # self.img = pygame.image.load("Material/Figures/" + self.fType.getImgName() + "_" + str(self.color) + ".png")
         self.img = ImageHandler.getImageOfFigure(self.fType, self.color)
 
     def draw(self, window, rotation, pos, resize):

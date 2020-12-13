@@ -16,8 +16,6 @@ class CulturalEvent:
     def __init__(self, event):
         self.event = event
         self.visibility = EVisibility.FOR_NOBODY
-        # self.imgCard = pygame.image.load("Material/CultureCards/" + prefix + self.event.getImgName(self.visibility) +
-        #                                 ".jpg")
         self.imgCard = ImageHandler.getImageOfCulturalEvent(self.event, False)
 
     def draw(self, window, rotation, pos, resize):
