@@ -1,17 +1,17 @@
 import pygame
 
-from CivCollection.Game import Game
+from Game.Game import Game
 from CivCollection.MapTileCollection import MapTileCollection
-from CivCollection.MarketMap import MarketMap
+from Game.MarketMap import MarketMap
 from CivEnums.EGameSection import EGameSection
-from CivObjects.CivPossibilities import CivPossibilities
-from Game.CityAdministration import CityAdministration
-from Game.GameStep import GameStep
-from Game.Movement import Movement
-from Game.PrepareGame import PrepareGame
-from Game.ResearchAndDevelopment import ResearchAndDevelopment
-from Game.StartOfRound import StartOfRound
-from Game.Trade import Trade
+from Possibilities.CivPossibilities import CivPossibilities
+from GameProcess.CityAdministration import CityAdministration
+from GameProcess.GameStep import GameStep
+from GameProcess.Movement import Movement
+from GameProcess.PrepareGame import PrepareGame
+from GameProcess.ResearchAndDevelopment import ResearchAndDevelopment
+from GameProcess.StartOfRound import StartOfRound
+from GameProcess.Trade import Trade
 
 
 """

@@ -1,6 +1,6 @@
-from CivCollection.Civilization import Civilization
-from CivCollection.GameMap import GameMap
-from CivCollection.PolityOfCivilizations import PolityOfCivilizations
+from Civilization.Civilization import Civilization
+from Game.GameMap import GameMap
+from Civilization.PolityOfCivilizations import PolityOfCivilizations
 from CivEnums.ECivilization import ECivilization
 
 

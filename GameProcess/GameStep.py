@@ -1,6 +1,6 @@
 from CivEnums.EGameSection import EGameSection
 from CivObjects.Position import Position
-from Game.EGameStep import EGameStep
+from GameProcess.EGameStep import EGameStep
 
 """
 this class handles the game step

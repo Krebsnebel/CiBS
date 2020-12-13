@@ -3,7 +3,7 @@ from random import randrange
 from CivEnums.ECivilization import ECivilization
 from CivEnums.EGameSection import EGameSection
 from Drawing.EImageObject import EImageObject
-from Game.EGameStep import EGameStep
+from GameProcess.EGameStep import EGameStep
 
 
 """

@@ -14,15 +14,4 @@ gameMapVisu = GameMapVisualization(playerColor)
 gameMapVisu.startVisualization()
 
 
-#fig = Figure(EFigure.ARMY, ECivilization.RUSSIA, EColor.YELLOW)
-#figures = [fig]
-
-#print(isinstance(figures, List))
-
-
-#imgBack = pygame.image.load("Material/Civilizations/Civilization_Back.jpg")
-#print(imgBack.get_height())
-
-
-
 

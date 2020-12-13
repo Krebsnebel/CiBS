@@ -1,4 +1,4 @@
-from CivCollection.GameMap import GameMap
+from Game.GameMap import GameMap
 from CivEnums.EBuilding import EBuilding
 from CivEnums.ECivilization import ECivilization
 from CivEnums.EColor import EColor

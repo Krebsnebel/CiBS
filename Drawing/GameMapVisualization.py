@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 
-from Game.GameProcessManager import GameProcessManager
+from GameProcess.GameProcessManager import GameProcessManager
 from CivObjects.Position import Position
 from Drawing.ImgInfoGame import ImgInfoGame
 

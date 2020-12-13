@@ -1,7 +1,7 @@
 import pygame
 
-from CivCollection.CivPolity import CivPolity
-from CivCollection.ResearchManager import ResearchManager
+from Civilization.CivPolity import CivPolity
+from Civilization.ResearchManager import ResearchManager
 from CivEnums.EArmyStrength import EArmyStrength
 from CivEnums.ECity import ECity
 from CivEnums.ECivilization import ECivilization
@@ -11,7 +11,7 @@ from CivEnums.EPolity import EPolity
 from CivEnums.EResearch import EResearch
 from CivEnums.ERotation import ERotation
 from CivEnums.EVisibility import EVisibility
-from CivObjects.City import City
+from Civilization.City import City
 from CivObjects.Figure import Figure
 from Drawing.DrawCivObjects import DrawCivObjects
 from Drawing.EImageObject import EImageObject

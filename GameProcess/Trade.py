@@ -1,4 +1,4 @@
-from Game.EGameStep import EGameStep
+from GameProcess.EGameStep import EGameStep
 
 
 """
