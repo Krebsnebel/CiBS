@@ -21,9 +21,6 @@
   <component name="ChangeListManager">
     <list default="true" id="effe2213-13fd-4f81-9707-808e4e0988ad" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CivObjects/Building.py" beforeDir="false" afterPath="$PROJECT_DIR$/CivObjects/Building.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CivObjects/CulturalEvent.py" beforeDir="false" afterPath="$PROJECT_DIR$/CivObjects/CulturalEvent.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CivObjects/Figure.py" beforeDir="false" afterPath="$PROJECT_DIR$/CivObjects/Figure.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
