@@ -1,10 +1,5 @@
-import pygame
-
 from Game.Game import Game
-from CivCollection.MapTileCollection import MapTileCollection
-from Game.MarketMap import MarketMap
 from CivEnums.EGameSection import EGameSection
-from Possibilities.CivPossibilities import CivPossibilities
 from GameProcess.CityAdministration import CityAdministration
 from GameProcess.GameStep import GameStep
 from GameProcess.Movement import Movement
@@ -22,27 +17,15 @@ in this class all subclasses of game phases are defined
 
 class GameProcessManager:
 
-    def __init__(self, playerColor, imgInfoGame):
-        self.FPS = 6
-        self.clock = pygame.time.Clock()
+    def __init__(self, playerColor, gameImgInfo):
         self.numberOfPlayer = len(playerColor)
-        self.gameImgInfo = imgInfoGame
-        self.mapTileCollection = MapTileCollection(imgInfoGame.getGameMap())
 
-        self.marketMap = MarketMap(imgInfoGame.getMarketMap(), self.numberOfPlayer)
-        self.game = Game(imgInfoGame, self.marketMap, playerColor, self.mapTileCollection)
-        self.game.setGame(self.mapTileCollection)
+        self.gameImgInfo = gameImgInfo
+        self.gameStep = GameStep(playerColor, gameImgInfo)
+        self.game = Game(self.gameImgInfo, playerColor, self.gameStep)
 
-        self.civsPossibilities = []
-        civs = self.game.getCivilizations()
-        for i in range(self.numberOfPlayer):
-            self.civsPossibilities.append(CivPossibilities(self.game.getGameMap(), civs[i]))
-            self.civsPossibilities[i].setPointsForKapitol()
-
-        self.businessObjectCollection = self.marketMap.getBusinessObjectCollection()
-
-        self.gameStep = GameStep(imgInfoGame, self.game.getCivilizations(), self.civsPossibilities, self.numberOfPlayer)
-        self.prepareGame = PrepareGame(self.gameStep, self.game, self.businessObjectCollection)
+        self.gameStep.setCivilizations(self.game.getCivilizations())
+        self.prepareGame = PrepareGame(self.gameStep, self.game)
         self.startOfRound = StartOfRound(self.gameStep)
         self.trade = Trade(self.gameStep)
         self.cityAdministration = CityAdministration(self.gameStep)
@@ -64,7 +47,7 @@ class GameProcessManager:
             self.researchAndDevelopment.execute()
 
     def isInSection(self, section):
-        return self.gameStep.getGameSection() == section
+        return self.gameStep.getSection() == section
 
     def getNumberOfPlayer(self):
         return self.numberOfPlayer

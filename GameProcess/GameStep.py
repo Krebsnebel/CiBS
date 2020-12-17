@@ -2,66 +2,48 @@ from CivEnums.EGameSection import EGameSection
 from CivObjects.Position import Position
 from GameProcess.EGameStep import EGameStep
 
+
 """
 this class handles the game step
 """
 
+
 class GameStep:
 
-    def __init__(self, gameImgInfo, civs, civsPoss, numPlayer):
-        self.numberOfPlayer = numPlayer
-        self.civilizations = civs
-        self.civsPossibilities = civsPoss
+    def __init__(self, playerColor, imgInfoGame):
+        self.imgInfo = imgInfoGame
+        self.playerColor = playerColor
+        self.numberOfPlayer = len(playerColor)
         self.step = None
         self.gameSection = None
         self.mousePosition = Position(0, 0)
+        self.leftMouseButtonPressed = Position(0, 0)
         self.chosenSquObj = None
         self.strForExpectedEvent = "aaa"
-        self.gameImgInfo = gameImgInfo
 
         self.startPlayer = 0
         self.nextPlayersTurn = 0
+        self.civilizations = None
         self.civTurn = None
-        self.civPossibilitiesTurn = None
         self.roundCompleted = True
+
+    def setCivilizations(self, civs):
+        self.civilizations = civs
         self.setNextCivilization(False)
         self.setStepAndSection(EGameStep.MARK_SQUARES_FOR_HIGHLIGHTING_CITY, EGameSection.PREPARE_GAME)
 
-    def setNextStep(self, obj, objType, nextStep):
-        self.setGameStep(obj, objType, nextStep, self.getGameSection())
+    def setStepAndSection(self, step, section):
+        self.gameSection = section
+        self.setStep(step)
 
-    def setGameStep(self, obj, objType, nextStep, nextSection):
-        self.setChosenSquareObject(obj)
-        if objType is None:
-            self.clearSquaresForHighlighting()
-        else:
-            self.markSquaresForHighlighting(objType)
-        self.setStepAndSection(nextStep, nextSection)
+    def setStep(self, step):
+        self.step = step
+        self.civTurn.calculateOptions()
 
-    def setSquareObject(self, strObj):
-        self.expectGameMapPosition(strObj)
-        p = self.getGameMapPosition()
-        if p is not None:
-            possible = self.gameImgInfo.getGameMap().isPuttingObjectOnSquarePossible(p)
-            if possible:
-                self.gameMapPositionUsed()
-                return p
-        return None
-
-    def refreshCurrentTownPositions(self):
-        for cp in self.civsPossibilities:
-            cp.setCurrentPointsForTown()
-
-    def clearSquaresForHighlighting(self):
-        self.gameImgInfo.getGameMap().clearPossibilities()
-
-    def markSquaresForHighlighting(self, objType):
-        listPoints = self.civPossibilitiesTurn.getPointsOf(objType)
-        self.gameImgInfo.getGameMap().markSquaresForHighlighting(listPoints)
-
-    def markAreasInCivilizationForHighlighting(self):
-        objImgList = self.civPossibilitiesTurn.getObjImgForHighlighting()
-        self.civTurn.getImgInfo().markAreasInCivilizationForHighlighting(objImgList)
+    def expectGameMapPosition(self, strObj):
+        col = self.civTurn.getColor()
+        civ = self.civTurn.getCivilizationEnum()
+        self.strForExpectedEvent = "Spieler " + str(col) + ", civ " + str(civ) + " - setze " + strObj + " (x/y)"
 
     def isRoundCompleted(self):
         return self.roundCompleted
@@ -72,61 +54,40 @@ class GameStep:
         else:
             self.roundCompleted = False
         self.civTurn = self.civilizations[self.nextPlayersTurn]
-        self.civPossibilitiesTurn = self.civsPossibilities[self.nextPlayersTurn]
         self.nextPlayersTurn = (self.nextPlayersTurn + 1) % self.numberOfPlayer
         if startPhase and self.nextPlayersTurn == self.startPlayer:
             self.startPlayer = (self.startPlayer + 1) % self.numberOfPlayer
             self.nextPlayersTurn = self.startPlayer
 
-    def setStepAndSection(self, step, section):
-        self.step = step
-        if self.gameSection is not section:
-            self.gameSection = section
-            for cp in self.civsPossibilities:
-                cp.setGameSection(section)
-
     def getStrForExpectedEvent(self):
         return self.strForExpectedEvent
 
-    def getGameSection(self):
+    def getSection(self):
         return self.gameSection
 
-    def get(self):
+    def getStep(self):
         return self.step
 
     def getCivilization(self):
         return self.civTurn
-
-    def getCivPossibilities(self):
-        return self.civPossibilitiesTurn
 
     def getMousePosition(self):
         return self.mousePosition
 
     def setMousePosition(self, x, y):
         self.mousePosition.setPosition(x, y)
-        self.gameImgInfo.setMousePositionForHighlighting(self.mousePosition)
+        gmPos = self.imgInfo.getGameMap().calcGameMapPosition(self.mousePosition)
+        if gmPos is not None:
+            self.civTurn.setMouseAtPossibleGameMapPosition(gmPos)
 
-    def expectGameMapPosition(self, strObj):
-        col = self.civTurn.getColor()
-        civ = self.civTurn.getCivilizationEnum()
-        self.strForExpectedEvent = "Spieler " + str(col) + ", civ " + str(civ) + " - setze " + strObj + " (x/y)"
-        self.gameImgInfo.getGameMap().expectGameMapPosition()
+    def setLeftMouseButtonPressed(self):
+        self.leftMouseButtonPressed.setPosition(self.mousePosition.getX(), self.mousePosition.getY())
+        gmPos = self.imgInfo.getGameMap().calcGameMapPosition(self.mousePosition)
+        if gmPos is not None:
+            self.civTurn.setMousePressedAtPossibleGameMapPosition(gmPos)
 
-    def leftMouseButtonPressed(self):
-        self.gameImgInfo.leftMouseButtonPressed(self.mousePosition)
-
-    def setStep(self, step):
-        self.step = step
-
-    def setChosenSquareObject(self, obj):
+    def setChosenObj(self, obj):
         self.chosenSquObj = obj
 
-    def getChosenSquareObject(self):
+    def getChosenObj(self):
         return self.chosenSquObj
-
-    def getGameMapPosition(self):
-        return self.gameImgInfo.getGameMap().getGameMapPosition()
-
-    def gameMapPositionUsed(self):
-        return self.gameImgInfo.getGameMap().gameMapPositionUsed()

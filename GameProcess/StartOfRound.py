@@ -30,5 +30,5 @@ class StartOfRound:
             pass
 
     def isInStep(self, step):
-        return self.gameStep.get() == step
+        return self.gameStep.getStep() == step
 

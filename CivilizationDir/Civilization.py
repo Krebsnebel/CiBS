@@ -1,7 +1,5 @@
 import pygame
 
-from Civilization.CivPolity import CivPolity
-from Civilization.ResearchManager import ResearchManager
 from CivEnums.EArmyStrength import EArmyStrength
 from CivEnums.ECity import ECity
 from CivEnums.ECivilization import ECivilization
@@ -11,12 +9,14 @@ from CivEnums.EPolity import EPolity
 from CivEnums.EResearch import EResearch
 from CivEnums.ERotation import ERotation
 from CivEnums.EVisibility import EVisibility
-from Civilization.City import City
 from CivObjects.Figure import Figure
+from CivilizationDir.City import City
+from CivilizationDir.CivPolity import CivPolity
+from CivilizationDir.ResearchManager import ResearchManager
 from Drawing.DrawCivObjects import DrawCivObjects
 from Drawing.EImageObject import EImageObject
 from Drawing.ImgInfoCivilization import ImgInfoCivilization
-
+from Options.CivOptions import CivOptions
 
 """
 this class represents each civilization, this means civilizations can be defined here
@@ -32,16 +32,16 @@ there are functions to
 
 class Civilization:
 
-    def __init__(self, imgInfoCiv, pl, civ, map_tile, col, gameMap):
+    def __init__(self, imgInfoCiv, pl, map_tile, col, gameMap, gameStep):
         self.playerNr = pl
         self.imgInfo = imgInfoCiv
         self.gameMap = gameMap
-        self.civ = civ
+        self.civ = map_tile.getCivilization()
         self.mapTile = map_tile
-        self.civPolity = CivPolity(civ)
+        self.civPolity = CivPolity(self.civ)
         self.imgPolity = self.civPolity.getImg()
         self.color = col
-        self.city = []
+        self.cities = []
         self.pioneer = []
         self.army = []
         self.militaryUnit = []
@@ -60,35 +60,50 @@ class Civilization:
         self.imgTrade = pygame.image.load("Material/Civilizations/TradeDisk.png")
         self.imgGold = pygame.image.load("Material/Civilizations/GoldDisk.png")
         self.imgBack = pygame.image.load("Material/Civilizations/Civilization_Back.jpg")
-        self.city.append(City(ECity.KAPITOL, col, civ, EImageObject.KAPITOL))
-        self.city.append(City(ECity.TOWN, col, civ, EImageObject.CITY_1))
-        self.city.append(City(ECity.TOWN, col, civ, EImageObject.CITY_2))
+        self.cities.append(City(ECity.KAPITOL, col, self.civ, EImageObject.KAPITOL))
+        self.cities.append(City(ECity.TOWN, col, self.civ, EImageObject.CITY_1))
+        self.cities.append(City(ECity.TOWN, col, self.civ, EImageObject.CITY_2))
 
         for i in range(2):
-            self.pioneer.append(Figure(EFigure.PIONEER, civ, col))
+            self.pioneer.append(Figure(EFigure.PIONEER, self.civ, col))
 
         for i in range(6):
-            self.army.append(Figure(EFigure.ARMY, civ, col))
+            self.army.append(Figure(EFigure.ARMY, self.civ, col))
 
-        if civ == ECivilization.ROME:
+        if self.civ == ECivilization.ROME:
             self.civPolity.setPolity(EPolity.REPUBLIC)
             self.imgPolity = self.civPolity.getImg()
             self.researchManager.research(EResearch.LEGISLATION, 1, True)
-        elif civ == ECivilization.RUSSIA:
+        elif self.civ == ECivilization.RUSSIA:
             self.figureLimit += 1
-            self.army.append(Figure(EFigure.ARMY, civ, EColor.WHITE))
+            self.army.append(Figure(EFigure.ARMY, self.civ, EColor.WHITE))
             self.civPolity.setPolity(EPolity.COMMUNISM)
             self.imgPolity = self.civPolity.getImg()
             self.researchManager.research(EResearch.COMMUNISM, 1, True)
-        elif civ == ECivilization.AGYPT:
+        elif self.civ == ECivilization.AGYPT:
             self.researchManager.research(EResearch.CONSTRUCTION_INDUSTRY, 1, True)
-        elif civ == ECivilization.GERMANY:
+        elif self.civ == ECivilization.GERMANY:
             self.researchManager.research(EResearch.IRON_PROCESSING, 1, True)
-        elif civ == ECivilization.AMERICA:
+        elif self.civ == ECivilization.AMERICA:
             self.researchManager.research(EResearch.CURRENCY, 1, True)
-        elif civ == ECivilization.CHINA:
+        elif self.civ == ECivilization.CHINA:
             self.getCity(0).upgradeCity()
             self.researchManager.research(EResearch.SCRIPTURE, 1, True)
+
+        self.options = CivOptions(gameMap, gameStep, self)
+
+    def getMousePressedAtPossibleGameMapPosition(self):
+        return self.options.getMousePressedAtPossibleGameMapPosition()
+
+    def setMouseAtPossibleGameMapPosition(self, gmPos):
+        self.options.setMouseAtPossibleGameMapPosition(gmPos)
+
+    def setMousePressedAtPossibleGameMapPosition(self, gmPos):
+        self.options.setMousePressedAtPossibleGameMapPosition(gmPos)
+
+    def calculateOptions(self):
+        self.options.setPointsForAllObjects()
+        self.options.setOptionsInGameStep()
 
     def getCivPolity(self):
         return self.civPolity
@@ -126,7 +141,7 @@ class Civilization:
 
     def countTradingPoints(self):
         tp = 0
-        for c in self.city:
+        for c in self.cities:
             tp = tp + c.countTradingPoints()
 
         self.tradingPoints = self.tradingPoints + tp
@@ -164,7 +179,7 @@ class Civilization:
         self.militaryUnit.append(unit)
 
     def getCity(self, idx):
-        return self.city[idx]
+        return self.cities[idx]
 
     def getPioneer(self, idx):
         return self.pioneer[idx]
@@ -209,7 +224,7 @@ class Civilization:
             i = i + 1
 
         i = 3
-        for c in self.city:
+        for c in self.cities:
             imgObj = c.getImgObj()
             pos = self.imgInfo.getImgPosOf(imgObj)
             resize = self.imgInfo.getResize(imgObj)

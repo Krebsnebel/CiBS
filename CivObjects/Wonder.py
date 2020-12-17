@@ -1,4 +1,4 @@
-from CivEnums.EPermission import EPermissionTerrain
+from CivEnums.EPermission import EPermission
 from CivEnums.EResource import EResource
 from CivEnums.EVisibility import EVisibility
 from CivObjects.BusinessObject import BusinessObject
@@ -33,7 +33,7 @@ class Wonder(BusinessObject):
         super().__init__(tp, pp, cp, dp, res, s)
         self.visibility = EVisibility.FOR_NOBODY
         self.wonder = w
-        self.permissionTerrain = EPermissionTerrain.ALL_EXCEPT_WATER
+        self.permissionTerrain = EPermission.ALL_EXCEPT_WATER
         self.imgMarker = ImageHandler.getImageOfWonder(self.wonder, False, True)
         self.imgCard = ImageHandler.getImageOfWonder(self.wonder, True, False)
 

@@ -42,11 +42,20 @@ class ImgInfoGameMap(ImgInfo):
         super().__init__(int(sizeX * sx), int(sizeY * sy),
                          Position(xPos, yPos), ERefPoint.TOP_LEFT)
 
+        self.options = None
+        self.mouseAtPossiblePosition = None
+
         self.squareX = sx
         self.squareY = sy
 
         self.expectGMPosition = False
         self.gameMapPosition = None
+
+    def setOptions(self, options):
+        self.options = options
+
+    def setMouseAtPossiblePosition(self, mouseAtPossiblePosition):
+        self.mouseAtPossiblePosition = mouseAtPossiblePosition
 
     def setMousePositionForHighlighting(self, mousePosition):
         pos = self.calcGameMapPosition(mousePosition)
@@ -59,24 +68,24 @@ class ImgInfoGameMap(ImgInfo):
         self.mouseHighlighting = None
 
     def draw(self, window):
-        length = int(self.getPixelOfSquare() * self.scale)
-        size = (length, length)
-        possible_img = pygame.Surface(size, pygame.SRCALPHA)
-        pygame.draw.rect(possible_img, (255, 0, 0), possible_img.get_rect(), 3)
+        if self.options is not None:
+            length = int(self.getPixelOfSquare() * self.scale)
+            size = (length, length)
+            possible_img = pygame.Surface(size, pygame.SRCALPHA)
+            pygame.draw.rect(possible_img, (255, 0, 0), possible_img.get_rect(), 3)
 
-        mouse_img = pygame.Surface(size, pygame.SRCALPHA)
-        pygame.draw.rect(mouse_img, (255, 0, 0, 50), mouse_img.get_rect())
+            mouse_img = pygame.Surface(size, pygame.SRCALPHA)
+            pygame.draw.rect(mouse_img, (255, 0, 0, 50), mouse_img.get_rect())
 
-        for p in self.possibilities:
-            posGM = p.getPosition()
-            if posGM is not None:
-                imgPos = self.getImgPosOfSquare(posGM)
-                window.blit(possible_img, (imgPos.getX(), imgPos.getY()))
+            for y in range(16):
+                for x in range(16):
+                    if self.options[x][y]:
+                        posGM = Position(x, y)
+                        imgPos = self.getImgPosOfSquare(posGM)
+                        window.blit(possible_img, (imgPos.getX(), imgPos.getY()))
 
-        if self.mouseHighlighting is not None:
-            posGM = self.mouseHighlighting.getPosition()
-            if posGM is not None:
-                imgPos = self.getImgPosOfSquare(posGM)
+            if self.mouseAtPossiblePosition is not None:
+                imgPos = self.getImgPosOfSquare(self.mouseAtPossiblePosition)
                 window.blit(mouse_img, (imgPos.getX(), imgPos.getY()))
 
     def markSquaresForHighlighting(self, squareList):
@@ -137,4 +146,7 @@ class ImgInfoGameMap(ImgInfo):
         mousePosRel = self.getMousePosition(mousePosition)
         x = int(mousePosRel.getX() // (size / 4.0))
         y = int(mousePosRel.getY() // (size / 4.0))
-        return Position(x, y)
+        if 0 <= x < 16 and 0 <= y < 16:
+            return Position(x, y)
+        else:
+            return None

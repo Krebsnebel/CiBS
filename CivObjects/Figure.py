@@ -1,4 +1,4 @@
-from CivEnums.EPermission import EPermissionTerrain
+from CivEnums.EPermission import EPermission
 from CivObjects.Position import Position
 from Drawing.DrawCivObjects import DrawCivObjects
 from Drawing import ImageHandler
@@ -24,7 +24,7 @@ class Figure:
         self.civilization = civ
         self.position = None
         self.foundingCity = False
-        self.permissionTerrain = EPermissionTerrain.ALL_EXCEPT_WATER
+        self.permissionTerrain = EPermission.ALL_EXCEPT_WATER
         self.img = ImageHandler.getImageOfFigure(self.fType, self.color)
 
     def draw(self, window, rotation, pos, resize):
@@ -37,10 +37,10 @@ class Figure:
         self.foundingCity = possible
 
     def setPermissionMoveOverWater(self):
-        self.permissionTerrain = EPermissionTerrain.MOVE_OVER_WATER
+        self.permissionTerrain = EPermission.MOVE_OVER_WATER
 
     def setPermissionStopOnWater(self):
-        self.permissionTerrain = EPermissionTerrain.STOP_ON_WATER
+        self.permissionTerrain = EPermission.STOP_ON_WATER
 
     def getPermissionTerrain(self):
         return self.permissionTerrain

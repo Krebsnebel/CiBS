@@ -1,6 +1,6 @@
 from enum import Enum
 
-from CivEnums.EPermission import EPermissionTerrain
+from CivEnums.EPermission import EPermission
 from CivEnums.EResource import EResource
 
 
@@ -86,19 +86,19 @@ class EBuilding(Enum):
     def getBackImg(self):
         return self.backImg
 
-    MARINA = (EPermissionTerrain.ONLY_WATER, False, False, 2, 2, 1, 1, 0, 0, 0, 0, EResource.NONE, EResource.NONE,
+    MARINA = (EPermission.ONLY_WATER, False, False, 2, 2, 1, 1, 0, 0, 0, 0, EResource.NONE, EResource.NONE,
               7, 7, "M", "M", "Hafen", "Hafen", "Marina", "Marina")
-    TRADING_POST = (EPermissionTerrain.ONLY_DESERT, False, False, 2, 2, 0, 0, 1, 1, 0, 0, EResource.NONE,
+    TRADING_POST = (EPermission.ONLY_DESERT, False, False, 2, 2, 0, 0, 1, 1, 0, 0, EResource.NONE,
                     EResource.NONE, 7, 7, "H", "H", "Handelsposten", "Handelsposten", "TradingPost", "TradingPost")
-    BLACKSMITH = (EPermissionTerrain.ONLY_MOUNTAIN, True, False, 0, 0, 3, 4, 0, 0, 0, 0, EResource.NONE, EResource.NONE,
+    BLACKSMITH = (EPermission.ONLY_MOUNTAIN, True, False, 0, 0, 3, 4, 0, 0, 0, 0, EResource.NONE, EResource.NONE,
                   7, 10, "S", "E", "Schmiede", "Eisenmine", "Blacksmith", "Ironmine")
-    LIBRARY = (EPermissionTerrain.ONLY_GRASSLAND, True, False, 1, 2, 0, 0, 1, 2, 0, 0, EResource.NONE, EResource.NONE,
+    LIBRARY = (EPermission.ONLY_GRASSLAND, True, False, 1, 2, 0, 0, 1, 2, 0, 0, EResource.NONE, EResource.NONE,
                5, 8, "L", "U", "Bibliothek", "Universität", "Library", "University")
-    GRANARY = (EPermissionTerrain.ONLY_GRASSLAND, True, False, 1, 2, 1, 2, 0, 0, 0, 0, EResource.NONE, EResource.NONE,
+    GRANARY = (EPermission.ONLY_GRASSLAND, True, False, 1, 2, 1, 2, 0, 0, 0, 0, EResource.NONE, EResource.NONE,
                5, 8, "K", "A", "Kornspeicher", "Aquädukt", "Granary", "Aqueduct")
-    MARKET = (EPermissionTerrain.ALL_EXCEPT_WATER, True, True, 1, 1, 1, 1, 1, 1, 0, 0, EResource.NONE, EResource.GOLD,
+    MARKET = (EPermission.ALL_EXCEPT_WATER, True, True, 1, 1, 1, 1, 1, 1, 0, 0, EResource.NONE, EResource.GOLD,
               7, 10, "R", "B", "Markt", "Bank", "Market", "Bank")
-    TEMPLE = (EPermissionTerrain.ALL_EXCEPT_WATER, True, True, 0, 0, 0, 0, 2, 3, 0, 0, EResource.NONE, EResource.NONE,
+    TEMPLE = (EPermission.ALL_EXCEPT_WATER, True, True, 0, 0, 0, 0, 2, 3, 0, 0, EResource.NONE, EResource.NONE,
               7, 10, "T", "C", "Tempel", "Kathedrale", "Temple", "Cathedral")
-    BARRACK = (EPermissionTerrain.ALL_EXCEPT_WATER, True, True, 2, 2, 0, 0, 0, 0, 2, 4, EResource.NONE, EResource.NONE,
+    BARRACK = (EPermission.ALL_EXCEPT_WATER, True, True, 2, 2, 0, 0, 0, 0, 2, 4, EResource.NONE, EResource.NONE,
                7, 10, "B", "A", "Kaserne", "Akademie", "Barrack", "Academy")

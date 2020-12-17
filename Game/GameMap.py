@@ -5,7 +5,7 @@ from CivEnums.ECivilization import ECivilization
 from CivEnums.EException import EException
 from CivEnums.EFigure import EFigure
 from CivEnums.ENote import ENote
-from CivEnums.EPermission import EPermissionTerrain
+from CivEnums.EPermission import EPermission
 from CivEnums.ERotation import ERotation
 from CivEnums.ETerrain import ETerrain
 from CivEnums.EVisibility import EVisibility
@@ -146,6 +146,61 @@ class GameMap:
         self.numSquaresY = 0
 
         self.potentiallyPointsForTown = []
+
+    def isObjectOnTerrainPermitted(self, x, y, permission, temporary):
+        terrain = self.getSquare(x, y).getTerrain()
+        if permission == EPermission.STOP_ON_WATER:
+            return True
+        elif permission == EPermission.MOVE_OVER_WATER:
+            if not temporary and terrain == ETerrain.SEA:
+                # print("You cannot stop on water")
+                return False
+            else:
+                return True
+        elif permission == EPermission.ALL_EXCEPT_WATER:
+            if terrain == ETerrain.SEA:
+                # print("You cannot stop/build on water")
+                return False
+            else:
+                return True
+        elif permission == EPermission.ALL_EXCEPT_WATER_AND_MOUNTAIN:
+            if terrain == ETerrain.SEA or terrain == ETerrain.MOUNTAIN:
+                # print("You cannot build on water or mountain")
+                return False
+            else:
+                return True
+        elif permission == EPermission.ONLY_DESERT:
+            if terrain == ETerrain.DESERT:
+                return True
+            else:
+                # print("You can only build at desert")
+                return False
+        elif permission == EPermission.ONLY_GRASSLAND:
+            if terrain == ETerrain.GRASSLAND:
+                return True
+            else:
+                # print("You can only build at grassland")
+                return False
+        elif permission == EPermission.ONLY_WATER:
+            if terrain == ETerrain.SEA:
+                return True
+            else:
+                # print("You can only build at sea")
+                return False
+        elif permission == EPermission.ONLY_MOUNTAIN:
+            if terrain == ETerrain.MOUNTAIN:
+                return True
+            else:
+                # print("You can only build at mountain")
+                return False
+        elif permission == EPermission.ONLY_FOREST:
+            if terrain == ETerrain.FOREST:
+                return True
+            else:
+                # print("You can only build at forest")
+                return False
+        else:
+            return False
 
     def getPotentiallyPointsForTown(self):
         return self.potentiallyPointsForTown
@@ -309,64 +364,8 @@ class GameMap:
             return False
         return True
 
-    @classmethod
-    def isPuttingObjectOnTerrainPossible(cls, obj, s, temp):
-        if isinstance(obj, List):
-            op = obj[0].getPermissionTerrain()
-        else:
-            op = obj.getPermissionTerrain()
-        if op == EPermissionTerrain.STOP_ON_WATER:
-            return True
-        elif op == EPermissionTerrain.MOVE_OVER_WATER:
-            if not temp and s.getTerrain() == ETerrain.SEA:
-                # print("You cannot stop on water")
-                return False
-            else:
-                return True
-        elif op == EPermissionTerrain.ALL_EXCEPT_WATER:
-            if s.getTerrain() == ETerrain.SEA:
-                # print("You cannot stop/build on water")
-                return False
-            else:
-                return True
-        elif op == EPermissionTerrain.ALL_EXCEPT_WATER_AND_MOUNTAIN:
-            if s.getTerrain() == ETerrain.SEA or s.getTerrain() == ETerrain.MOUNTAIN:
-                # print("You cannot build on water or mountain")
-                return False
-            else:
-                return True
-        elif op == EPermissionTerrain.ONLY_DESERT:
-            if s.getTerrain() == ETerrain.DESERT:
-                return True
-            else:
-                # print("You can only build at desert")
-                return False
-        elif op == EPermissionTerrain.ONLY_GRASSLAND:
-            if s.getTerrain() == ETerrain.GRASSLAND:
-                return True
-            else:
-                # print("You can only build at grassland")
-                return False
-        elif op == EPermissionTerrain.ONLY_WATER:
-            if s.getTerrain() == ETerrain.SEA:
-                return True
-            else:
-                # print("You can only build at sea")
-                return False
-        elif op == EPermissionTerrain.ONLY_MOUNTAIN:
-            if s.getTerrain() == ETerrain.MOUNTAIN:
-                return True
-            else:
-                # print("You can only build at mountain")
-                return False
-        elif op == EPermissionTerrain.ONLY_FOREST:
-            if s.getTerrain() == ETerrain.FOREST:
-                return True
-            else:
-                # print("You can only build at forest")
-                return False
-        else:
-            return False
+
+
 
     def isPuttingKapitolOnSquarePossible(self, city, s, m):
         if city.getType() == ECity.KAPITOL:

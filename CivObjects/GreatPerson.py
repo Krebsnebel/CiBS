@@ -1,4 +1,4 @@
-from CivEnums.EPermission import EPermissionTerrain
+from CivEnums.EPermission import EPermission
 from CivEnums.EVisibility import EVisibility
 from CivObjects.BusinessObject import BusinessObject
 from Drawing import ImageHandler
@@ -25,7 +25,7 @@ class GreatPerson(BusinessObject):
     def __init__(self, gpType):
         self.gpType = gpType
         self.visibility = EVisibility.FOR_NOBODY
-        self.permissionTerrain = EPermissionTerrain.ALL_EXCEPT_WATER
+        self.permissionTerrain = EPermission.ALL_EXCEPT_WATER
         tp = self.gpType.getTradingPoints()
         pp = self.gpType.getProductionPoints()
         cp = self.gpType.getCulturePoints()

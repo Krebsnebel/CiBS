@@ -1,4 +1,4 @@
-from CivEnums.EPermission import EPermissionTerrain
+from CivEnums.EPermission import EPermission
 from CivEnums.EResource import EResource
 from CivEnums.ETerrain import ETerrain
 from CivObjects.BusinessObject import BusinessObject
@@ -26,7 +26,7 @@ class DisasterMarker(BusinessObject):
         self.terrain1 = ETerrain.DROUGHT
         self.terrain2 = ETerrain.DEFORESTATION
         self.terrain1active = True
-        self.permissionTerrain = EPermissionTerrain.ALL_EXCEPT_WATER_AND_MOUNTAIN
+        self.permissionTerrain = EPermission.ALL_EXCEPT_WATER_AND_MOUNTAIN
         tp = self.terrain1.getTradingPoints()
         pp = self.terrain1.getProductionPoints()
         cp = 0
@@ -44,7 +44,7 @@ class DisasterMarker(BusinessObject):
         self.tradingPoints = self.terrain1.getTradingPoints()
         self.productionPoints = self.terrain1.getProductionPoints()
         self.sign = self.terrain1.getSign()
-        self.permissionTerrain = EPermissionTerrain.ALL_EXCEPT_WATER_AND_MOUNTAIN
+        self.permissionTerrain = EPermission.ALL_EXCEPT_WATER_AND_MOUNTAIN
         self.img = ImageHandler.getImageOfDisasterMarker(True)
 
     def chooseDeforestation(self):
@@ -52,7 +52,7 @@ class DisasterMarker(BusinessObject):
         self.tradingPoints = self.terrain2.getTradingPoints()
         self.productionPoints = self.terrain2.getProductionPoints()
         self.sign = self.terrain2.getSign()
-        self.permissionTerrain = EPermissionTerrain.ONLY_FOREST
+        self.permissionTerrain = EPermission.ONLY_FOREST
         self.img = ImageHandler.getImageOfDisasterMarker(False)
 
     def isDroughtChosen(self):

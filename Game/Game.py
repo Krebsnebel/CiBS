@@ -1,8 +1,9 @@
-from Civilization.Civilization import Civilization
+from CivCollection.MapTileCollection import MapTileCollection
+from CivilizationDir.Civilization import Civilization
 from Game.GameMap import GameMap
-from Civilization.PolityOfCivilizations import PolityOfCivilizations
+from CivilizationDir.PolityOfCivilizations import PolityOfCivilizations
 from CivEnums.ECivilization import ECivilization
-
+from Game.MarketMap import MarketMap
 
 """
 this class is the overall class of the whole game
@@ -12,19 +13,21 @@ in this class all subclasses are defined
 
 class Game:
 
-    def __init__(self, imgInfoGame, marketMap, playerColor, mapTileCollection):
+    def __init__(self, imgInfoGame, playerColor, gameStep):
+        self.playerColor = playerColor
+        self.numberOfPlayer = len(self.playerColor)
+        self.gameStep = gameStep
+        self.marketMap = MarketMap(imgInfoGame.getMarketMap(), self.numberOfPlayer)
+        self.mapTileCollection = MapTileCollection(imgInfoGame.getGameMap())
         self.civilizations = []
         self.imgInfo = imgInfoGame
         self.gameMap = GameMap(imgInfoGame.getGameMap())
         self.polityOfCivilizations = PolityOfCivilizations()
-        self.marketMap = marketMap
-        self.playerColor = playerColor
-        self.numberOfPlayer = len(self.playerColor)
 
         militaryUnitCollection = self.marketMap.getMilitaryUnitCollection()
         for i in range(self.numberOfPlayer):
-            mt = mapTileCollection.popMapTileCiv()
-            civ = Civilization(imgInfoGame.getCivilization(i), i, mt.civilization, mt, playerColor[i], self.gameMap)
+            mt = self.mapTileCollection.popMapTileCiv()
+            civ = Civilization(imgInfoGame.getCivilization(i), i, mt, playerColor[i], self.gameMap, gameStep)
             self.polityOfCivilizations.addCivPolity(civ.getCivPolity())
 #            self.polityOfCivilizations.setCivForDrawing(civ.getCivilizationEnum())
             civ.addMilitaryUnit(militaryUnitCollection.getArtillery())
@@ -35,8 +38,13 @@ class Game:
                 civ.addMilitaryUnit(militaryUnitCollection.getInfantry())
             self.civilizations.append(civ)
 
-    def setGame(self, mapTileCollection):
-        self.gameMap.setGame(self.civilizations, mapTileCollection)
+        self.setGame()
+
+    def getBusinessObjectCollection(self):
+        return self.marketMap.getBusinessObjectCollection()
+
+    def setGame(self):
+        self.gameMap.setGame(self.civilizations, self.mapTileCollection)
 
     def getGameMap(self):
         return self.gameMap

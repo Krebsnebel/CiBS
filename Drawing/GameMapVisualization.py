@@ -15,8 +15,8 @@ Due to events, decisions are made
 class GameMapVisualization:
 
     def __init__(self, playerColor):
-        self.imgInfo = ImgInfoGame(len(playerColor))
-        self.gameProcess = GameProcessManager(playerColor, self.imgInfo)
+        self.gameImgInfo = ImgInfoGame(len(playerColor))
+        self.gameProcess = GameProcessManager(playerColor, self.gameImgInfo)
 
         pygame.init()
 
@@ -31,7 +31,7 @@ class GameMapVisualization:
         # Definieren und Öffnen eines neuen Fensters
         #self.window = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         self.window = pygame.display.set_mode([self.W, self.H])
-        pygame.display.set_caption("Civilization")
+        pygame.display.set_caption("CivilizationDir")
         self.clock = pygame.time.Clock()
 
     def startVisualization(self):
@@ -43,7 +43,7 @@ class GameMapVisualization:
             [x, y] = pygame.mouse.get_pos()
             gameStep.setMousePosition(x, y)
 
-            self.imgInfo.shift(self.window, Position(x, y))
+            self.gameImgInfo.shift(self.window, Position(x, y))
 
             # Überprüfen, ob Nutzer eine Aktion durchgeführt hat
             for event in pygame.event.get():
@@ -51,7 +51,7 @@ class GameMapVisualization:
                 if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                     spielaktiv = False
                 elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-                    gameStep.leftMouseButtonPressed()
+                    gameStep.setLeftMouseButtonPressed()
 
             # Spiellogik
             self.gameProcess.execute()

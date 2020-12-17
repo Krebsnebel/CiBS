@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class EPermissionTerrain(Enum):
+class EPermission(Enum):
     ALL_EXCEPT_WATER = 0
     ALL_EXCEPT_WATER_AND_MOUNTAIN = 1
     ONLY_GRASSLAND = 2
