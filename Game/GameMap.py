@@ -147,6 +147,9 @@ class GameMap:
 
         self.potentiallyPointsForTown = []
 
+    def getMousePressedAtPossiblePosition(self):
+        return self.imgInfo.getMousePressedAtPossiblePosition()
+
     def isObjectOnTerrainPermitted(self, x, y, permission, temporary):
         terrain = self.getSquare(x, y).getTerrain()
         if permission == EPermission.STOP_ON_WATER:
@@ -363,9 +366,6 @@ class GameMap:
             # print("Setzen des Katastrophenmarkers nicht möglich")
             return False
         return True
-
-
-
 
     def isPuttingKapitolOnSquarePossible(self, city, s, m):
         if city.getType() == ECity.KAPITOL:

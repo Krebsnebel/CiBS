@@ -24,6 +24,7 @@ class ImgInfoCivilization(ImgInfo):
 
     def __init__(self, i, numPlayer):
 
+        self.selectPolity = False
         self.mouseHighlighting = None
 
         width = 1000
@@ -60,6 +61,9 @@ class ImgInfoCivilization(ImgInfo):
                 refPos = Position(1460, 1020)
         super().__init__(width, height, refPos, refPoint)
 
+    def setOptions(self, selPolity):
+        self.selectPolity = selPolity
+
     def setMousePositionForHighlighting(self, mousePosition):
         mx = mousePosition.getX()
         my = mousePosition.getY()
@@ -72,6 +76,14 @@ class ImgInfoCivilization(ImgInfo):
                 self.mouseHighlighting = p.getImgObj()
 
     def draw(self, window):
+        if self.selectPolity:
+            imgObj = EImageObject.POLITY
+            possible_img = pygame.Surface(self.getRect(imgObj), pygame.SRCALPHA)
+            pygame.draw.rect(possible_img, (255, 0, 0), possible_img.get_rect(), 3)
+            window.blit(possible_img, (self.getImgPosOf(imgObj).getX(), self.getImgPosOf(imgObj).getY()))
+
+
+        """
         for p in self.possibilities:
             imgPos = self.getImgPosOf(p.getImgObj())
             possible_img = pygame.Surface(self.getRect(p.getImgObj()), pygame.SRCALPHA)
@@ -83,6 +95,7 @@ class ImgInfoCivilization(ImgInfo):
             mouse_img = pygame.Surface(self.getRect(self.mouseHighlighting), pygame.SRCALPHA)
             pygame.draw.rect(mouse_img, (255, 0, 0, 50), mouse_img.get_rect())
             window.blit(mouse_img, (imgPos.getX(), imgPos.getY()))
+        """
 
     def markAreasInCivilizationForHighlighting(self, objImgList):
         self.possibilities = []

@@ -7,8 +7,11 @@ from CivEnums.ECulturalEvent import ECulturalEvent
 from CivEnums.EFigure import EFigure
 from CivEnums.EGreatPerson import EGreatPerson
 from CivEnums.ELabel import ELabel
+from CivEnums.ENote import ENote
 from CivEnums.EPolity import EPolity
+from CivEnums.EProcess import EProcess
 from CivEnums.EResearch import EResearch
+from CivEnums.EResource import EResource
 from CivEnums.ETerrain import ETerrain
 from CivEnums.EUnitStrength import EUnitStrength
 from CivEnums.EUnitType import EUnitType
@@ -339,6 +342,58 @@ class ImageHandler:
                                                 EPolity.FUNDAMENTALISM.getImgName() + ".jpg")
     imgPolityMonarchy = pygame.image.load("Material/Civilizations/Polity_" + EPolity.MONARCHY.getImgName() + ".jpg")
     imgPolityRepublic = pygame.image.load("Material/Civilizations/Polity_" + EPolity.REPUBLIC.getImgName() + ".jpg")
+
+    # process
+    imgNextButton = pygame.image.load("Material/Process/NextButton.png")
+
+    # marker
+    imgBarbarian = pygame.image.load("Material/Marker/Barbarian.png")
+    imgCottage = pygame.image.load("Material/Marker/Cottage.png")
+    imgIron = pygame.image.load("Material/Marker/Iron.png")
+    imgIncense = pygame.image.load("Material/Marker/Incense.png")
+    imgSilk = pygame.image.load("Material/Marker/Silk.png")
+    imgWheat = pygame.image.load("Material/Marker/Wheat.png")
+    imgSpy = pygame.image.load("Material/Marker/Spy.png")
+    imgUranium = pygame.image.load("Material/Marker/Uranium.png")
+    imgGreatPersonRes = pygame.image.load("Material/Marker/GreatPersonRes.png")
+    imgCoin = pygame.image.load("Material/Marker/Coin.png")
+    imgCultureMarker = pygame.image.load("Material/Marker/CultureMarker.png")
+    imgHitMarker = pygame.image.load("Material/Marker/HitMarker.png")
+
+
+def getImageOfMarker(mType, res, front):
+    if mType is ENote.BARBARIAN and not front:
+        return ImageHandler.imgBarbarian
+    elif mType is ENote.COTTAGE and not front:
+        return ImageHandler.imgCottage
+    else:       # resource, culture, coin, hit marker
+        if res is EResource.IRON:
+            return ImageHandler.imgIron
+        elif res is EResource.INCENSE:
+            return ImageHandler.imgIncense
+        elif res is EResource.SILK:
+            return ImageHandler.imgSilk
+        elif res is EResource.WHEAT:
+            return ImageHandler.imgWheat
+        elif res is EResource.SPY:
+            return ImageHandler.imgSpy
+        elif res is EResource.URANIUM:
+            return ImageHandler.imgUranium
+        elif res is EResource.GREAT_PERSON:
+            return ImageHandler.imgGreatPersonRes
+        elif res is EResource.COIN:
+            return ImageHandler.imgCoin
+        elif res is EResource.CULTURE:
+            return ImageHandler.imgCultureMarker
+        elif res is EResource.HIT:
+            return ImageHandler.imgHitMarker
+        else:
+            return None
+
+
+def getImageOfProcess(process):
+    if process is EProcess.NEXT_BUTTON:
+        return ImageHandler.imgNextButton
 
 
 def getImageOfPolity(polity):

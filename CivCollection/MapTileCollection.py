@@ -97,7 +97,7 @@ class MapTileCollection:
         s22 = Square(ETerrain.MOUNTAIN, EResource.IRON, False, ENote.NONE)
         s23 = Square(ETerrain.FOREST, EResource.NONE, False, ENote.NONE)
 
-        s30 = Square(ETerrain.MOUNTAIN, EResource.GOLD, False, ENote.NONE)
+        s30 = Square(ETerrain.MOUNTAIN, EResource.COIN, False, ENote.NONE)
         s31 = Square(ETerrain.MOUNTAIN, EResource.NONE, False, ENote.NONE)
         s32 = Square(ETerrain.DESERT, EResource.NONE, False, ENote.NONE)
         s33 = Square(ETerrain.GRASSLAND, EResource.WHEAT, False, ENote.NONE)
@@ -492,7 +492,7 @@ class MapTileCollection:
         s12 = Square(ETerrain.FOREST, EResource.NONE, False, ENote.NONE)
         s13 = Square(ETerrain.FOREST, EResource.WHEAT, False, ENote.NONE)
 
-        s20 = Square(ETerrain.MOUNTAIN, EResource.GOLD, False, ENote.NONE)
+        s20 = Square(ETerrain.MOUNTAIN, EResource.COIN, False, ENote.NONE)
         s21 = Square(ETerrain.DESERT, EResource.NONE, False, ENote.NONE)
         s22 = Square(ETerrain.GRASSLAND, EResource.NONE, False, ENote.NONE)
         s23 = Square(ETerrain.FOREST, EResource.NONE, False, ENote.NONE)

@@ -20,29 +20,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="effe2213-13fd-4f81-9707-808e4e0988ad" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CivEnums/EBuilding.py" beforeDir="false" afterPath="$PROJECT_DIR$/CivEnums/EBuilding.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CivEnums/EPermission.py" beforeDir="false" afterPath="$PROJECT_DIR$/CivEnums/EPermission.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CivObjects/DisasterMarker.py" beforeDir="false" afterPath="$PROJECT_DIR$/CivObjects/DisasterMarker.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CivObjects/Figure.py" beforeDir="false" afterPath="$PROJECT_DIR$/CivObjects/Figure.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CivObjects/GreatPerson.py" beforeDir="false" afterPath="$PROJECT_DIR$/CivObjects/GreatPerson.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CivObjects/Wonder.py" beforeDir="false" afterPath="$PROJECT_DIR$/CivObjects/Wonder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Civilization/City.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Civilization/CivPolity.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Civilization/Civilization.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Civilization/PolityOfCivilizations.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Civilization/ResearchManager.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Drawing/GameMapVisualization.py" beforeDir="false" afterPath="$PROJECT_DIR$/Drawing/GameMapVisualization.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Drawing/ImgInfo.py" beforeDir="false" afterPath="$PROJECT_DIR$/Drawing/ImgInfo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Drawing/ImgInfoGame.py" beforeDir="false" afterPath="$PROJECT_DIR$/Drawing/ImgInfoGame.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Drawing/ImgInfoGameMap.py" beforeDir="false" afterPath="$PROJECT_DIR$/Drawing/ImgInfoGameMap.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/Game.py" beforeDir="false" afterPath="$PROJECT_DIR$/Game/Game.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/GameMap.py" beforeDir="false" afterPath="$PROJECT_DIR$/Game/GameMap.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameProcess/GameProcessManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/GameProcess/GameProcessManager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameProcess/GameStep.py" beforeDir="false" afterPath="$PROJECT_DIR$/GameProcess/GameStep.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameProcess/PrepareGame.py" beforeDir="false" afterPath="$PROJECT_DIR$/GameProcess/PrepareGame.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameProcess/StartOfRound.py" beforeDir="false" afterPath="$PROJECT_DIR$/GameProcess/StartOfRound.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Possibilities/CivPossibilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Possibilities/FigureMovementPossibilities.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

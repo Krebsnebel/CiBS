@@ -1,5 +1,6 @@
 from random import shuffle
 
+from CivEnums.EConstants import EConstants
 from CivEnums.ECulturalEvent import ECulturalEvent
 from CivEnums.ERotation import ERotation
 from CivObjects.CulturalEvent import CulturalEvent
@@ -55,6 +56,16 @@ class CulturalEventCollection:
 
         self.shuffleCards()
 
+    def getStackLengthOfCultureCards(self, level):
+        if level == 1:
+            return len(self.culturalEvent_I)
+        elif level == 2:
+            return len(self.culturalEvent_II)
+        elif level == 3:
+            return len(self.culturalEvent_III)
+        else:
+            return -1
+
     def shuffleCards(self):
         shuffle(self.culturalEvent_I)
         shuffle(self.culturalEvent_II)
@@ -64,23 +75,24 @@ class CulturalEventCollection:
 
         resize = self.imgInfo.getResize(EImageObject.CULTURE_CARDS)
 
-        d = 0
+        dx = EConstants.DELTA_CULTURE_CARDS_STACK.value
+        delta = 0
         stackPos = self.imgInfo.getImgPosOf(EImageObject.CULTURE_EVENT_1)
         for c in self.culturalEvent_I:
-            pos = Position(stackPos.getX() + d, stackPos.getY() - d)
+            pos = Position(stackPos.getX() + delta, stackPos.getY() - delta)
             c.draw(window, ERotation.NO_ROTATION, pos, resize)
-            d = d + 1
+            delta = delta + dx
 
-        d = 0
+        delta = 0
         stackPos = self.imgInfo.getImgPosOf(EImageObject.CULTURE_EVENT_2)
         for c in self.culturalEvent_II:
-            pos = Position(stackPos.getX() + d, stackPos.getY() - d)
+            pos = Position(stackPos.getX() + delta, stackPos.getY() - delta)
             c.draw(window, ERotation.NO_ROTATION, pos, resize)
-            d = d + 1
+            delta = delta + dx
 
-        d = 0
+        delta = 0
         stackPos = self.imgInfo.getImgPosOf(EImageObject.CULTURE_EVENT_3)
         for c in self.culturalEvent_III:
-            pos = Position(stackPos.getX() + d, stackPos.getY() - d)
+            pos = Position(stackPos.getX() + delta, stackPos.getY() - delta)
             c.draw(window, ERotation.NO_ROTATION, pos, resize)
-            d = d + 1
+            delta = delta + dx

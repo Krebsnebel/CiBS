@@ -1,9 +1,16 @@
+import pygame
+
+from CivEnums.EProcess import EProcess
 from CivEnums.ERefPoint import ERefPoint
+from CivEnums.ERotation import ERotation
 from CivObjects.Position import Position
+from Drawing.EImageObject import EImageObject
+from Drawing import ImageHandler
 from Drawing.ImgInfoCivilization import ImgInfoCivilization
 from Drawing.ImgInfoGameMap import ImgInfoGameMap
 from Drawing.ImgInfo import ImgInfo
 from Drawing.ImgInfoMarketMap import ImgInfoMarketMap
+from Drawing.DrawCivObjects import DrawCivObjects
 
 
 """
@@ -24,6 +31,8 @@ Furthermore functions are implemented
 class ImgInfoGame(ImgInfo):
 
     def __init__(self, numPlayer):
+        self.nextButton = True
+
         self.imgFramePix = 50
         self.imgInfoArray = []
         self.imgInfoCivilizations = []
@@ -48,9 +57,13 @@ class ImgInfoGame(ImgInfo):
         for imgInfo in self.imgInfoArray:
             imgInfo.setMousePositionForHighlighting(mousePosition)
 
-    def leftMouseButtonPressed(self, mousePosition):
+    def setLeftMouseButtonPressed(self):
         for imgInfo in self.imgInfoArray:
-            imgInfo.leftMouseButtonPressed(mousePosition)
+            imgInfo.setLeftMouseButtonPressed()
+
+    def clearMouseButtons(self):
+        for imgInfo in self.imgInfoArray:
+            imgInfo.clearMouseButtons()
 
     def setTopLeft(self):
         topLefts = [self.imgInfoGameMap.getPosOf(ERefPoint.TOP_LEFT, False),
@@ -92,7 +105,7 @@ class ImgInfoGame(ImgInfo):
             self.shiftDown(window, speed)
         if mousePos.getY() >= window.get_height() - self.imgFramePix:
             self.shiftUp(window, speed)
-        self.updateShifts()
+        self.updateShiftsAndMousePosition(mousePos)
 
     def shiftRight(self, window, dx):
         max_shift = -self.posTopLeft.getX()
@@ -123,9 +136,25 @@ class ImgInfoGame(ImgInfo):
     def getMarketMap(self):
         return self.imgInfoMarketMap
 
-    def updateShifts(self):
+    def updateShiftsAndMousePosition(self, mousePos):
         for imgInfo in self.imgInfoArray:
             imgInfo.shiftX = self.shiftX
             imgInfo.shiftY = self.shiftY
+            imgInfo.setMousePosition(mousePos.getX(), mousePos.getY())
+
+    def draw(self, window):
+        if self.nextButton:
+            pos = Position(EImageObject.NEXT_BUTTON.getX(), EImageObject.NEXT_BUTTON.getY())
+            img = ImageHandler.getImageOfProcess(EProcess.NEXT_BUTTON)
+            resize = EImageObject.NEXT_BUTTON.getResize()
+            DrawCivObjects.drawImage(img, window, ERotation.NO_ROTATION, pos, resize, 1)
+
+    @classmethod
+    def getRect(cls, imgObj):
+        return int(imgObj.getSizeX()), int(imgObj.getSizeY())
+
+
+
+
 
 

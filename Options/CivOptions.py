@@ -22,9 +22,10 @@ this class represents the possibilities of each civilization
 
 class CivOptions:
 
-    def __init__(self, gameMap, gameStep, civ):
-        self.gameMap = gameMap
+    def __init__(self, game, gameStep, civ):
         self.gameStep = gameStep
+        self.game = game
+        self.gameMap = self.game.getGameMap()
         self.civ = civ
         self.citiesAreSet = [False, False, False]
         self.cities = []
@@ -32,7 +33,8 @@ class CivOptions:
             self.cities.append(self.civ.getCity(i))
 
         self.cityObj = EImageObject.NO_OBJECT
-        self.isSwitchingPolityPossible = True #False
+#        self.isSwitchingPolityPossible = True #False
+        self.selectPolity = False
 
         self.isMarketPossible = False
         self.isTemplePossible = False
@@ -67,19 +69,19 @@ class CivOptions:
         self.mouseAtPossibleGameMapPosition = None
         self.mousePressedAtPossibleGameMapPosition = None
 
-    def getMousePressedAtPossibleGameMapPosition(self):
-        if self.mousePressedAtPossibleGameMapPosition is not None:
-            mp = self.mousePressedAtPossibleGameMapPosition
-            self.mousePressedAtPossibleGameMapPosition = None
-            return mp
-        return None
+#    def getMousePressedAtPossibleGameMapPosition(self):
+#        if self.mousePressedAtPossibleGameMapPosition is not None:
+#            mp = self.mousePressedAtPossibleGameMapPosition
+#            self.mousePressedAtPossibleGameMapPosition = None
+#            return mp
+#        return None
 
-    def setMouseAtPossibleGameMapPosition(self, gmPos):
-        if self.optionsGameMap[gmPos.getX()][gmPos.getY()]:
-            self.mouseAtPossibleGameMapPosition = gmPos
-        else:
-            self.mouseAtPossibleGameMapPosition = None
-        self.gameMap.getImgInfo().setMouseAtPossiblePosition(self.mouseAtPossibleGameMapPosition)
+#    def setMouseAtPossibleGameMapPosition(self, gmPos):
+#        if self.optionsGameMap[gmPos.getX()][gmPos.getY()]:
+#            self.mouseAtPossibleGameMapPosition = gmPos
+#        else:
+#            self.mouseAtPossibleGameMapPosition = None
+#        self.gameMap.getImgInfo().setMouseAtPossiblePosition(self.mouseAtPossibleGameMapPosition)
 
     def setMousePressedAtPossibleGameMapPosition(self, gmPos):
         if self.optionsGameMap[gmPos.getX()][gmPos.getY()]:
@@ -88,6 +90,40 @@ class CivOptions:
             self.mousePressedAtPossibleGameMapPosition = None
 
     def setOptionsInGameStep(self):
+        self.setOptionsInGameMap()
+        self.setOtherOptionsInGameStep()
+
+    def setOtherOptionsInGameStep(self):
+        if self.gameStep.getSection() == EGameSection.START_ROUND:
+            if self.isInStep(EGameStep.GENERAL_SELECT):
+                self.selectPolity = True
+            elif self.isInStep(EGameStep.SELECT_POLITY):
+                pass
+            elif self.isInStep(EGameStep.POLITY_SELECTED):
+                pass
+            elif self.isInStep(EGameStep.WONDER_SKILL_SELECTED):
+                pass
+            elif self.isInStep(EGameStep.CULTURE_SKILL_SELECTED):
+                pass
+            elif self.isInStep(EGameStep.RESEARCH_SKILL_SELECTED):
+                pass
+            elif self.isInStep(EGameStep.SET_CITY):
+                pass
+            elif self.isInStep(EGameStep.SWITCH_CIVILIZATION):
+                pass
+        elif self.gameStep.getSection() == EGameSection.TRADE:
+            pass
+        elif self.gameStep.getSection() == EGameSection.CITY_ADMINISTRATION:
+            pass
+        elif self.gameStep.getSection() == EGameSection.MOVEMENT:
+            pass
+        elif self.gameStep.getSection() == EGameSection.RESEARCH:
+            pass
+        else:
+            return False
+        self.civ.getImgInfo().setOptions(self.selectPolity)
+
+    def setOptionsInGameMap(self):
         for y in range(16):
             for x in range(16):
                 if self.gameStep.getSection() == EGameSection.PREPARE_GAME:
@@ -115,7 +151,22 @@ class CivOptions:
                     else:
                         return False
                 elif self.gameStep.getSection() == EGameSection.START_ROUND:
-                    pass
+                    if self.isInStep(EGameStep.GENERAL_SELECT):
+                        pass
+                    elif self.isInStep(EGameStep.SELECT_POLITY):
+                        pass
+                    elif self.isInStep(EGameStep.POLITY_SELECTED):
+                        pass
+                    elif self.isInStep(EGameStep.WONDER_SKILL_SELECTED):
+                        pass
+                    elif self.isInStep(EGameStep.CULTURE_SKILL_SELECTED):
+                        pass
+                    elif self.isInStep(EGameStep.RESEARCH_SKILL_SELECTED):
+                        pass
+                    elif self.isInStep(EGameStep.SET_CITY):
+                        pass
+                    elif self.isInStep(EGameStep.SWITCH_CIVILIZATION):
+                        pass
                 elif self.gameStep.getSection() == EGameSection.TRADE:
                     pass
                 elif self.gameStep.getSection() == EGameSection.CITY_ADMINISTRATION:
@@ -281,5 +332,9 @@ class CivOptions:
 
     def isInStep(self, step):
         return self.gameStep.getStep() == step
+
+
+
+
 
 

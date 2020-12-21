@@ -1,6 +1,7 @@
 from random import shuffle, randrange
 
 from CivEnums.EBuilding import EBuilding
+from CivEnums.EConstants import EConstants
 from CivEnums.EGreatPerson import EGreatPerson
 from CivEnums.ERotation import ERotation
 from CivEnums.EWonder import EWonder
@@ -98,6 +99,29 @@ class BusinessObjectCollection:
         self.wonderCovered_L3.append(Wonder(EWonder.UNITED_NATIONS))
         shuffle(self.wonderCovered_L3)
 
+    def getStackLengthOfWonder(self):
+        return len(self.wonderCovered_L2) + len(self.wonderCovered_L3)
+
+    def getStackLengthOfBuilding(self, building):
+        if building is EBuilding.MARKET:
+            return len(self.market)
+        elif building is EBuilding.TEMPLE:
+            return len(self.temple)
+        elif building is EBuilding.GRANARY:
+            return len(self.granary)
+        elif building is EBuilding.LIBRARY:
+            return len(self.library)
+        elif building is EBuilding.BARRACK:
+            return len(self.barrack)
+        elif building is EBuilding.BLACKSMITH:
+            return len(self.blacksmith)
+        elif building is EBuilding.TRADING_POST:
+            return len(self.tradingPost)
+        elif building is EBuilding.MARINA:
+            return len(self.marina)
+        else:
+            return -1
+
     def popWonder(self, idx):
         if 0 <= idx < len(self.wonderVisible):
             w = self.wonderVisible.pop(idx)
@@ -122,7 +146,7 @@ class BusinessObjectCollection:
         resizeCard = self.imgInfo.getResize(EImageObject.WONDER_CARD)
         resizeMarker = self.imgInfo.getResize(EImageObject.SQUARE_OBJECT)
 
-        delta = 2
+        delta = EConstants.DELTA_MARKER_BUILDINGS_STACK.value
         drawStack(window, resizeMarker, self.market, self.imgInfo, EImageObject.BUILDING_STACK_1L, delta)
         drawStack(window, resizeMarker, self.temple, self.imgInfo, EImageObject.BUILDING_STACK_1R, delta)
         drawStack(window, resizeMarker, self.granary, self.imgInfo, EImageObject.BUILDING_STACK_2L, delta)
@@ -152,14 +176,15 @@ class BusinessObjectCollection:
             w.drawCard(window, ERotation.NO_ROTATION, pos, resizeCard)
             i = i + 1
 
-        d = 0
+        dx = EConstants.DELTA_WONDER_CARDS_STACK.value
+        delta = 0
         stackPos = self.imgInfo.getImgPosOf(EImageObject.WONDER_STACK)
         for w in self.wonderCovered_L3:
-            pos = Position(stackPos.getX() + d, stackPos.getY() - d)
+            pos = Position(stackPos.getX() + delta, stackPos.getY() - delta)
             w.drawCard(window, ERotation.NO_ROTATION, pos, resizeCard)
-            d = d + 2
+            delta = delta + dx
 
         for w in self.wonderCovered_L2:
-            pos = Position(stackPos.getX() + d, stackPos.getY() - d)
+            pos = Position(stackPos.getX() + delta, stackPos.getY() - delta)
             w.drawCard(window, ERotation.NO_ROTATION, pos, resizeCard)
-            d = d + 2
+            delta = delta + dx

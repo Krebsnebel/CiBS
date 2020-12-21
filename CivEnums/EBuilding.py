@@ -96,7 +96,7 @@ class EBuilding(Enum):
                5, 8, "L", "U", "Bibliothek", "Universität", "Library", "University")
     GRANARY = (EPermission.ONLY_GRASSLAND, True, False, 1, 2, 1, 2, 0, 0, 0, 0, EResource.NONE, EResource.NONE,
                5, 8, "K", "A", "Kornspeicher", "Aquädukt", "Granary", "Aqueduct")
-    MARKET = (EPermission.ALL_EXCEPT_WATER, True, True, 1, 1, 1, 1, 1, 1, 0, 0, EResource.NONE, EResource.GOLD,
+    MARKET = (EPermission.ALL_EXCEPT_WATER, True, True, 1, 1, 1, 1, 1, 1, 0, 0, EResource.NONE, EResource.COIN,
               7, 10, "R", "B", "Markt", "Bank", "Market", "Bank")
     TEMPLE = (EPermission.ALL_EXCEPT_WATER, True, True, 0, 0, 0, 0, 2, 3, 0, 0, EResource.NONE, EResource.NONE,
               7, 10, "T", "C", "Tempel", "Kathedrale", "Temple", "Cathedral")

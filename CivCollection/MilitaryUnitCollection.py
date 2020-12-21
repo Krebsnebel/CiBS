@@ -1,5 +1,6 @@
 from random import shuffle
 
+from CivEnums.EConstants import EConstants
 from CivEnums.ERotation import ERotation
 from CivEnums.EUnitStrength import EUnitStrength
 from CivEnums.EUnitType import EUnitType
@@ -45,6 +46,18 @@ class MilitaryUnitCollection:
             self.cavalry.append(MilitaryUnit(EUnitType.CAVALRY, EUnitStrength.MEDIUM))
             self.infantry.append(MilitaryUnit(EUnitType.INFANTRY, EUnitStrength.MEDIUM))
 
+    def getStackLengthOfMilUnit(self, unitType):
+        if unitType is EUnitType.ARTILLERY:
+            return len(self.artillery)
+        elif unitType is EUnitType.CAVALRY:
+            return len(self.cavalry)
+        elif unitType is EUnitType.INFANTRY:
+            return len(self.infantry)
+        elif unitType is EUnitType.AIR_FORCE:
+            return len(self.airForce)
+        else:
+            return -1
+
     def shuffleCards(self, unitType):
         if unitType == EUnitType.ARTILLERY:
             shuffle(self.artillery)
@@ -87,30 +100,31 @@ class MilitaryUnitCollection:
     def draw(self, window):
         resize = self.imgInfo.getResize(EImageObject.UNIT_CARDS)
 
-        d = 0
+        dx = EConstants.DELTA_MILITARY_UNIT_STACK.value
+        delta = 0
         stackPos = self.imgInfo.getImgPosOf(EImageObject.INFANTRY_STACK)
         for u in self.infantry:
-            pos = Position(stackPos.getX() + d, stackPos.getY() - d)
+            pos = Position(stackPos.getX() + delta, stackPos.getY() - delta)
             u.draw(window, ERotation.NO_ROTATION, pos, resize)
-            d = d + 1
+            delta = delta + dx
 
-        d = 0
+        delta = 0
         stackPos = self.imgInfo.getImgPosOf(EImageObject.ARTILLERY_STACK)
         for u in self.artillery:
-            pos = Position(stackPos.getX() + d, stackPos.getY() - d)
+            pos = Position(stackPos.getX() + delta, stackPos.getY() - delta)
             u.draw(window, ERotation.NO_ROTATION, pos, resize)
-            d = d + 1
+            delta = delta + dx
 
-        d = 0
+        delta = 0
         stackPos = self.imgInfo.getImgPosOf(EImageObject.CAVALRY_STACK)
         for u in self.cavalry:
-            pos = Position(stackPos.getX() + d, stackPos.getY() - d)
+            pos = Position(stackPos.getX() + delta, stackPos.getY() - delta)
             u.draw(window, ERotation.NO_ROTATION, pos, resize)
-            d = d + 1
+            delta = delta + dx
 
-        d = 0
+        delta = 0
         stackPos = self.imgInfo.getImgPosOf(EImageObject.AIR_FORCE_STACK)
         for u in self.airForce:
-            pos = Position(stackPos.getX() + d, stackPos.getY() - d)
+            pos = Position(stackPos.getX() + delta, stackPos.getY() - delta)
             u.draw(window, ERotation.NO_ROTATION, pos, resize)
-            d = d + 1
+            delta = delta + dx

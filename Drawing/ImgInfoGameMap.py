@@ -51,21 +51,38 @@ class ImgInfoGameMap(ImgInfo):
         self.expectGMPosition = False
         self.gameMapPosition = None
 
+    def setMousePosition(self, x, y):
+        ImgInfo.setMousePosition(self, x, y)
+        posGM = self.getMousePositionInGameMap()
+        if self.options is not None and posGM is not None:
+            if self.options[posGM.getX()][posGM.getY()]:
+                self.mouseAtPossiblePosition = posGM
+                print(str(posGM.getX()) + " " + str(posGM.getY()))
+            else:
+                self.mouseAtPossiblePosition = None
+        else:
+            self.mouseAtPossiblePosition = None
+
+    def getMousePositionInGameMap(self):
+        size = EImageObject.MAP_TILE.getSizeX()
+        mousePosRel = self.getMousePosition(True)
+        if mousePosRel is None:
+            return None
+        x = int(mousePosRel.getX() // (size / 4.0))
+        y = int(mousePosRel.getY() // (size / 4.0))
+        if 0 <= x < 16 and 0 <= y < 16:
+            return Position(x, y)
+        else:
+            return None
+
+    def getMousePressedAtPossiblePosition(self):
+        if self.isLeftMouseButtonPressed():
+            return self.mouseAtPossiblePosition
+        else:
+            return None
+
     def setOptions(self, options):
         self.options = options
-
-    def setMouseAtPossiblePosition(self, mouseAtPossiblePosition):
-        self.mouseAtPossiblePosition = mouseAtPossiblePosition
-
-    def setMousePositionForHighlighting(self, mousePosition):
-        pos = self.calcGameMapPosition(mousePosition)
-        x = pos.getX()
-        y = pos.getY()
-        for p in self.possibilities:
-            if p.getPosition().getX() == x and p.getPosition().getY() == y:
-                self.mouseHighlighting = HighlightObject(EImageObject.SQUARE_OBJECT, pos)
-                return
-        self.mouseHighlighting = None
 
     def draw(self, window):
         if self.options is not None:
@@ -141,12 +158,4 @@ class ImgInfoGameMap(ImgInfo):
         return Position(int(pixSquareScale * posGameMap.getX() + self.getPosOf(ERefPoint.TOP_LEFT, True).getX()),
                         int(pixSquareScale * posGameMap.getY() + self.getPosOf(ERefPoint.TOP_LEFT, True).getY()))
 
-    def calcGameMapPosition(self, mousePosition):
-        size = EImageObject.MAP_TILE.getSizeX()
-        mousePosRel = self.getMousePosition(mousePosition)
-        x = int(mousePosRel.getX() // (size / 4.0))
-        y = int(mousePosRel.getY() // (size / 4.0))
-        if 0 <= x < 16 and 0 <= y < 16:
-            return Position(x, y)
-        else:
-            return None
+

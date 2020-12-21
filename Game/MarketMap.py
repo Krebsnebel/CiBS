@@ -45,3 +45,6 @@ class MarketMap:
         self.businessObjectCollection.draw(window)
         self.culturalEventCollection.draw(window)
         self.militaryUnitCollection.draw(window)
+        self.markerCollection.draw(window)
+
+        self.imgInfo.draw(window)

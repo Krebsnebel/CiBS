@@ -41,7 +41,6 @@ class GameMapVisualization:
         # Schleife Hauptprogramm
         while spielaktiv:
             [x, y] = pygame.mouse.get_pos()
-            gameStep.setMousePosition(x, y)
 
             self.gameImgInfo.shift(self.window, Position(x, y))
 
@@ -51,10 +50,13 @@ class GameMapVisualization:
                 if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                     spielaktiv = False
                 elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-                    gameStep.setLeftMouseButtonPressed()
+                    self.gameImgInfo.setLeftMouseButtonPressed()
 
             # Spiellogik
             self.gameProcess.execute()
+
+            # postprocessing
+            self.gameImgInfo.clearMouseButtons()
 
             # Spielfeld löschen
             self.window.fill(self.WEISS)

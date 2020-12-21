@@ -1,8 +1,10 @@
 from CivEnums.EConstants import EConstants
 from CivEnums.ENote import ENote
 from CivEnums.EResource import EResource
+from CivEnums.ERotation import ERotation
 from CivObjects.Marker import Marker
-
+from CivObjects.Position import Position
+from Drawing.EImageObject import EImageObject
 
 """
 this class is a collection of different markers on market map
@@ -22,8 +24,8 @@ class MarkerCollection:
         self.incense = []
         self.cottage = []
         self.barbarian = []
-        self.coin = EConstants.NUMBER_COINS.value
-        self.culture = EConstants.NUMBER_CULTURE.value
+        self.coin = []
+        self.culture = []
 
         for i in range(2):
             self.barbarian.append(Marker(ENote.BARBARIAN, EResource.GREAT_PERSON))
@@ -45,3 +47,52 @@ class MarkerCollection:
             self.cottage.append(Marker(ENote.COTTAGE, EResource.WHEAT))
             self.cottage.append(Marker(ENote.COTTAGE, EResource.SILK))
             self.cottage.append(Marker(ENote.COTTAGE, EResource.INCENSE))
+
+        for i in range(EConstants.NUMBER_COINS.value):
+            self.coin.append(Marker(ENote.RESOURCE, EResource.COIN))
+
+        for i in range(EConstants.NUMBER_CULTURE.value):
+            self.culture.append(Marker(ENote.RESOURCE, EResource.CULTURE))
+
+    def getStackLengthOfResource(self, resource):
+        if resource is EResource.IRON:
+            return len(self.iron)
+        elif resource is EResource.INCENSE:
+            return len(self.incense)
+        elif resource is EResource.WHEAT:
+            return len(self.wheat)
+        elif resource is EResource.SILK:
+            return len(self.silk)
+        elif resource is EResource.COIN:
+            return len(self.coin)
+        elif resource is EResource.CULTURE:
+            return len(self.culture)
+        else:
+            return -1
+
+    def getStackLengthOfCottage(self):
+        return len(self.cottage)
+
+    def getStackLengthOfBarbarian(self):
+        return len(self.barbarian)
+
+    def draw(self, window):
+        delta = EConstants.DELTA_TOKENS_STACK.value
+        self.drawStack(window, self.barbarian, self.imgInfo, EImageObject.BARBARIAN_MARKET_MAP, delta)
+        self.drawStack(window, self.cottage, self.imgInfo, EImageObject.COTTAGE_MARKET_MAP, delta)
+        self.drawStack(window, self.iron, self.imgInfo, EImageObject.IRON_MARKET_MAP, delta)
+        self.drawStack(window, self.incense, self.imgInfo, EImageObject.INCENSE_MARKET_MAP, delta)
+        self.drawStack(window, self.wheat, self.imgInfo, EImageObject.WHEAT_MARKET_MAP, delta)
+        self.drawStack(window, self.silk, self.imgInfo, EImageObject.SILK_MARKET_MAP, delta)
+
+        self.drawStack(window, self.coin, self.imgInfo, EImageObject.COIN_MARKET_MAP, delta)
+        self.drawStack(window, self.culture, self.imgInfo, EImageObject.CULTURE_MARKET_MAP, delta)
+
+    def drawStack(self, window, stack, imgInfo, imgObj, s):
+        i = 0
+        stackPos = imgInfo.getImgPosOf(imgObj)
+        resize = self.imgInfo.getResize(imgObj)
+        for obj in stack:
+            pos = Position(stackPos.getX() + i, stackPos.getY() - i)
+            obj.draw(window, ERotation.NO_ROTATION, pos, resize)
+            i = i + s

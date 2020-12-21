@@ -26,6 +26,8 @@ Furthermore common functions are implemented
 class ImgInfo:
 
     def __init__(self, width, height, refPos, refPoint):
+        self.mousePosition = None
+        self.leftMouseButtonPressed = False
         self.shiftX = 0
         self.shiftY = 0
         self.scale = 1
@@ -41,6 +43,29 @@ class ImgInfo:
         self.possibilities = []
         self.mouseHighlighting = None
         self.possibilitiesMarked = False
+
+    def setMousePosition(self, x, y):
+        self.mousePosition = Position(x, y)
+
+    def getMousePosition(self, relative):
+        if self.mousePosition is None:
+            return None
+        if relative:
+            x = self.mousePosition.getX() - self.getPosOf(ERefPoint.TOP_LEFT, True).getX()
+            y = self.mousePosition.getY() - self.getPosOf(ERefPoint.TOP_LEFT, True).getY()
+        else:
+            x = self.mousePosition.getX()
+            y = self.mousePosition.getY()
+        return Position(x, y)
+
+    def setLeftMouseButtonPressed(self):
+        self.leftMouseButtonPressed = True
+
+    def isLeftMouseButtonPressed(self):
+        return self.leftMouseButtonPressed
+
+    def clearMouseButtons(self):
+        self.leftMouseButtonPressed = False
 
     def clearPossibilities(self):
         self.possibilities = []
@@ -77,11 +102,6 @@ class ImgInfo:
 
     def getShiftY(self):
         return self.shiftY
-
-    def getMousePosition(self, mousePos):
-        x = mousePos.getX() - self.getPosOf(ERefPoint.TOP_LEFT, True).getX()
-        y = mousePos.getY() - self.getPosOf(ERefPoint.TOP_LEFT, True).getY()
-        return Position(x, y)
 
     def setTopLeft(self):
         refPos = self.getPosOf(ERefPoint.REF_POS, False)

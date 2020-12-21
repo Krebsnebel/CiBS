@@ -25,7 +25,7 @@ class PrepareGame:
             self.gameStep.setStep(EGameStep.SET_CITY)
         elif self.isInStep(EGameStep.SET_CITY):
             self.gameStep.expectGameMapPosition("Hauptstadt")
-            p = civ.getMousePressedAtPossibleGameMapPosition()
+            p = self.getGameMap().getMousePressedAtPossiblePosition()
             if p is not None:
                 self.getGameMap().setCity(self.gameStep.getChosenObj(), p.getX(), p.getY())
                 if civEnum == ECivilization.AGYPT:
@@ -39,28 +39,28 @@ class PrepareGame:
                     self.gameStep.setStep(EGameStep.SET_PIONEER)
         elif self.isInStep(EGameStep.SET_WONDER):
             self.gameStep.expectGameMapPosition("Wunder")
-            p = civ.getMousePressedAtPossibleGameMapPosition()
+            p = self.getGameMap().getMousePressedAtPossiblePosition()
             if p is not None:
                 self.getGameMap().setBusinessObject(self.gameStep.getChosenObj(), p.getX(), p.getY())
                 self.gameStep.setChosenObj([civ.getPioneer(0)])
                 self.gameStep.setStep(EGameStep.SET_PIONEER)
         elif self.isInStep(EGameStep.SET_GREAT_PERSON):
             self.gameStep.expectGameMapPosition("Große Persönlichkeit")
-            p = civ.getMousePressedAtPossibleGameMapPosition()
+            p = self.getGameMap().getMousePressedAtPossiblePosition()
             if p is not None:
                 self.getGameMap().setBusinessObject(self.gameStep.getChosenObj(), p.getX(), p.getY())
                 self.gameStep.setChosenObj([civ.getPioneer(0)])
                 self.gameStep.setStep(EGameStep.SET_PIONEER)
         elif self.isInStep(EGameStep.SET_PIONEER):
             self.gameStep.expectGameMapPosition("Pionier")
-            p = civ.getMousePressedAtPossibleGameMapPosition()
+            p = self.getGameMap().getMousePressedAtPossiblePosition()
             if p is not None:
                 self.getGameMap().setFigures(self.gameStep.getChosenObj(), p.getX(), p.getY())
                 self.gameStep.setChosenObj([civ.getArmy(0)])
                 self.gameStep.setStep(EGameStep.SET_ARMY_NR1)
         elif self.isInStep(EGameStep.SET_ARMY_NR1):
             self.gameStep.expectGameMapPosition("Armee - 01")
-            p = civ.getMousePressedAtPossibleGameMapPosition()
+            p = self.getGameMap().getMousePressedAtPossiblePosition()
             if p is not None:
                 self.getGameMap().setFigures(self.gameStep.getChosenObj(), p.getX(), p.getY())
                 if civEnum == ECivilization.RUSSIA:
@@ -70,7 +70,7 @@ class PrepareGame:
                     self.gameStep.setStep(EGameStep.COUNT_TRADING_POINTS)
         elif self.isInStep(EGameStep.SET_ARMY_NR2):
             self.gameStep.expectGameMapPosition("Armee - 02")
-            p = civ.getMousePressedAtPossibleGameMapPosition()
+            p = self.getGameMap().getMousePressedAtPossiblePosition()
             if p is not None:
                 self.getGameMap().setFigures(self.gameStep.getChosenObj(), p.getX(), p.getY())
                 self.gameStep.setStep(EGameStep.COUNT_TRADING_POINTS)

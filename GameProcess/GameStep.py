@@ -16,13 +16,14 @@ class GameStep:
         self.numberOfPlayer = len(playerColor)
         self.step = None
         self.gameSection = None
-        self.mousePosition = Position(0, 0)
-        self.leftMouseButtonPressed = Position(0, 0)
+#        self.mousePosition = Position(0, 0)
+#        self.leftMouseButtonPressed = Position(0, 0)
         self.chosenSquObj = None
         self.strForExpectedEvent = "aaa"
 
         self.startPlayer = 0
         self.nextPlayersTurn = 0
+        self.civTurnIdx = 0
         self.civilizations = None
         self.civTurn = None
         self.roundCompleted = True
@@ -53,7 +54,8 @@ class GameStep:
             self.roundCompleted = True
         else:
             self.roundCompleted = False
-        self.civTurn = self.civilizations[self.nextPlayersTurn]
+        self.civTurnIdx = self.nextPlayersTurn
+        self.civTurn = self.civilizations[self.civTurnIdx]
         self.nextPlayersTurn = (self.nextPlayersTurn + 1) % self.numberOfPlayer
         if startPhase and self.nextPlayersTurn == self.startPlayer:
             self.startPlayer = (self.startPlayer + 1) % self.numberOfPlayer
@@ -71,20 +73,20 @@ class GameStep:
     def getCivilization(self):
         return self.civTurn
 
-    def getMousePosition(self):
-        return self.mousePosition
+#    def getMousePosition(self):
+#        return self.mousePosition
 
-    def setMousePosition(self, x, y):
-        self.mousePosition.setPosition(x, y)
-        gmPos = self.imgInfo.getGameMap().calcGameMapPosition(self.mousePosition)
-        if gmPos is not None:
-            self.civTurn.setMouseAtPossibleGameMapPosition(gmPos)
+#    def setMousePosition(self, x, y):
+#        self.mousePosition.setPosition(x, y)
+#        gmPos = self.imgInfo.getGameMap().calcGameMapPosition(self.mousePosition)
+#        if gmPos is not None:
+#            self.civTurn.setMouseAtPossibleGameMapPosition(gmPos)
 
-    def setLeftMouseButtonPressed(self):
-        self.leftMouseButtonPressed.setPosition(self.mousePosition.getX(), self.mousePosition.getY())
-        gmPos = self.imgInfo.getGameMap().calcGameMapPosition(self.mousePosition)
-        if gmPos is not None:
-            self.civTurn.setMousePressedAtPossibleGameMapPosition(gmPos)
+#    def setLeftMouseButtonPressed(self):
+#        self.leftMouseButtonPressed.setPosition(self.mousePosition.getX(), self.mousePosition.getY())
+#        gmPos = self.imgInfo.getGameMap().calcGameMapPosition(self.mousePosition)
+#        if gmPos is not None:
+#            self.civTurn.setMousePressedAtPossibleGameMapPosition(gmPos)
 
     def setChosenObj(self, obj):
         self.chosenSquObj = obj

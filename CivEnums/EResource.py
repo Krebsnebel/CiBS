@@ -7,7 +7,7 @@ class EResource(Enum):
         self.sign = s
 
     NONE = " "
-    GOLD = "c"
+    COIN = "c"
     SILK = "s"
     IRON = "e"
     WHEAT = "w"
@@ -15,6 +15,8 @@ class EResource(Enum):
     GREAT_PERSON = "g"
     SPY = "o"
     URANIUM = "u"
+    CULTURE = "a"
+    HIT = "h"
 
     def getSign(self):
         return self.sign

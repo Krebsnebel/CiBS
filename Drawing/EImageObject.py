@@ -33,7 +33,20 @@ class EImageObject(Enum):
     def getResize(self):
         return self.resize
 
+    def getRect(self):
+        return int(self.getSizeX()), int(self.getSizeY())
+
     NO_OBJECT = (0, 0, 0.0, 0.0, 0.0)
+    BARBARIAN_MARKET_MAP = (100, 100, 60.0 / 100.0, 100.0, 10.0)
+    COTTAGE_MARKET_MAP = (100, 100, 60.0 / 100.0, 200.0, 50.0)
+    IRON_MARKET_MAP = (100, 100, 60.0 / 100.0, 100.0, 90.0)
+    INCENSE_MARKET_MAP = (100, 100, 60.0 / 100.0, 200.0, 130.0)
+    WHEAT_MARKET_MAP = (100, 100, 60.0 / 100.0, 100.0, 170.0)
+    SILK_MARKET_MAP = (100, 100, 60.0 / 100.0, 200.0, 210.0)
+    COIN_MARKET_MAP = (85, 85, 60.0 / 100.0, 0.0, 400.0)
+    CULTURE_MARKET_MAP = (100, 80, 60.0 / 100.0, 100.0, 440.0)
+    CULTURE_LEVEL_MARKER = (48.49, 60, 1.0, 386.0, 460.0)
+    NEXT_BUTTON = (2400, 2400, 60.0 / 2400.0, 20.0, 20.0)
     CIVILIZATION_SHEET = (2000, 1333, 217.0 / 1333.0, 2000.0 * 217.0 / 1333.0, 217.0)
     MARKET_MAP = (2000, 997, 531.4 / 997.0, 390.0, 0.0)
     MAP_TILE = (1125, 1125, 240.0 / 1125.0, 0.0, 0.0)
@@ -50,7 +63,7 @@ class EImageObject(Enum):
     BUILDING_STACK_3R = (1125, 1125, 60.0 / 1125.0, 778.0, 225.0)
     BUILDING_STACK_4L = (1125, 1125, 60.0 / 1125.0, 654.0, 332.0)
     BUILDING_STACK_4R = (1125, 1125, 60.0 / 1125.0, 815.0, 332.0)
-    WONDER_STACK = (1125, 1125, 60.0 / 1125.0, 397.0, 2.0)
+    WONDER_STACK = (1125, 750, 78.0 / 750.0, 397.0, 2.0)
     WONDER_CARD_POS_1 = (1125, 750, 78.0 / 750.0, 397.0, 90.0)
     WONDER_CARD_POS_2 = (1125, 750, 78.0 / 750.0, 397.0, 178.0)
     WONDER_CARD_POS_3 = (1125, 750, 78.0 / 750.0, 397.0, 266.0)

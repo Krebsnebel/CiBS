@@ -12,10 +12,12 @@ class StartOfRound:
         self.gameStep = gameStep
 
     def execute(self):
+        civ = self.gameStep.getCivilization()
+        civEnum = civ.getCivilizationEnum()
         if self.isInStep(EGameStep.GENERAL_SELECT):
             pass
         elif self.isInStep(EGameStep.SELECT_POLITY):
-            pass
+            self.polityOfCivilizations.setCivForDrawing(civ.getCivilizationEnum())
         elif self.isInStep(EGameStep.POLITY_SELECTED):
             pass
         elif self.isInStep(EGameStep.WONDER_SKILL_SELECTED):
