@@ -67,16 +67,6 @@ class ImgInfo:
     def clearMouseButtons(self):
         self.leftMouseButtonPressed = False
 
-    def clearPossibilities(self):
-        self.possibilities = []
-        self.possibilitiesMarked = False
-
-    def arePossibilitiesMarked(self):
-        return self.possibilitiesMarked
-
-    def finishPossibilities(self):
-        self.possibilitiesMarked = True
-
     def getScale(self):
         return self.scale
 

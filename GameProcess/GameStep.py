@@ -16,8 +16,6 @@ class GameStep:
         self.numberOfPlayer = len(playerColor)
         self.step = None
         self.gameSection = None
-#        self.mousePosition = Position(0, 0)
-#        self.leftMouseButtonPressed = Position(0, 0)
         self.chosenSquObj = None
         self.strForExpectedEvent = "aaa"
 
@@ -72,21 +70,6 @@ class GameStep:
 
     def getCivilization(self):
         return self.civTurn
-
-#    def getMousePosition(self):
-#        return self.mousePosition
-
-#    def setMousePosition(self, x, y):
-#        self.mousePosition.setPosition(x, y)
-#        gmPos = self.imgInfo.getGameMap().calcGameMapPosition(self.mousePosition)
-#        if gmPos is not None:
-#            self.civTurn.setMouseAtPossibleGameMapPosition(gmPos)
-
-#    def setLeftMouseButtonPressed(self):
-#        self.leftMouseButtonPressed.setPosition(self.mousePosition.getX(), self.mousePosition.getY())
-#        gmPos = self.imgInfo.getGameMap().calcGameMapPosition(self.mousePosition)
-#        if gmPos is not None:
-#            self.civTurn.setMousePressedAtPossibleGameMapPosition(gmPos)
 
     def setChosenObj(self, obj):
         self.chosenSquObj = obj

@@ -69,20 +69,6 @@ class CivOptions:
         self.mouseAtPossibleGameMapPosition = None
         self.mousePressedAtPossibleGameMapPosition = None
 
-#    def getMousePressedAtPossibleGameMapPosition(self):
-#        if self.mousePressedAtPossibleGameMapPosition is not None:
-#            mp = self.mousePressedAtPossibleGameMapPosition
-#            self.mousePressedAtPossibleGameMapPosition = None
-#            return mp
-#        return None
-
-#    def setMouseAtPossibleGameMapPosition(self, gmPos):
-#        if self.optionsGameMap[gmPos.getX()][gmPos.getY()]:
-#            self.mouseAtPossibleGameMapPosition = gmPos
-#        else:
-#            self.mouseAtPossibleGameMapPosition = None
-#        self.gameMap.getImgInfo().setMouseAtPossiblePosition(self.mouseAtPossibleGameMapPosition)
-
     def setMousePressedAtPossibleGameMapPosition(self, gmPos):
         if self.optionsGameMap[gmPos.getX()][gmPos.getY()]:
             self.mousePressedAtPossibleGameMapPosition = gmPos
@@ -299,11 +285,6 @@ class CivOptions:
 
 
 
-    def getPointsOf(self, objType):
-        if objType == EImageObject.KAPITOL:
-            return self.pointsForKapitol
-        else:
-            return self.getPointsForObjectSetInCities(objType)
 
     def setGameSection(self, section):
         if section == EGameSection.START_ROUND:
@@ -314,14 +295,6 @@ class CivOptions:
                 elif not self.citiesAreSet[2] and self.civ.isThirdCityPossible():
                     self.cityObj = EImageObject.CITY_2
 
-    def getPointsForObjectSetInCities(self, objType):
-        sumPoints = []
-        for c in self.cities:
-            points = c.getPointsForObjectSetInCity(objType)
-            if points is not None:
-                for p in points:
-                    sumPoints.append(p)
-        return sumPoints
 
     @ classmethod
     def isPointInPotentiallyList(cls, p, potentiallyList):

@@ -1,5 +1,3 @@
-import pygame
-
 from CivEnums.EProcess import EProcess
 from CivEnums.ERefPoint import ERefPoint
 from CivEnums.ERotation import ERotation
@@ -53,10 +51,6 @@ class ImgInfoGame(ImgInfo):
         height = posBottomRight.getY() - posTopLeft.getY()
         super().__init__(width, height, posTopLeft, ERefPoint.TOP_LEFT)
 
-    def setMousePositionForHighlighting(self, mousePosition):
-        for imgInfo in self.imgInfoArray:
-            imgInfo.setMousePositionForHighlighting(mousePosition)
-
     def setLeftMouseButtonPressed(self):
         for imgInfo in self.imgInfoArray:
             imgInfo.setLeftMouseButtonPressed()
@@ -107,6 +101,12 @@ class ImgInfoGame(ImgInfo):
             self.shiftUp(window, speed)
         self.updateShiftsAndMousePosition(mousePos)
 
+    def updateShiftsAndMousePosition(self, mousePos):
+        for imgInfo in self.imgInfoArray:
+            imgInfo.shiftX = self.shiftX
+            imgInfo.shiftY = self.shiftY
+            imgInfo.setMousePosition(mousePos.getX(), mousePos.getY())
+
     def shiftRight(self, window, dx):
         max_shift = -self.posTopLeft.getX()
         if self.shiftX + dx < max_shift:
@@ -136,12 +136,6 @@ class ImgInfoGame(ImgInfo):
     def getMarketMap(self):
         return self.imgInfoMarketMap
 
-    def updateShiftsAndMousePosition(self, mousePos):
-        for imgInfo in self.imgInfoArray:
-            imgInfo.shiftX = self.shiftX
-            imgInfo.shiftY = self.shiftY
-            imgInfo.setMousePosition(mousePos.getX(), mousePos.getY())
-
     def draw(self, window):
         if self.nextButton:
             pos = Position(EImageObject.NEXT_BUTTON.getX(), EImageObject.NEXT_BUTTON.getY())
@@ -152,9 +146,3 @@ class ImgInfoGame(ImgInfo):
     @classmethod
     def getRect(cls, imgObj):
         return int(imgObj.getSizeX()), int(imgObj.getSizeY())
-
-
-
-
-
-

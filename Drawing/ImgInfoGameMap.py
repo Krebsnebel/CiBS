@@ -48,9 +48,6 @@ class ImgInfoGameMap(ImgInfo):
         self.squareX = sx
         self.squareY = sy
 
-        self.expectGMPosition = False
-        self.gameMapPosition = None
-
     def setMousePosition(self, x, y):
         ImgInfo.setMousePosition(self, x, y)
         posGM = self.getMousePositionInGameMap()
@@ -105,41 +102,6 @@ class ImgInfoGameMap(ImgInfo):
                 imgPos = self.getImgPosOfSquare(self.mouseAtPossiblePosition)
                 window.blit(mouse_img, (imgPos.getX(), imgPos.getY()))
 
-    def markSquaresForHighlighting(self, squareList):
-        self.possibilities = []
-        for s in squareList:
-            posGM = s.getPosition()
-            self.possibilities.append(HighlightObject(EImageObject.SQUARE_OBJECT, posGM))
-
-    def isPuttingObjectOnSquarePossible(self, poi):
-        for p in self.possibilities:
-            if p.getPosition().getX() == poi.getX() and p.getPosition().getY() == poi.getY():
-                return True
-        return False
-
-    def markSquareForHighlighting(self, posGameMap):
-        self.possibilities.append(HighlightObject(EImageObject.SQUARE_OBJECT, posGameMap))
-
-    def expectGameMapPosition(self):
-        self.expectGMPosition = True
-
-    def gameMapPositionUsed(self):
-        self.expectGMPosition = False
-
-    def getGameMapPosition(self):
-        pos = self.gameMapPosition
-        self.gameMapPosition = None
-        return pos
-
-    def leftMouseButtonPressed(self, mousePosition):
-        pos = self.calcGameMapPosition(mousePosition)
-        x = pos.getX()
-        y = pos.getY()
-        if 0 <= x < self.squareX and 0 <= y < self.squareY:
-            self.gameMapPosition = Position(x, y)
-        else:
-            self.gameMapPosition = None
-
     def getPixelOfSquare(self):
         sizeX = EImageObject.SQUARE_OBJECT.getSizeX()
         return int(sizeX * self.getScale())
@@ -157,5 +119,3 @@ class ImgInfoGameMap(ImgInfo):
         pixSquareScale = size * self.scale
         return Position(int(pixSquareScale * posGameMap.getX() + self.getPosOf(ERefPoint.TOP_LEFT, True).getX()),
                         int(pixSquareScale * posGameMap.getY() + self.getPosOf(ERefPoint.TOP_LEFT, True).getY()))
-
-

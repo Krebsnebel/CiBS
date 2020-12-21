@@ -235,20 +235,6 @@ class GameMap:
                 if possible:
                     self.potentiallyPointsForTown.append(s)
 
-    def clearSquaresForHighlighting(self):
-        self.imgInfo.clearPossibilities()
-
-    def markSquaresForHighlighting(self, obj, civ, n_max):
-        marked = self.imgInfo.arePossibilitiesMarked()
-        if not marked:
-            for y in range(16):
-                for x in range(16):
-                    p = Position(x, y)
-                    possible = self.isPuttingObjectOnSquarePossible(obj, p.getX(), p.getY(), civ, False, n_max)
-                    if possible:
-                        self.imgInfo.markSquareForHighlighting(p)
-            self.imgInfo.finishPossibilities()
-
     def draw(self, window):
         for m in self.map:
             m.draw(window)

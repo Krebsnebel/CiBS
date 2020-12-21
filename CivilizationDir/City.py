@@ -4,7 +4,6 @@ from CivObjects.Position import Position
 from CivObjects.Wonder import Wonder
 from Drawing import ImageHandler
 from Drawing.DrawCivObjects import DrawCivObjects
-from Options.CityPossibilities import CityPossibilities
 
 """
 this class handles the city and its outskirt
@@ -30,17 +29,6 @@ class City:
 
         self.permissionTerrain = EPermission.ALL_EXCEPT_WATER
         self.img = ImageHandler.getImageOfCity(cType, col, self.upgrade)
-
-        self.cityPossibilities = CityPossibilities(self)
-
-    def clearPotentialPoints(self):
-        self.cityPossibilities.clearPotentialPoints()
-
-    def setPotentialPointsForCity(self):
-        self.cityPossibilities.setPotentialPointsForCity()
-
-    def getPointsForObjectSetInCity(self, objType):
-        self.cityPossibilities.getPointsForObjectSetInCity(objType)
 
     def getImgObj(self):
         return self.imgObj
