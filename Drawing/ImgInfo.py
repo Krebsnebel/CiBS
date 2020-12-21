@@ -40,6 +40,9 @@ class ImgInfo:
         self.posTopRight = self.setTopRight()
         self.posBottomLeft = self.setBottomLeft()
 
+        self.options = []
+        self.mouseAtPossiblePosition = None
+
         self.possibilities = []
         self.mouseHighlighting = None
         self.possibilitiesMarked = False

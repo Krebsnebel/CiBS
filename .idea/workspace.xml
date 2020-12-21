@@ -21,17 +21,8 @@
   <component name="ChangeListManager">
     <list default="true" id="effe2213-13fd-4f81-9707-808e4e0988ad" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CivilizationDir/City.py" beforeDir="false" afterPath="$PROJECT_DIR$/CivilizationDir/City.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Drawing/ImgInfo.py" beforeDir="false" afterPath="$PROJECT_DIR$/Drawing/ImgInfo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Drawing/ImgInfoCivilization.py" beforeDir="false" afterPath="$PROJECT_DIR$/Drawing/ImgInfoCivilization.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Drawing/ImgInfoGame.py" beforeDir="false" afterPath="$PROJECT_DIR$/Drawing/ImgInfoGame.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Drawing/ImgInfoGameMap.py" beforeDir="false" afterPath="$PROJECT_DIR$/Drawing/ImgInfoGameMap.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/GameMap.py" beforeDir="false" afterPath="$PROJECT_DIR$/Game/GameMap.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameProcess/GameStep.py" beforeDir="false" afterPath="$PROJECT_DIR$/GameProcess/GameStep.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Options/CityPossibilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Options/CivOptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Options/CivOptions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Options/FigureMovementPossibilities.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Options/PossibilitiesToSetCities.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,5 +106,16 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/GameProcess/PrepareGame.py</url>
+          <line>29</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

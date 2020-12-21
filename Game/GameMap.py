@@ -147,8 +147,8 @@ class GameMap:
 
         self.potentiallyPointsForTown = []
 
-    def getMousePressedAtPossiblePosition(self):
-        return self.imgInfo.getMousePressedAtPossiblePosition()
+    def getValidGameMapPositionWhileMousePressed(self):
+        return self.imgInfo.getValidGameMapPositionWhileMousePressed()
 
     def isObjectOnTerrainPermitted(self, x, y, permission, temporary):
         terrain = self.getSquare(x, y).getTerrain()

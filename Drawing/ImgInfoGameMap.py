@@ -3,9 +3,9 @@ import pygame
 from CivEnums.ERefPoint import ERefPoint
 from CivObjects.Position import Position
 from Drawing.EImageObject import EImageObject
-from Drawing.HighlightObject import HighlightObject
 from Drawing.ImgInfo import ImgInfo
-
+from Options.EOptionType import EOptionType
+from Options.Option import Option
 
 """
 this class is an image information of game map
@@ -42,8 +42,7 @@ class ImgInfoGameMap(ImgInfo):
         super().__init__(int(sizeX * sx), int(sizeY * sy),
                          Position(xPos, yPos), ERefPoint.TOP_LEFT)
 
-        self.options = None
-        self.mouseAtPossiblePosition = None
+        self.optionsGameMap = None
 
         self.squareX = sx
         self.squareY = sy
@@ -51,9 +50,13 @@ class ImgInfoGameMap(ImgInfo):
     def setMousePosition(self, x, y):
         ImgInfo.setMousePosition(self, x, y)
         posGM = self.getMousePositionInGameMap()
-        if self.options is not None and posGM is not None:
-            if self.options[posGM.getX()][posGM.getY()]:
-                self.mouseAtPossiblePosition = posGM
+        if self.optionsGameMap is not None and posGM is not None:
+            if self.optionsGameMap[posGM.getX()][posGM.getY()]:
+                size = EImageObject.MAP_TILE.getSizeX() / 4.0
+                refPos = self.getPosOf(ERefPoint.TOP_LEFT, False)
+                posX = refPos.getX() + posGM.getX() * size
+                posY = refPos.getY() + posGM.getY() * size
+                self.mouseAtPossiblePosition = Option(posX, posY, size, size, EOptionType.SQUARE)
                 print(str(posGM.getX()) + " " + str(posGM.getY()))
             else:
                 self.mouseAtPossiblePosition = None
@@ -72,35 +75,40 @@ class ImgInfoGameMap(ImgInfo):
         else:
             return None
 
-    def getMousePressedAtPossiblePosition(self):
+    def getValidGameMapPositionWhileMousePressed(self):
         if self.isLeftMouseButtonPressed():
-            return self.mouseAtPossiblePosition
-        else:
-            return None
+            if self.mouseAtPossiblePosition is not None:
+                return self.getMousePositionInGameMap()
+        return None
 
-    def setOptions(self, options):
-        self.options = options
+    def setOptions(self, optionsGameMap):
+        if optionsGameMap is not None:
+            self.options = []
+            size = EImageObject.MAP_TILE.getSizeX() / 4.0
+            refPos = self.getPosOf(ERefPoint.TOP_LEFT, False)
+            for y in range(16):
+                for x in range(16):
+                    if optionsGameMap[x][y]:
+                        posX = refPos.getX() + x * size
+                        posY = refPos.getY() + y * size
+                        self.options.append(Option(posX, posY, size, size, EOptionType.SQUARE))
+        self.optionsGameMap = optionsGameMap
 
     def draw(self, window):
         if self.options is not None:
-            length = int(self.getPixelOfSquare() * self.scale)
-            size = (length, length)
-            possible_img = pygame.Surface(size, pygame.SRCALPHA)
-            pygame.draw.rect(possible_img, (255, 0, 0), possible_img.get_rect(), 3)
+            for opt in self.options:
+                size = opt.getRect()
+                possible_img = pygame.Surface(size, pygame.SRCALPHA)
+                pygame.draw.rect(possible_img, (255, 0, 0), possible_img.get_rect(), 3)
+                window.blit(possible_img, (opt.getX() + self.getShiftX(), opt.getY() + self.getShiftY()))
 
+        mpp = self.mouseAtPossiblePosition
+        if mpp is not None:
+            print("kfjsd")
+            size = mpp.getRect()
             mouse_img = pygame.Surface(size, pygame.SRCALPHA)
             pygame.draw.rect(mouse_img, (255, 0, 0, 50), mouse_img.get_rect())
-
-            for y in range(16):
-                for x in range(16):
-                    if self.options[x][y]:
-                        posGM = Position(x, y)
-                        imgPos = self.getImgPosOfSquare(posGM)
-                        window.blit(possible_img, (imgPos.getX(), imgPos.getY()))
-
-            if self.mouseAtPossiblePosition is not None:
-                imgPos = self.getImgPosOfSquare(self.mouseAtPossiblePosition)
-                window.blit(mouse_img, (imgPos.getX(), imgPos.getY()))
+            window.blit(mouse_img, (mpp.getX() + self.getShiftX(), mpp.getY() + self.getShiftY()))
 
     def getPixelOfSquare(self):
         sizeX = EImageObject.SQUARE_OBJECT.getSizeX()
