@@ -128,23 +128,6 @@ class Square(BusinessObject):
     def getTerrain(self):
         return self.terrain
 
-    def printLineOfSquare(self, row):
-        if row == 0:
-            str_tp = str(self.evalTradingPoints())
-            str_a = str(0)
-            str_r = str(self.evalResource())
-            print(str_tp + str_a + str_r + "|", end="")
-        elif row == 1:
-            str_pio = str(0)
-            str_o = self.getObjectType()
-            str_r = str(self.evalDefencePoints())
-            print(str_pio + str_o + str_r + "|", end="")
-        elif row == 2:
-            str_pio = str(0)
-            str_o = str(0)
-            str_r = str(0)
-            print(str_pio + str_o + str_r + "_", end="")
-
     def setPosition(self, x, y):
         if self.position is None:
             self.position = Position(x, y)
@@ -178,16 +161,6 @@ class Square(BusinessObject):
             return self.businessObject.getResource().getSign()
         else:
             return self.getResource().getSign()
-
-    def getObjectType(self):
-        if self.marker is not None:
-            return self.marker.getSign()
-        elif self.businessObject is not None:
-            return self.businessObject.getSign()
-        elif self.city is not None:
-            return self.city.getSign()
-        else:
-            return self.getSign()
 
     def evalDefencePoints(self):
         if self.businessObject is not None:

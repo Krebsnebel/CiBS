@@ -14,7 +14,7 @@ with it all properties of marker can be defined
 class Marker:
 
     def __init__(self, mType, res):
-        self.imgPosMM = Position(0, 0)
+        self.imgPosMM = None
         self.markerType = mType
         self.resource = res
         if mType == ENote.RESOURCE:

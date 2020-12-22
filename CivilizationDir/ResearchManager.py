@@ -141,24 +141,24 @@ class ResearchManager:
         resize = self.imgInfo.getResize(EImageObject.RESEARCH_CARDS)
         i = 0
         for r in self.researchedCards_I:
-            imgPos = self.imgInfo.getImgPosOfResearchCard(1, i)
+            imgPos = self.imgInfo.getImgPosOfResearchCard(1, i, True)
             r.draw(window, ERotation.NO_ROTATION, imgPos, resize)
             i = i + 1
 
         i = 0
         for r in self.researchedCards_II:
-            imgPos = self.imgInfo.getImgPosOfResearchCard(2, i)
+            imgPos = self.imgInfo.getImgPosOfResearchCard(2, i, True)
             r.draw(window, ERotation.NO_ROTATION, imgPos, resize)
             i = i + 1
 
         i = 0
         for r in self.researchedCards_III:
-            imgPos = self.imgInfo.getImgPosOfResearchCard(3, i)
+            imgPos = self.imgInfo.getImgPosOfResearchCard(3, i, True)
             r.draw(window, ERotation.NO_ROTATION, imgPos, resize)
             i = i + 1
 
         i = 0
         for r in self.researchedCards_IV:
-            imgPos = self.imgInfo.getImgPosOfResearchCard(4, i)
+            imgPos = self.imgInfo.getImgPosOfResearchCard(4, i, True)
             r.draw(window, ERotation.NO_ROTATION, imgPos, resize)
             i = i + 1

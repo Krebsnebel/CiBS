@@ -20,3 +20,9 @@ class Option:
 
     def getY(self):
         return self.position.getY()
+
+    def getWidth(self):
+        return self.width
+
+    def getHeight(self):
+        return self.height

@@ -69,12 +69,6 @@ class CivOptions:
         self.mouseAtPossibleGameMapPosition = None
         self.mousePressedAtPossibleGameMapPosition = None
 
-    def setMousePressedAtPossibleGameMapPosition(self, gmPos):
-        if self.optionsGameMap[gmPos.getX()][gmPos.getY()]:
-            self.mousePressedAtPossibleGameMapPosition = gmPos
-        else:
-            self.mousePressedAtPossibleGameMapPosition = None
-
     def setOptionsInGameStep(self):
         self.setOptionsInGameMap()
         self.setOtherOptionsInGameStep()
@@ -264,6 +258,8 @@ class CivOptions:
         else:
             return False
 
+
+#noch zu prüfen
     def setCurrentPointsForTown(self):
         self.currentPointsForTown = []
         listFig = self.civ.getFiguresForFoundingCity()

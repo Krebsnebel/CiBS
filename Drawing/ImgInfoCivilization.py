@@ -4,9 +4,9 @@ from CivEnums.EFigure import EFigure
 from CivEnums.ERefPoint import ERefPoint
 from CivObjects.Position import Position
 from Drawing.EImageObject import EImageObject
-from Drawing.HighlightObject import HighlightObject
 from Drawing.ImgInfo import ImgInfo
-
+from Options.EOptionType import EOptionType
+from Options.Option import Option
 
 """
 this class is an image information of each civilization
@@ -61,30 +61,24 @@ class ImgInfoCivilization(ImgInfo):
                 refPos = Position(1460, 1020)
         super().__init__(width, height, refPos, refPoint)
 
-    def setOptions(self, selPolity):
-        self.selectPolity = selPolity
+    def setMousePosition(self, x, y):
+        ImgInfo.setMousePosition(self, x, y)
+        self.mouseAtPossiblePosition = None
+        for opt in self.options:
+            mousePos = self.getMousePosition(False)
+            insideX = opt.getX() < (mousePos.getX() - self.getShiftX()) <= opt.getX() + opt.getWidth()
+            insideY = opt.getY() < (mousePos.getY() - self.getShiftY()) <= opt.getY() + opt.getHeight()
+            if insideX and insideY:
+                self.mouseAtPossiblePosition = Option(opt.getX(), opt.getY(), opt.getWidth(), opt.getHeight(),
+                                                      EOptionType.SQUARE)
 
-    def draw(self, window):
-        if self.selectPolity:
+    def setOptions(self, selectPolity):
+        self.options = []
+        if selectPolity:
             imgObj = EImageObject.POLITY
-            possible_img = pygame.Surface(self.getRect(imgObj), pygame.SRCALPHA)
-            pygame.draw.rect(possible_img, (255, 0, 0), possible_img.get_rect(), 3)
-            window.blit(possible_img, (self.getImgPosOf(imgObj).getX(), self.getImgPosOf(imgObj).getY()))
-
-
-        """
-        for p in self.possibilities:
-            imgPos = self.getImgPosOf(p.getImgObj())
-            possible_img = pygame.Surface(self.getRect(p.getImgObj()), pygame.SRCALPHA)
-            pygame.draw.rect(possible_img, (255, 0, 0), possible_img.get_rect(), 3)
-            window.blit(possible_img, (imgPos.getX(), imgPos.getY()))
-
-        if self.mouseHighlighting is not None:
-            imgPos = self.getImgPosOf(self.mouseHighlighting)
-            mouse_img = pygame.Surface(self.getRect(self.mouseHighlighting), pygame.SRCALPHA)
-            pygame.draw.rect(mouse_img, (255, 0, 0, 50), mouse_img.get_rect())
-            window.blit(mouse_img, (imgPos.getX(), imgPos.getY()))
-        """
+            imgPos = self.getImgPosOf(imgObj, False)
+            self.options.append(Option(imgPos.getX(), imgPos.getY(), imgObj.getSizeX(), imgObj.getSizeY(),
+                                       EOptionType.SQUARE))
 
     def setWidth(self, level, stackLength):
         pass
@@ -95,7 +89,7 @@ class ImgInfoCivilization(ImgInfo):
     def getResize(self, imgObj):
         return imgObj.getResize() * self.scale
 
-    def getImgPosOf(self, imgObj):
+    def getImgPosOf(self, imgObj, shift):
         civDx = EImageObject.CIVILIZATION_SHEET.getX()
         civDy = EImageObject.CIVILIZATION_SHEET.getY()
         figDx = EImageObject.FIGURE.getX()
@@ -103,13 +97,13 @@ class ImgInfoCivilization(ImgInfo):
         cityDx = EImageObject.CITY.getX()
         researchDelta = EImageObject.RESEARCH_CARDS.getX()
         if self.refPoint == ERefPoint.BOTTOM_RIGHT or self.refPoint == ERefPoint.TOP_RIGHT:
-            refPos = self.getPosOf(ERefPoint.BOTTOM_RIGHT, True)
+            refPos = self.getPosOf(ERefPoint.BOTTOM_RIGHT, shift)
             pos = Position(refPos.getX() - civDx, refPos.getY() - civDy)
             resPos = Position(refPos.getX() - civDx - researchDelta, refPos.getY())
             figPos = Position(refPos.getX() - figDx, refPos.getY() - figDy)
             cityPos = Position(refPos.getX() - cityDx, refPos.getY())
         else:
-            refPos = self.getPosOf(ERefPoint.BOTTOM_LEFT, True)
+            refPos = self.getPosOf(ERefPoint.BOTTOM_LEFT, shift)
             pos = Position(refPos.getX(), refPos.getY() - civDy)
             resPos = Position(refPos.getX() + civDx + researchDelta, refPos.getY())
             figPos = Position(refPos.getX() + figDx, refPos.getY() - figDy)
@@ -137,8 +131,8 @@ class ImgInfoCivilization(ImgInfo):
             return Position(cityPos.getX(), cityPos.getY() - cityDy)
         return None
 
-    def getImgPosOfFigure(self, figureType, nr):
-        refPos = self.getImgPosOf(EImageObject.FIGURE)
+    def getImgPosOfFigure(self, figureType, nr, shift):
+        refPos = self.getImgPosOf(EImageObject.FIGURE, shift)
         if figureType == EFigure.ARMY and 0 <= nr < 7:
             armyDeltaX = EImageObject.ARMY.getX()
             armyDeltaY = EImageObject.ARMY.getY()
@@ -149,8 +143,8 @@ class ImgInfoCivilization(ImgInfo):
             return Position(refPos.getX() + pioneerDeltaX[nr], refPos.getY() + pioneerDeltaY[nr])
         return None
 
-    def getImgPosOfResearchCard(self, level, cardNr):
-        refPos = self.getImgPosOf(EImageObject.CIVILIZATION_RESEARCH)
+    def getImgPosOfResearchCard(self, level, cardNr, shift):
+        refPos = self.getImgPosOf(EImageObject.CIVILIZATION_RESEARCH, shift)
         researchDx = EImageObject.RESEARCH_CARDS.getSizeX()
         researchDy = EImageObject.RESEARCH_CARDS.getSizeY()
         researchDelta = EImageObject.RESEARCH_CARDS.getX()

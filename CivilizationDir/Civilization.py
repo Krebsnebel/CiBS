@@ -92,15 +92,6 @@ class Civilization:
 
         self.options = CivOptions(gameMap, gameStep, self)
 
-    def getMousePressedAtPossibleGameMapPosition(self):
-        return self.options.getMousePressedAtPossibleGameMapPosition()
-
-    def setMouseAtPossibleGameMapPosition(self, gmPos):
-        self.options.setMouseAtPossibleGameMapPosition(gmPos)
-
-    def setMousePressedAtPossibleGameMapPosition(self, gmPos):
-        self.options.setMousePressedAtPossibleGameMapPosition(gmPos)
-
     def calculateOptions(self):
         self.options.setPointsForAllObjects()
         self.options.setOptionsInGameStep()
@@ -191,25 +182,25 @@ class Civilization:
         rotTrade = ImgInfoCivilization.getRotationTradingPoints(self.tradingPoints)
         rotGold = ImgInfoCivilization.getRotationGoldPoints(self.tradingPoints, self.goldPoints)
 
-        pos = self.imgInfo.getImgPosOf(EImageObject.CIVILIZATION_SHEET)
+        pos = self.imgInfo.getImgPosOf(EImageObject.CIVILIZATION_SHEET, True)
         resize = self.imgInfo.getResize(EImageObject.CIVILIZATION_SHEET)
         DrawCivObjects.drawImage(self.img, window, ERotation.NO_ROTATION, pos, resize, 1)
 
-        pos = self.imgInfo.getImgPosOf(EImageObject.TRADE_DISK)
+        pos = self.imgInfo.getImgPosOf(EImageObject.TRADE_DISK, True)
         resize = self.imgInfo.getResize(EImageObject.TRADE_DISK)
         DrawCivObjects.drawImage(self.imgTrade, window, rotTrade, pos, resize, 1)
 
-        pos = self.imgInfo.getImgPosOf(EImageObject.GOLD_DISK)
+        pos = self.imgInfo.getImgPosOf(EImageObject.GOLD_DISK, True)
         resize = self.imgInfo.getResize(EImageObject.GOLD_DISK)
         DrawCivObjects.drawImage(self.imgGold, window, rotGold, pos, resize, 1)
 
-        pos = self.imgInfo.getImgPosOf(EImageObject.POLITY)
+        pos = self.imgInfo.getImgPosOf(EImageObject.POLITY, True)
         resize = self.imgInfo.getResize(EImageObject.POLITY)
         DrawCivObjects.drawImage(self.imgPolity, window, ERotation.NO_ROTATION, pos, resize, 1)
 
         i = 0
         for p in self.pioneer:
-            pos = self.imgInfo.getImgPosOfFigure(EFigure.PIONEER, i)
+            pos = self.imgInfo.getImgPosOfFigure(EFigure.PIONEER, i, True)
             resize = self.imgInfo.getResize(EImageObject.FIGURE)
             if p.getPosition() is None:
                 p.draw(window, ERotation.NO_ROTATION, pos, resize)
@@ -217,7 +208,7 @@ class Civilization:
 
         i = 0
         for a in self.army:
-            pos = self.imgInfo.getImgPosOfFigure(EFigure.ARMY, i)
+            pos = self.imgInfo.getImgPosOfFigure(EFigure.ARMY, i, True)
             resize = self.imgInfo.getResize(EImageObject.FIGURE)
             if a.getPosition() is None:
                 a.draw(window, ERotation.NO_ROTATION, pos, resize)
@@ -226,7 +217,7 @@ class Civilization:
         i = 3
         for c in self.cities:
             imgObj = c.getImgObj()
-            pos = self.imgInfo.getImgPosOf(imgObj)
+            pos = self.imgInfo.getImgPosOf(imgObj, True)
             resize = self.imgInfo.getResize(imgObj)
             if c.getPosition() is None:
                 c.draw(window, ERotation.NO_ROTATION, pos, resize)

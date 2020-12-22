@@ -3,6 +3,7 @@ import pygame
 from CivEnums.ERotation import ERotation
 from CivObjects.Position import Position
 
+
 """
 with this class, it is possible to draw any 2D object image or figures
 arguments of functions are
@@ -13,6 +14,8 @@ arguments of functions are
 * rotation
 * additional dx, dy
 """
+
+
 class DrawCivObjects:
 
     @classmethod

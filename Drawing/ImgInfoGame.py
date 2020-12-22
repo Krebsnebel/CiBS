@@ -142,7 +142,3 @@ class ImgInfoGame(ImgInfo):
             img = ImageHandler.getImageOfProcess(EProcess.NEXT_BUTTON)
             resize = EImageObject.NEXT_BUTTON.getResize()
             DrawCivObjects.drawImage(img, window, ERotation.NO_ROTATION, pos, resize, 1)
-
-    @classmethod
-    def getRect(cls, imgObj):
-        return int(imgObj.getSizeX()), int(imgObj.getSizeY())

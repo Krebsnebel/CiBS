@@ -16,12 +16,12 @@ with it all properties of military unit can be defined
 
 class MilitaryUnit:
 
-    def __init__(self, utype, strength):
-        self.uType = utype
+    def __init__(self, uType, strength):
+        self.uType = uType
         self.unitStrength = strength
         self.visibility = EVisibility.FOR_NOBODY
-        self.imgFront = ImageHandler.getImageOfMilitaryUnit(utype, strength, True)
-        self.imgBack = ImageHandler.getImageOfMilitaryUnit(utype, strength, False)
+        self.imgFront = ImageHandler.getImageOfMilitaryUnit(uType, strength, True)
+        self.imgBack = ImageHandler.getImageOfMilitaryUnit(uType, strength, False)
 
     def getFightValue(self, rank):
         return self.unitStrength.getFightValue(rank)
@@ -30,7 +30,7 @@ class MilitaryUnit:
         self.visibility = vis
 
     def getCosts(self, rank):
-        if self.utype == EUnitType.AIR_FORCE:
+        if self.uType == EUnitType.AIR_FORCE:
             return 12
         elif rank == EArmyStrength.FORTH_LEVEL:
             return 11

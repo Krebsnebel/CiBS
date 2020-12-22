@@ -1,3 +1,5 @@
+import pygame
+
 from CivEnums.ERefPoint import ERefPoint
 from CivObjects.Position import Position
 
@@ -43,9 +45,20 @@ class ImgInfo:
         self.options = []
         self.mouseAtPossiblePosition = None
 
-        self.possibilities = []
-        self.mouseHighlighting = None
-        self.possibilitiesMarked = False
+    def draw(self, window):
+        if self.options is not None:
+            for opt in self.options:
+                size = opt.getRect()
+                possible_img = pygame.Surface(size, pygame.SRCALPHA)
+                pygame.draw.rect(possible_img, (255, 0, 0), possible_img.get_rect(), 3)
+                window.blit(possible_img, (opt.getX() + self.getShiftX(), opt.getY() + self.getShiftY()))
+
+        mpp = self.mouseAtPossiblePosition
+        if mpp is not None:
+            size = mpp.getRect()
+            mouse_img = pygame.Surface(size, pygame.SRCALPHA)
+            pygame.draw.rect(mouse_img, (255, 0, 0, 50), mouse_img.get_rect())
+            window.blit(mouse_img, (mpp.getX() + self.getShiftX(), mpp.getY() + self.getShiftY()))
 
     def setMousePosition(self, x, y):
         self.mousePosition = Position(x, y)

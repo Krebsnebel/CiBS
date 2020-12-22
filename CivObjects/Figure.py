@@ -57,5 +57,8 @@ class Figure:
         else:
             self.position.setPosition(x, y)
 
+    def clearPosition(self):
+        self.position = None
+
     def getPosition(self):
         return self.position

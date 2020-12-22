@@ -57,7 +57,6 @@ class ImgInfoGameMap(ImgInfo):
                 posX = refPos.getX() + posGM.getX() * size
                 posY = refPos.getY() + posGM.getY() * size
                 self.mouseAtPossiblePosition = Option(posX, posY, size, size, EOptionType.SQUARE)
-                print(str(posGM.getX()) + " " + str(posGM.getY()))
             else:
                 self.mouseAtPossiblePosition = None
         else:
@@ -82,8 +81,8 @@ class ImgInfoGameMap(ImgInfo):
         return None
 
     def setOptions(self, optionsGameMap):
+        self.options = []
         if optionsGameMap is not None:
-            self.options = []
             size = EImageObject.MAP_TILE.getSizeX() / 4.0
             refPos = self.getPosOf(ERefPoint.TOP_LEFT, False)
             for y in range(16):
@@ -93,22 +92,6 @@ class ImgInfoGameMap(ImgInfo):
                         posY = refPos.getY() + y * size
                         self.options.append(Option(posX, posY, size, size, EOptionType.SQUARE))
         self.optionsGameMap = optionsGameMap
-
-    def draw(self, window):
-        if self.options is not None:
-            for opt in self.options:
-                size = opt.getRect()
-                possible_img = pygame.Surface(size, pygame.SRCALPHA)
-                pygame.draw.rect(possible_img, (255, 0, 0), possible_img.get_rect(), 3)
-                window.blit(possible_img, (opt.getX() + self.getShiftX(), opt.getY() + self.getShiftY()))
-
-        mpp = self.mouseAtPossiblePosition
-        if mpp is not None:
-            print("kfjsd")
-            size = mpp.getRect()
-            mouse_img = pygame.Surface(size, pygame.SRCALPHA)
-            pygame.draw.rect(mouse_img, (255, 0, 0, 50), mouse_img.get_rect())
-            window.blit(mouse_img, (mpp.getX() + self.getShiftX(), mpp.getY() + self.getShiftY()))
 
     def getPixelOfSquare(self):
         sizeX = EImageObject.SQUARE_OBJECT.getSizeX()

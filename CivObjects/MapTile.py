@@ -96,10 +96,6 @@ class MapTile:
     def getPosition(self):
         return self.position
 
-    def printLineOfSquare(self, x, y, row):
-        idx = self.getIndex(x, y)
-        self.mapTile[idx].printLineOfSquare(row)
-
     def getIndex(self, x, y):
         if self.rotation == ERotation.NO_ROTATION:
             return 4 * y + x
