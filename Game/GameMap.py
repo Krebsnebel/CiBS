@@ -236,8 +236,9 @@ class GameMap:
                     self.potentiallyPointsForTown.append(s)
 
     def draw(self, window):
+        scale = self.imgInfo.getScale()
         for m in self.map:
-            m.draw(window)
+            m.draw(window, scale)
 
         self.imgInfo.draw(window)
 

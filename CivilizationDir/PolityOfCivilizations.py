@@ -1,5 +1,7 @@
+from CivEnums.ECivilization import ECivilization
 from CivEnums.EPolity import EPolity
 from CivEnums.ERotation import ERotation
+from CivObjects.Position import Position
 from Drawing import ImageHandler
 from Drawing.DrawCivObjects import DrawCivObjects
 from Drawing.EImageObject import EImageObject
@@ -40,6 +42,7 @@ class PolityOfCivilizations:
     def draw(self, window):
         if self.drawPolityOfCiv is None:
             return False
+        print("here2")
         self.drawIdx = 0
         self.polityArr = []
         for pc in self.polityOfCivilizationsArr:
@@ -64,7 +67,7 @@ class PolityOfCivilizations:
 
     def drawPolity(self, window, polity):
         pos = self.imgInfo.getImgPosOf(EImageObject.POLITY_ZOOMED, self.drawIdx % 4, self.drawIdx // 4)
-        resize = self.imgInfo.getResize(EImageObject.POLITY_ZOOMED)
+        resize = EImageObject.POLITY_ZOOMED.getResize()
         DrawCivObjects.drawImage(ImageHandler.getImageOfPolity(polity), window,
                                  ERotation.NO_ROTATION, pos, resize, 1)
         self.drawIdx = self.drawIdx + 1

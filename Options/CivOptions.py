@@ -1,6 +1,7 @@
 from CivEnums.EBuilding import EBuilding
 from CivEnums.ECivilization import ECivilization
 from CivEnums.EColor import EColor
+from CivEnums.EConstants import EConstants
 from CivEnums.EFigure import EFigure
 from CivEnums.EGreatPerson import EGreatPerson
 from CivEnums.EPermission import EPermission
@@ -27,28 +28,52 @@ class CivOptions:
         self.game = game
         self.gameMap = self.game.getGameMap()
         self.civ = civ
-        self.citiesAreSet = [False, False, False]
         self.cities = []
         for i in range(3):
             self.cities.append(self.civ.getCity(i))
 
         self.cityObj = EImageObject.NO_OBJECT
-#        self.isSwitchingPolityPossible = True #False
-        self.selectPolity = False
 
-        self.isMarketPossible = False
-        self.isTemplePossible = False
-        self.isGranaryPossible = False
-        self.isLibraryPossible = False
-        self.isBarrackPossible = False
-        self.isBlacksmithPossible = False
-        self.isMarinaPossible = False
-        self.isTradingPostPossible = False
-        self.isInfantryUnitPossible = False
-        self.isArtilleryUnitPossible = False
-        self.isCavalryUnitPossible = False
-        self.isAirForceUnitPossible = False
-        self.areVisibleWondersPossible = [False, False, False, False]
+        # Objects from own civilization
+        self.selectPolity = False
+        self.selectCity1 = False
+        self.selectCity2 = False
+
+        # Objects from market place
+        self.pickMarket = False
+        self.pickTemple = False
+        self.pickGranary = False
+        self.pickLibrary = False
+        self.pickBarrack = False
+        self.pickBlacksmith = False
+        self.pickTradingPost = False
+        self.pickMarina = False
+        self.pickWonderCardStack = True
+        self.pickWonderCard1 = False
+        self.pickWonderCard2 = False
+        self.pickWonderCard3 = False
+        self.pickWonderCard4 = False
+        self.pickWonderMarker1 = False
+        self.pickWonderMarker2 = False
+        self.pickWonderMarker3 = False
+        self.pickWonderMarker4 = False
+        self.pickInfantry = False
+        self.pickArtillery = False
+        self.pickCavalry = False
+        self.pickAirForce = False
+        self.pickCultureCardI = False
+        self.pickCultureCardII = False
+        self.pickCultureCardIII = False
+        self.pickIron = False
+        self.pickIncense = False
+        self.pickWheat = False
+        self.pickSilk = False
+        self.pickCoin = False
+        self.pickCulture = False
+        self.pickCottage = False
+        self.pickBarbarian = False
+
+        self.cultureStepArray = [False for i in range(EConstants.CULTURE_LEVELS.value)]
 
         self.pointsForKapitol = [[False for i in range(16)] for j in range(16)]
         self.pointsForNextTown = [[False for i in range(16)] for j in range(16)]
@@ -69,14 +94,78 @@ class CivOptions:
         self.mouseAtPossibleGameMapPosition = None
         self.mousePressedAtPossibleGameMapPosition = None
 
+    def clearOptions(self):
+        self.clearOptionsForMarketPlace()
+        self.clearOptionsForCivilization()
+
+    def clearOptionsForMarketPlace(self):
+        self.pickMarket = False
+        self.pickTemple = False
+        self.pickGranary = False
+        self.pickLibrary = False
+        self.pickBarrack = False
+        self.pickBlacksmith = False
+        self.pickTradingPost = False
+        self.pickMarina = False
+        self.pickWonderCardStack = True
+        self.pickWonderCard1 = False
+        self.pickWonderCard2 = False
+        self.pickWonderCard3 = False
+        self.pickWonderCard4 = False
+        self.pickWonderMarker1 = False
+        self.pickWonderMarker2 = False
+        self.pickWonderMarker3 = False
+        self.pickWonderMarker4 = False
+        self.pickInfantry = False
+        self.pickArtillery = False
+        self.pickCavalry = False
+        self.pickAirForce = False
+        self.pickCultureCardI = False
+        self.pickCultureCardII = False
+        self.pickCultureCardIII = False
+        self.pickIron = False
+        self.pickIncense = False
+        self.pickWheat = False
+        self.pickSilk = False
+        self.pickCoin = False
+        self.pickCulture = False
+        self.pickCottage = False
+        self.pickBarbarian = False
+
+        self.cultureStepArray = [False for i in range(EConstants.CULTURE_LEVELS.value)]
+
+    def clearOptionsForCivilization(self):
+        self.selectPolity = False
+        self.selectCity1 = False
+        self.selectCity2 = False
+
     def setOptionsInGameStep(self):
         self.setOptionsInGameMap()
         self.setOtherOptionsInGameStep()
 
+    def setCityIsPossible(self, idx):
+        if idx == 1:
+            if self.cities[1].isSet():
+                return False
+        else:   # idx == 2
+            if not self.cities[1].isSet() or not self.civ.isThirdCityPossible():
+                return False
+
+        for y in range(16):
+            for x in range(16):
+                if self.pointsForNextTown[x][y]:
+                    return True
+        return False
+
     def setOtherOptionsInGameStep(self):
-        if self.gameStep.getSection() == EGameSection.START_ROUND:
+        if self.gameStep.getSection() == EGameSection.PREPARE_GAME:
+            self.clearOptions()
+        elif self.gameStep.getSection() == EGameSection.START_ROUND:
+            self.clearOptions()
             if self.isInStep(EGameStep.GENERAL_SELECT):
                 self.selectPolity = True
+                self.selectCity1 = self.setCityIsPossible(1)
+                self.selectCity2 = self.setCityIsPossible(2)
             elif self.isInStep(EGameStep.SELECT_POLITY):
                 pass
             elif self.isInStep(EGameStep.POLITY_SELECTED):
@@ -101,7 +190,25 @@ class CivOptions:
             pass
         else:
             return False
-        self.civ.getImgInfo().setOptions(self.selectPolity)
+        pol = self.selectPolity
+        c1 = self.selectCity1
+        c2 = self.selectCity2
+        self.civ.getImgInfo().setOptions(pol, c1, c2)
+
+        # set options for market place
+        imgInfo = self.game.getMarketMap().getImgInfo()
+        imgInfo.setOptionsForBuildings(self.pickMarket, self.pickTemple, self.pickGranary, self.pickLibrary,
+                                       self.pickBarrack, self.pickBlacksmith, self.pickTradingPost, self.pickMarina)
+        imgInfo.setOptionsForWonder(self.pickWonderCardStack, self.pickWonderCard1, self.pickWonderCard2,
+                                    self.pickWonderCard3, self.pickWonderCard4, self.pickWonderMarker1,
+                                    self.pickWonderMarker2, self.pickWonderMarker3, self.pickWonderMarker4)
+        imgInfo.setOptionsForMilitaryAndCultureCards(self.pickInfantry, self.pickArtillery, self.pickCavalry,
+                                                     self.pickAirForce, self.pickCultureCardI, self.pickCultureCardII,
+                                                     self.pickCultureCardIII)
+        imgInfo.setOptionsForMarker(self.pickIron, self.pickIncense, self.pickWheat, self.pickSilk, self.pickCoin,
+                                    self.pickCulture, self.pickCottage, self.pickBarbarian)
+        imgInfo.setOptionsForCultureLevelMarker(self.cultureStepArray)
+        imgInfo.setOptions()
 
     def setOptionsInGameMap(self):
         for y in range(16):
@@ -301,9 +408,4 @@ class CivOptions:
 
     def isInStep(self, step):
         return self.gameStep.getStep() == step
-
-
-
-
-
 

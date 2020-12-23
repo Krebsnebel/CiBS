@@ -138,27 +138,28 @@ class ResearchManager:
         return False
 
     def draw(self, window):
-        resize = self.imgInfo.getResize(EImageObject.RESEARCH_CARDS)
+        scale = self.imgInfo.getScale()
+        resize = EImageObject.RESEARCH_CARDS.getResize()
         i = 0
         for r in self.researchedCards_I:
-            imgPos = self.imgInfo.getImgPosOfResearchCard(1, i, True)
-            r.draw(window, ERotation.NO_ROTATION, imgPos, resize)
+            imgPos = self.imgInfo.getImgPosOfResearchCard(1, i, True, False)
+            r.draw(window, ERotation.NO_ROTATION, imgPos, resize, scale)
             i = i + 1
 
         i = 0
         for r in self.researchedCards_II:
-            imgPos = self.imgInfo.getImgPosOfResearchCard(2, i, True)
-            r.draw(window, ERotation.NO_ROTATION, imgPos, resize)
+            imgPos = self.imgInfo.getImgPosOfResearchCard(2, i, True, False)
+            r.draw(window, ERotation.NO_ROTATION, imgPos, resize, scale)
             i = i + 1
 
         i = 0
         for r in self.researchedCards_III:
-            imgPos = self.imgInfo.getImgPosOfResearchCard(3, i, True)
-            r.draw(window, ERotation.NO_ROTATION, imgPos, resize)
+            imgPos = self.imgInfo.getImgPosOfResearchCard(3, i, True, False)
+            r.draw(window, ERotation.NO_ROTATION, imgPos, resize, scale)
             i = i + 1
 
         i = 0
         for r in self.researchedCards_IV:
-            imgPos = self.imgInfo.getImgPosOfResearchCard(4, i, True)
-            r.draw(window, ERotation.NO_ROTATION, imgPos, resize)
+            imgPos = self.imgInfo.getImgPosOfResearchCard(4, i, True, False)
+            r.draw(window, ERotation.NO_ROTATION, imgPos, resize, scale)
             i = i + 1

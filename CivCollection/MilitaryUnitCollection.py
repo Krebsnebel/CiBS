@@ -98,33 +98,34 @@ class MilitaryUnitCollection:
             return None
 
     def draw(self, window):
-        resize = self.imgInfo.getResize(EImageObject.UNIT_CARDS)
+        scale = self.imgInfo.getScale()
+        resize = EImageObject.UNIT_CARDS.getResize()
 
         dx = EConstants.DELTA_MILITARY_UNIT_STACK.value
         delta = 0
-        stackPos = self.imgInfo.getImgPosOf(EImageObject.INFANTRY_STACK)
+        stackPos = self.imgInfo.getImgPosOf(EImageObject.INFANTRY_STACK, True, False)
         for u in self.infantry:
             pos = Position(stackPos.getX() + delta, stackPos.getY() - delta)
-            u.draw(window, ERotation.NO_ROTATION, pos, resize)
+            u.draw(window, ERotation.NO_ROTATION, pos, resize, scale)
             delta = delta + dx
 
         delta = 0
-        stackPos = self.imgInfo.getImgPosOf(EImageObject.ARTILLERY_STACK)
+        stackPos = self.imgInfo.getImgPosOf(EImageObject.ARTILLERY_STACK, True, False)
         for u in self.artillery:
             pos = Position(stackPos.getX() + delta, stackPos.getY() - delta)
-            u.draw(window, ERotation.NO_ROTATION, pos, resize)
+            u.draw(window, ERotation.NO_ROTATION, pos, resize, scale)
             delta = delta + dx
 
         delta = 0
-        stackPos = self.imgInfo.getImgPosOf(EImageObject.CAVALRY_STACK)
+        stackPos = self.imgInfo.getImgPosOf(EImageObject.CAVALRY_STACK, True, False)
         for u in self.cavalry:
             pos = Position(stackPos.getX() + delta, stackPos.getY() - delta)
-            u.draw(window, ERotation.NO_ROTATION, pos, resize)
+            u.draw(window, ERotation.NO_ROTATION, pos, resize, scale)
             delta = delta + dx
 
         delta = 0
-        stackPos = self.imgInfo.getImgPosOf(EImageObject.AIR_FORCE_STACK)
+        stackPos = self.imgInfo.getImgPosOf(EImageObject.AIR_FORCE_STACK, True, False)
         for u in self.airForce:
             pos = Position(stackPos.getX() + delta, stackPos.getY() - delta)
-            u.draw(window, ERotation.NO_ROTATION, pos, resize)
+            u.draw(window, ERotation.NO_ROTATION, pos, resize, scale)
             delta = delta + dx

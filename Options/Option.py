@@ -3,17 +3,23 @@ from CivObjects.Position import Position
 
 class Option:
 
-    def __init__(self, x, y, width, height, oType):
+    def __init__(self, imgObj, x, y, oType, emphasize, mapPos):
         self.position = Position(x, y)
-        self.width = width
-        self.height = height
+        self.imgObj = imgObj
+        self.width = imgObj.getSizeX()
+        self.height = imgObj.getSizeY()
+        self.emphasize = emphasize
         self.oType = oType
+        self.mapPos = mapPos
+
+    def getEmphasize(self):
+        return self.emphasize
 
     def getPosition(self):
         return self.position
 
-    def getRect(self):
-        return self.width, self.height
+    def getRect(self, scale):
+        return self.width * scale, self.height * scale
 
     def getX(self):
         return self.position.getX()
@@ -26,3 +32,12 @@ class Option:
 
     def getHeight(self):
         return self.height
+
+    def getImgObj(self):
+        return self.imgObj
+
+    def getPositionOfMap(self):
+        return self.mapPos
+
+    def getOptionType(self):
+        return self.oType

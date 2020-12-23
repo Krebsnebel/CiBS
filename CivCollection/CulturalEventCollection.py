@@ -72,27 +72,27 @@ class CulturalEventCollection:
         shuffle(self.culturalEvent_III)
 
     def draw(self, window):
-
-        resize = self.imgInfo.getResize(EImageObject.CULTURE_CARDS)
+        scale = self.imgInfo.getScale()
+        resize = EImageObject.CULTURE_CARDS.getResize()
 
         dx = EConstants.DELTA_CULTURE_CARDS_STACK.value
         delta = 0
-        stackPos = self.imgInfo.getImgPosOf(EImageObject.CULTURE_EVENT_1)
+        stackPos = self.imgInfo.getImgPosOf(EImageObject.CULTURE_EVENT_1, True, False)
         for c in self.culturalEvent_I:
             pos = Position(stackPos.getX() + delta, stackPos.getY() - delta)
-            c.draw(window, ERotation.NO_ROTATION, pos, resize)
+            c.draw(window, ERotation.NO_ROTATION, pos, resize, scale)
             delta = delta + dx
 
         delta = 0
-        stackPos = self.imgInfo.getImgPosOf(EImageObject.CULTURE_EVENT_2)
+        stackPos = self.imgInfo.getImgPosOf(EImageObject.CULTURE_EVENT_2, True, False)
         for c in self.culturalEvent_II:
             pos = Position(stackPos.getX() + delta, stackPos.getY() - delta)
-            c.draw(window, ERotation.NO_ROTATION, pos, resize)
+            c.draw(window, ERotation.NO_ROTATION, pos, resize, scale)
             delta = delta + dx
 
         delta = 0
-        stackPos = self.imgInfo.getImgPosOf(EImageObject.CULTURE_EVENT_3)
+        stackPos = self.imgInfo.getImgPosOf(EImageObject.CULTURE_EVENT_3, True, False)
         for c in self.culturalEvent_III:
             pos = Position(stackPos.getX() + delta, stackPos.getY() - delta)
-            c.draw(window, ERotation.NO_ROTATION, pos, resize)
+            c.draw(window, ERotation.NO_ROTATION, pos, resize, scale)
             delta = delta + dx

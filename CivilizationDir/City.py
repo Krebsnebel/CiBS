@@ -36,8 +36,8 @@ class City:
     def getOutskirts(self):
         return self.outskirts
 
-    def draw(self, window, rotation, pos, resize):
-        DrawCivObjects.drawImage(self.img, window, rotation, pos, resize, 1)
+    def draw(self, window, rotation, pos, resize, scale):
+        DrawCivObjects.drawImage(self.img, window, rotation, pos, resize, scale)
 
     def getCivilization(self):
         return self.civilization
@@ -64,6 +64,11 @@ class City:
 
     def getPosition(self):
         return self.position
+
+    def isSet(self):
+        if self.position is None:
+            return False
+        return True
 
     def setOutskirt(self, s):
         self.outskirts.append(s)

@@ -38,10 +38,14 @@ class MarketMap:
     def getCulturalEventCollection(self):
         return self.culturalEventCollection
 
+    def getImgInfo(self):
+        return self.imgInfo
+
     def draw(self, window):
-        pos = self.imgInfo.getImgPosOf(EImageObject.MARKET_MAP)
-        resize = self.imgInfo.getResize(EImageObject.MARKET_MAP)
-        DrawCivObjects.drawImage(self.imgMarket, window, ERotation.NO_ROTATION, pos, resize, 1)
+        scale = self.imgInfo.getScale()
+        pos = self.imgInfo.getImgPosOf(EImageObject.MARKET_MAP, True, False)
+        resize = EImageObject.MARKET_MAP.getResize()
+        DrawCivObjects.drawImage(self.imgMarket, window, ERotation.NO_ROTATION, pos, resize, scale)
         self.businessObjectCollection.draw(window)
         self.culturalEventCollection.draw(window)
         self.militaryUnitCollection.draw(window)

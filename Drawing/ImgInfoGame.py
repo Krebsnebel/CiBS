@@ -51,6 +51,16 @@ class ImgInfoGame(ImgInfo):
         height = posBottomRight.getY() - posTopLeft.getY()
         super().__init__(width, height, posTopLeft, ERefPoint.TOP_LEFT)
 
+    def setScaling(self, dw):
+        scale_prev = self.scale
+        if dw > 0:
+            self.scale = self.scale * 1.1**dw
+        elif dw < 0:
+            self.scale = self.scale * 0.9**(-dw)
+        self.shiftX = self.shiftX - self.mousePosition.getX() * (self.scale / scale_prev - 1)
+        self.shiftY = self.shiftY - self.mousePosition.getY() * (self.scale / scale_prev - 1)
+        self.updateShiftsAndScale()
+
     def setLeftMouseButtonPressed(self):
         for imgInfo in self.imgInfoArray:
             imgInfo.setLeftMouseButtonPressed()
@@ -60,10 +70,10 @@ class ImgInfoGame(ImgInfo):
             imgInfo.clearMouseButtons()
 
     def setTopLeft(self):
-        topLefts = [self.imgInfoGameMap.getPosOf(ERefPoint.TOP_LEFT, False),
-                    self.imgInfoMarketMap.getPosOf(ERefPoint.TOP_LEFT, False)]
+        topLefts = [self.imgInfoGameMap.getPosOf(ERefPoint.TOP_LEFT, False, False),
+                    self.imgInfoMarketMap.getPosOf(ERefPoint.TOP_LEFT, False, False)]
         for c in self.imgInfoCivilizations:
-            topLefts.append(c.getPosOf(ERefPoint.TOP_LEFT, False))
+            topLefts.append(c.getPosOf(ERefPoint.TOP_LEFT, False, False))
 
         tlp = Position(topLefts[0].getX(), topLefts[0].getY())
         for p in topLefts:
@@ -75,10 +85,10 @@ class ImgInfoGame(ImgInfo):
         return Position(int(tlp.getX() - self.imgFramePix), int(tlp.getY() - self.imgFramePix))
 
     def setBottomRight(self):
-        bottomRights = [self.imgInfoGameMap.getPosOf(ERefPoint.BOTTOM_RIGHT, False),
-                        self.imgInfoMarketMap.getPosOf(ERefPoint.BOTTOM_RIGHT, False)]
+        bottomRights = [self.imgInfoGameMap.getPosOf(ERefPoint.BOTTOM_RIGHT, False, False),
+                        self.imgInfoMarketMap.getPosOf(ERefPoint.BOTTOM_RIGHT, False, False)]
         for c in self.imgInfoCivilizations:
-            bottomRights.append(c.getPosOf(ERefPoint.BOTTOM_RIGHT, False))
+            bottomRights.append(c.getPosOf(ERefPoint.BOTTOM_RIGHT, False, False))
 
         brp = Position(bottomRights[0].getX(), bottomRights[0].getY())
         for p in bottomRights:
@@ -89,7 +99,8 @@ class ImgInfoGame(ImgInfo):
         return Position(int(brp.getX() + self.imgFramePix), int(brp.getY() + self.imgFramePix))
 
     def shift(self, window, mousePos):
-        speed = 10
+        speed = 10 * self.scale
+        self.mousePosition = mousePos
 
         if mousePos.getX() <= self.imgFramePix:
             self.shiftRight(window, speed)
@@ -99,31 +110,36 @@ class ImgInfoGame(ImgInfo):
             self.shiftDown(window, speed)
         if mousePos.getY() >= window.get_height() - self.imgFramePix:
             self.shiftUp(window, speed)
-        self.updateShiftsAndMousePosition(mousePos)
+        self.updateShiftsAndScale()
+        self.updateMousePosition(mousePos)
 
-    def updateShiftsAndMousePosition(self, mousePos):
+    def updateShiftsAndScale(self):
         for imgInfo in self.imgInfoArray:
             imgInfo.shiftX = self.shiftX
             imgInfo.shiftY = self.shiftY
+            imgInfo.scale = self.scale
+
+    def updateMousePosition(self, mousePos):
+        for imgInfo in self.imgInfoArray:
             imgInfo.setMousePosition(mousePos.getX(), mousePos.getY())
 
     def shiftRight(self, window, dx):
-        max_shift = -self.posTopLeft.getX()
+        max_shift = -self.posTopLeft.getX() * self.getScale()
         if self.shiftX + dx < max_shift:
             self.shiftX = self.shiftX + dx
 
     def shiftLeft(self, window, dx):
-        max_shift = window.get_width() - self.posBottomRight.getX()
+        max_shift = window.get_width() - self.posBottomRight.getX() * self.getScale()
         if self.shiftX - dx > max_shift:
             self.shiftX = self.shiftX - dx
 
     def shiftDown(self, window, dy):
-        max_shift = -self.posTopLeft.getY()
+        max_shift = -self.posTopLeft.getY() * self.getScale()
         if self.shiftY + dy < max_shift:
             self.shiftY = self.shiftY + dy
 
     def shiftUp(self, window, dy):
-        max_shift = window.get_height() - self.posBottomRight.getY()
+        max_shift = window.get_height() - self.posBottomRight.getY() * self.getScale()
         if self.shiftY - dy > max_shift:
             self.shiftY = self.shiftY - dy
 

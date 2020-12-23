@@ -28,6 +28,7 @@ Furthermore common functions are implemented
 class ImgInfo:
 
     def __init__(self, width, height, refPos, refPoint):
+        self.emphasize = True
         self.mousePosition = None
         self.leftMouseButtonPressed = False
         self.shiftX = 0
@@ -46,19 +47,22 @@ class ImgInfo:
         self.mouseAtPossiblePosition = None
 
     def draw(self, window):
+        scale = self.getScale()
         if self.options is not None:
             for opt in self.options:
-                size = opt.getRect()
-                possible_img = pygame.Surface(size, pygame.SRCALPHA)
-                pygame.draw.rect(possible_img, (255, 0, 0), possible_img.get_rect(), 3)
-                window.blit(possible_img, (opt.getX() + self.getShiftX(), opt.getY() + self.getShiftY()))
+                if opt.getEmphasize():
+                    size = opt.getRect(scale)
+                    possible_img = pygame.Surface(size, pygame.SRCALPHA)
+                    pygame.draw.rect(possible_img, (255, 0, 0), possible_img.get_rect(), 3)
+                    window.blit(possible_img, ((opt.getX() + self.getShiftX()) * scale,
+                                               (opt.getY() + self.getShiftY()) * scale))
 
         mpp = self.mouseAtPossiblePosition
-        if mpp is not None:
-            size = mpp.getRect()
+        if mpp is not None and mpp.getEmphasize():
+            size = mpp.getRect(scale)
             mouse_img = pygame.Surface(size, pygame.SRCALPHA)
             pygame.draw.rect(mouse_img, (255, 0, 0, 50), mouse_img.get_rect())
-            window.blit(mouse_img, (mpp.getX() + self.getShiftX(), mpp.getY() + self.getShiftY()))
+            window.blit(mouse_img, ((mpp.getX() + self.getShiftX()) * scale, (mpp.getY() + self.getShiftY()) * scale))
 
     def setMousePosition(self, x, y):
         self.mousePosition = Position(x, y)
@@ -67,8 +71,8 @@ class ImgInfo:
         if self.mousePosition is None:
             return None
         if relative:
-            x = self.mousePosition.getX() - self.getPosOf(ERefPoint.TOP_LEFT, True).getX()
-            y = self.mousePosition.getY() - self.getPosOf(ERefPoint.TOP_LEFT, True).getY()
+            x = self.mousePosition.getX() - self.getPosOf(ERefPoint.TOP_LEFT, True, True).getX()
+            y = self.mousePosition.getY() - self.getPosOf(ERefPoint.TOP_LEFT, True, True).getY()
         else:
             x = self.mousePosition.getX()
             y = self.mousePosition.getY()
@@ -86,7 +90,7 @@ class ImgInfo:
     def getScale(self):
         return self.scale
 
-    def getPosOf(self, refPoint, shift):
+    def getPosOf(self, refPoint, shift, scale):
         if refPoint == ERefPoint.TOP_LEFT:
             pos = self.posTopLeft
         elif refPoint == ERefPoint.BOTTOM_RIGHT:
@@ -97,10 +101,18 @@ class ImgInfo:
             pos = self.posBottomLeft
         else:   # REF_POS
             pos = self.refPos
-        if not shift:
-            return pos
-        x = pos.getX() + self.shiftX
-        y = pos.getY() + self.shiftY
+        if shift:
+            sx = self.shiftX
+            sy = self.shiftY
+        else:
+            sx = 0
+            sy = 0
+        if scale:
+            sc = self.getScale()
+        else:
+            sc = 1
+        x = (pos.getX() + sx) * sc
+        y = (pos.getY() + sy) * sc
         return Position(x, y)
 
     def getShiftX(self):
@@ -110,37 +122,28 @@ class ImgInfo:
         return self.shiftY
 
     def setTopLeft(self):
-        refPos = self.getPosOf(ERefPoint.REF_POS, False)
-        x = refPos.getX()
-        y = refPos.getY()
+        x = self.refPos.getX()
+        y = self.refPos.getY()
         if self.refPoint == ERefPoint.TOP_RIGHT:
             x = x - self.width
-            y = y
-        elif self.refPoint == ERefPoint.TOP_LEFT:
-            x = x
-            y = y
+        elif self.refPoint == ERefPoint.BOTTOM_LEFT:
+            y = y - self.height
         elif self.refPoint == ERefPoint.BOTTOM_RIGHT:
             x = x - self.width
             y = y - self.height
-        else:  # BOTTOM_LEFT
-            x = x
-            y = y - self.height
-        return Position(int(x), int(y))
+        return Position(x, y)
 
     def setBottomRight(self):
+        x = self.refPos.getX()
+        y = self.refPos.getY()
         if self.refPoint == ERefPoint.TOP_RIGHT:
-            x = self.refPos.getX()
-            y = self.refPos.getY() + self.height
+            y = y + self.height
         elif self.refPoint == ERefPoint.TOP_LEFT:
-            x = self.refPos.getX() + self.width
-            y = self.refPos.getY() + self.height
-        elif self.refPoint == ERefPoint.BOTTOM_RIGHT:
-            x = self.refPos.getX()
-            y = self.refPos.getY()
-        else:  # BOTTOM_LEFT
-            x = self.refPos.getX() + self.width
-            y = self.refPos.getY()
-        return Position(int(x), int(y))
+            x = x + self.width
+            y = y + self.height
+        elif self.refPoint == ERefPoint.BOTTOM_LEFT:
+            x = x + self.width
+        return Position(x, y)
 
     def setTopRight(self):
         return Position(self.posBottomRight.getX(), self.posTopLeft.getY())

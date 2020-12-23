@@ -51,6 +51,8 @@ class GameMapVisualization:
                     spielaktiv = False
                 elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                     self.gameImgInfo.setLeftMouseButtonPressed()
+                elif event.type == MOUSEWHEEL:
+                    self.gameImgInfo.setScaling(event.y)
 
             # Spiellogik
             self.gameProcess.execute()

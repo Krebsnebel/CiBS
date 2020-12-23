@@ -92,6 +92,9 @@ class Civilization:
 
         self.options = CivOptions(gameMap, gameStep, self)
 
+    def getValidChoiceWhileMousePressed(self):
+        return self.imgInfo.getValidChoiceWhileMousePressed()
+
     def calculateOptions(self):
         self.options.setPointsForAllObjects()
         self.options.setOptionsInGameStep()
@@ -179,48 +182,49 @@ class Civilization:
         return self.army[idx]
 
     def draw(self, window):
+        scale = self.imgInfo.getScale()
         rotTrade = ImgInfoCivilization.getRotationTradingPoints(self.tradingPoints)
         rotGold = ImgInfoCivilization.getRotationGoldPoints(self.tradingPoints, self.goldPoints)
 
-        pos = self.imgInfo.getImgPosOf(EImageObject.CIVILIZATION_SHEET, True)
-        resize = self.imgInfo.getResize(EImageObject.CIVILIZATION_SHEET)
-        DrawCivObjects.drawImage(self.img, window, ERotation.NO_ROTATION, pos, resize, 1)
+        pos = self.imgInfo.getImgPosOf(EImageObject.CIVILIZATION_SHEET, True, False)
+        resize = EImageObject.CIVILIZATION_SHEET.getResize()
+        DrawCivObjects.drawImage(self.img, window, ERotation.NO_ROTATION, pos, resize, scale)
 
-        pos = self.imgInfo.getImgPosOf(EImageObject.TRADE_DISK, True)
-        resize = self.imgInfo.getResize(EImageObject.TRADE_DISK)
-        DrawCivObjects.drawImage(self.imgTrade, window, rotTrade, pos, resize, 1)
+        pos = self.imgInfo.getImgPosOf(EImageObject.TRADE_DISK, True, False)
+        resize = EImageObject.TRADE_DISK.getResize()
+        DrawCivObjects.drawImage(self.imgTrade, window, rotTrade, pos, resize, scale)
 
-        pos = self.imgInfo.getImgPosOf(EImageObject.GOLD_DISK, True)
-        resize = self.imgInfo.getResize(EImageObject.GOLD_DISK)
-        DrawCivObjects.drawImage(self.imgGold, window, rotGold, pos, resize, 1)
+        pos = self.imgInfo.getImgPosOf(EImageObject.GOLD_DISK, True, False)
+        resize = EImageObject.GOLD_DISK.getResize()
+        DrawCivObjects.drawImage(self.imgGold, window, rotGold, pos, resize, scale)
 
-        pos = self.imgInfo.getImgPosOf(EImageObject.POLITY, True)
-        resize = self.imgInfo.getResize(EImageObject.POLITY)
-        DrawCivObjects.drawImage(self.imgPolity, window, ERotation.NO_ROTATION, pos, resize, 1)
+        pos = self.imgInfo.getImgPosOf(EImageObject.POLITY, True, False)
+        resize = EImageObject.POLITY.getResize()
+        DrawCivObjects.drawImage(self.imgPolity, window, ERotation.NO_ROTATION, pos, resize, scale)
 
         i = 0
         for p in self.pioneer:
-            pos = self.imgInfo.getImgPosOfFigure(EFigure.PIONEER, i, True)
-            resize = self.imgInfo.getResize(EImageObject.FIGURE)
+            pos = self.imgInfo.getImgPosOfFigure(EFigure.PIONEER, i, True, False)
+            resize = EImageObject.FIGURE.getResize()
             if p.getPosition() is None:
-                p.draw(window, ERotation.NO_ROTATION, pos, resize)
+                p.draw(window, ERotation.NO_ROTATION, pos, resize, scale)
             i = i + 1
 
         i = 0
         for a in self.army:
-            pos = self.imgInfo.getImgPosOfFigure(EFigure.ARMY, i, True)
-            resize = self.imgInfo.getResize(EImageObject.FIGURE)
+            pos = self.imgInfo.getImgPosOfFigure(EFigure.ARMY, i, True, False)
+            resize = EImageObject.FIGURE.getResize()
             if a.getPosition() is None:
-                a.draw(window, ERotation.NO_ROTATION, pos, resize)
+                a.draw(window, ERotation.NO_ROTATION, pos, resize, scale)
             i = i + 1
 
         i = 3
         for c in self.cities:
             imgObj = c.getImgObj()
-            pos = self.imgInfo.getImgPosOf(imgObj, True)
-            resize = self.imgInfo.getResize(imgObj)
+            pos = self.imgInfo.getImgPosOf(imgObj, True, False)
+            resize = imgObj.getResize()
             if c.getPosition() is None:
-                c.draw(window, ERotation.NO_ROTATION, pos, resize)
+                c.draw(window, ERotation.NO_ROTATION, pos, resize, scale)
             i = i - 1
 
         self.researchManager.draw(window)

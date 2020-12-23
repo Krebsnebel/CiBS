@@ -55,16 +55,16 @@ class MapTile:
         self.frontImg = ImageHandler.getImageOfMapTile(self.label, True)
         self.backImg = ImageHandler.getImageOfMapTile(self.label, False)
 
-    def draw(self, window):
+    def draw(self, window, scale):
         if self.visibility is EVisibility.FOR_ALL:
             img = self.frontImg
         else:
             img = self.backImg
-        pos = self.imgInfo.getImgPosOfSquare(self.position)
-        resize = self.imgInfo.getResizeMapTile() * self.imgInfo.getScale()
-        DrawCivObjects.drawImage(img, window, self.rotation, pos, resize, 1)
+        pos = self.imgInfo.getImgPosOfSquare(self.position, True, False)
+        resize = self.imgInfo.getResizeMapTile()
+        DrawCivObjects.drawImage(img, window, self.rotation, pos, resize, scale)
         for s in self.mapTile:
-            s.drawObjectsOfSquare(window, self.imgInfo)
+            s.drawObjectsOfSquare(window, self.imgInfo, scale)
 
     def getCivilization(self):
         return self.civilization

@@ -21,16 +21,6 @@ depending of move of each player business objects can be lifted off the stacks
 there is a function to draw the stacks on market place
 """
 
-
-def drawStack(window, resize, stack, imgInfo, imgObj, s):
-    i = 0
-    stackPos = imgInfo.getImgPosOf(imgObj)
-    for obj in stack:
-        pos = Position(stackPos.getX() + i, stackPos.getY() - i)
-        obj.draw(window, ERotation.NO_ROTATION, pos, resize)
-        i = i + s
-
-
 class BusinessObjectCollection:
 
     def __init__(self, imgInfoMarketMap):
@@ -143,18 +133,19 @@ class BusinessObjectCollection:
         return None
 
     def draw(self, window):
-        resizeCard = self.imgInfo.getResize(EImageObject.WONDER_CARD)
-        resizeMarker = self.imgInfo.getResize(EImageObject.SQUARE_OBJECT)
+        scale = self.imgInfo.getScale()
+        resizeCard = EImageObject.WONDER_CARD.getResize()
+        resizeMarker = EImageObject.SQUARE_OBJECT.getResize()
 
         delta = EConstants.DELTA_MARKER_BUILDINGS_STACK.value
-        drawStack(window, resizeMarker, self.market, self.imgInfo, EImageObject.BUILDING_STACK_1L, delta)
-        drawStack(window, resizeMarker, self.temple, self.imgInfo, EImageObject.BUILDING_STACK_1R, delta)
-        drawStack(window, resizeMarker, self.granary, self.imgInfo, EImageObject.BUILDING_STACK_2L, delta)
-        drawStack(window, resizeMarker, self.library, self.imgInfo, EImageObject.BUILDING_STACK_2R, delta)
-        drawStack(window, resizeMarker, self.barrack, self.imgInfo, EImageObject.BUILDING_STACK_3L, delta)
-        drawStack(window, resizeMarker, self.blacksmith, self.imgInfo, EImageObject.BUILDING_STACK_3R, delta)
-        drawStack(window, resizeMarker, self.tradingPost, self.imgInfo, EImageObject.BUILDING_STACK_4L, delta)
-        drawStack(window, resizeMarker, self.marina, self.imgInfo, EImageObject.BUILDING_STACK_4R, delta)
+        self.drawStack(window, resizeMarker, self.market, self.imgInfo, EImageObject.BUILDING_STACK_1L, delta)
+        self.drawStack(window, resizeMarker, self.temple, self.imgInfo, EImageObject.BUILDING_STACK_1R, delta)
+        self.drawStack(window, resizeMarker, self.granary, self.imgInfo, EImageObject.BUILDING_STACK_2L, delta)
+        self.drawStack(window, resizeMarker, self.library, self.imgInfo, EImageObject.BUILDING_STACK_2R, delta)
+        self.drawStack(window, resizeMarker, self.barrack, self.imgInfo, EImageObject.BUILDING_STACK_3L, delta)
+        self.drawStack(window, resizeMarker, self.blacksmith, self.imgInfo, EImageObject.BUILDING_STACK_3R, delta)
+        self.drawStack(window, resizeMarker, self.tradingPost, self.imgInfo, EImageObject.BUILDING_STACK_4L, delta)
+        self.drawStack(window, resizeMarker, self.marina, self.imgInfo, EImageObject.BUILDING_STACK_4R, delta)
 
         i = 0
         for w in self.wonderVisible:
@@ -170,21 +161,30 @@ class BusinessObjectCollection:
             else:   # i == 3
                 cardObj = EImageObject.WONDER_CARD_POS_4
                 markerObj = EImageObject.WONDER_MARKER_POS_4
-            pos = self.imgInfo.getImgPosOf(markerObj)
-            w.draw(window, ERotation.CLOCKWISE_90, pos, resizeMarker)
-            pos = self.imgInfo.getImgPosOf(cardObj)
-            w.drawCard(window, ERotation.NO_ROTATION, pos, resizeCard)
+            pos = self.imgInfo.getImgPosOf(markerObj, True, False)
+            w.draw(window, ERotation.CLOCKWISE_90, pos, resizeMarker, scale)
+            pos = self.imgInfo.getImgPosOf(cardObj, True, False)
+            w.drawCard(window, ERotation.NO_ROTATION, pos, resizeCard, scale)
             i = i + 1
 
         dx = EConstants.DELTA_WONDER_CARDS_STACK.value
         delta = 0
-        stackPos = self.imgInfo.getImgPosOf(EImageObject.WONDER_STACK)
+        stackPos = self.imgInfo.getImgPosOf(EImageObject.WONDER_STACK, True, False)
         for w in self.wonderCovered_L3:
             pos = Position(stackPos.getX() + delta, stackPos.getY() - delta)
-            w.drawCard(window, ERotation.NO_ROTATION, pos, resizeCard)
+            w.drawCard(window, ERotation.NO_ROTATION, pos, resizeCard, scale)
             delta = delta + dx
 
         for w in self.wonderCovered_L2:
             pos = Position(stackPos.getX() + delta, stackPos.getY() - delta)
-            w.drawCard(window, ERotation.NO_ROTATION, pos, resizeCard)
+            w.drawCard(window, ERotation.NO_ROTATION, pos, resizeCard, scale)
             delta = delta + dx
+
+    def drawStack(self, window, resize, stack, imgInfo, imgObj, s):
+        scale = self.imgInfo.getScale()
+        i = 0
+        stackPos = imgInfo.getImgPosOf(imgObj, True, False)
+        for obj in stack:
+            pos = Position(stackPos.getX() + i, stackPos.getY() - i)
+            obj.draw(window, ERotation.NO_ROTATION, pos, resize, scale)
+            i = i + s

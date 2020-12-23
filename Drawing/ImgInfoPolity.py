@@ -21,11 +21,8 @@ class ImgInfoPolity(ImgInfo):
     def leftMouseButtonPressed(self, mousePosition):
         pass
 
-    def getResize(self, imgObj):
-        return imgObj.getResize() * self.scale
-
     def getImgPosOf(self, imgObj, x, y):
-        pos = self.getPosOf(ERefPoint.TOP_LEFT, False)
+        pos = self.getPosOf(ERefPoint.TOP_LEFT, False, False)
         if x < 0 or x > 3:
             return Position(0, 0)
         if y < 0 or y > 1:

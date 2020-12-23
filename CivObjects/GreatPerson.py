@@ -38,5 +38,5 @@ class GreatPerson(BusinessObject):
     def getPermissionTerrain(self):
         return self.permissionTerrain
 
-    def draw(self, window, rotation, pos, resize):
-        DrawCivObjects.drawImage(self.img, window, rotation, pos, resize, 1)
+    def draw(self, window, rotation, pos, resize, scale):
+        DrawCivObjects.drawImage(self.img, window, rotation, pos, resize, scale)

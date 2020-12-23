@@ -41,10 +41,10 @@ class DrawCivObjects:
                 manImg = pygame.transform.rotate(manImg, 180)
             elif rotation is ERotation.CLOCKWISE_270:
                 manImg = pygame.transform.rotate(manImg, 90)
-            window.blit(manImg, (pos.getX(), pos.getY()))
+            window.blit(manImg, (pos.getX() * scale, pos.getY() * scale))
         else:
             size_orig = manImg.get_rect()
             manImg = pygame.transform.rotate(manImg, rotation)
             size_rot = manImg.get_rect()
-            window.blit(manImg, (pos.getX() - size_rot.center[0] + size_orig.center[0],
-                                 pos.getY() - size_rot.center[1] + size_orig.center[1]))
+            window.blit(manImg, ((pos.getX() - size_rot.center[0] + size_orig.center[0]) * scale,
+                                 (pos.getY() - size_rot.center[1] + size_orig.center[1]) * scale))

@@ -8,7 +8,8 @@ from CivEnums.EUnitType import EUnitType
 from CivObjects.Position import Position
 from Drawing.EImageObject import EImageObject
 from Drawing.ImgInfo import ImgInfo
-
+from Options.EOptionType import EOptionType
+from Options.Option import Option
 
 """
 this class is an image information of market map
@@ -45,14 +46,14 @@ class ImgInfoMarketMap(ImgInfo):
         self.pickCultureCardI = False
         self.pickCultureCardII = False
         self.pickCultureCardIII = False
-        self.pickIron = True
-        self.pickIncense = True
-        self.pickWheat = True
-        self.pickSilk = True
-        self.pickCoin = True
-        self.pickCulture = True
-        self.pickCottage = True
-        self.pickBarbarian = True
+        self.pickIron = False
+        self.pickIncense = False
+        self.pickWheat = False
+        self.pickSilk = False
+        self.pickCoin = False
+        self.pickCulture = False
+        self.pickCottage = False
+        self.pickBarbarian = False
 
         self.cultureStepArray = [False for i in range(EConstants.CULTURE_LEVELS.value)]
 
@@ -67,97 +68,143 @@ class ImgInfoMarketMap(ImgInfo):
     def leftMouseButtonPressed(self, mousePosition):
         pass
 
-    def getResize(self, imgObj):
-        return imgObj.getResize() * self.scale
-
-    def getImgPosOf(self, imgObj):
-        pos = self.getPosOf(ERefPoint.TOP_LEFT, True)
+    def getImgPosOf(self, imgObj, shift, scale):
+        pos = self.getPosOf(ERefPoint.TOP_LEFT, shift, scale)
         return Position(pos.getX() + imgObj.getX(), pos.getY() + imgObj.getY())
 
-    def draw(self, window):
+    def setMousePosition(self, x, y):
+        ImgInfo.setMousePosition(self, x, y)
+        self.mouseAtPossiblePosition = None
+        for opt in self.options:
+            mousePos = self.getMousePosition(False)
+            insideX = opt.getX() < mousePos.getX()/self.scale - self.getShiftX() <= opt.getX() + opt.getWidth()
+            insideY = opt.getY() < mousePos.getY()/self.scale - self.getShiftY() <= opt.getY() + opt.getHeight()
+            if insideX and insideY:
+                self.mouseAtPossiblePosition = Option(opt.getImgObj(), opt.getX(), opt.getY(),
+                                                      opt.getOptionType(), opt.getEmphasize(), opt.getPositionOfMap())
+
+    def setOptionsForBuildings(self, mk, te, gr, li, ba, bl, tr, mr):
+        self.pickMarket = mk
+        self.pickTemple = te
+        self.pickGranary = gr
+        self.pickLibrary = li
+        self.pickBarrack = ba
+        self.pickBlacksmith = bl
+        self.pickTradingPost = tr
+        self.pickMarina = mr
+
+    def setOptionsForWonder(self, wcs, wc1, wc2, wc3, wc4, wk1, wk2, wk3, wk4):
+        self.pickWonderCardStack = wcs
+        self.pickWonderCard1 = wc1
+        self.pickWonderCard2 = wc2
+        self.pickWonderCard3 = wc3
+        self.pickWonderCard4 = wc4
+        self.pickWonderMarker1 = wk1
+        self.pickWonderMarker2 = wk2
+        self.pickWonderMarker3 = wk3
+        self.pickWonderMarker4 = wk4
+
+    def setOptionsForMilitaryAndCultureCards(self, inf, art, cav, af, cc1, cc2, cc3):
+        self.pickInfantry = inf
+        self.pickArtillery = art
+        self.pickCavalry = cav
+        self.pickAirForce = af
+        self.pickCultureCardI = cc1
+        self.pickCultureCardII = cc2
+        self.pickCultureCardIII = cc3
+
+    def setOptionsForMarker(self, ir, ic, wt, sk, cn, cu, co, ba):
+        self.pickIron = ir
+        self.pickIncense = ic
+        self.pickWheat = wt
+        self.pickSilk = sk
+        self.pickCoin = cn
+        self.pickCulture = cu
+        self.pickCottage = co
+        self.pickBarbarian = ba
+
+    def setOptionsForCultureLevelMarker(self, cultureStepArray):
+        self.cultureStepArray = cultureStepArray.copy()
+
+    def setOptions(self):
+        self.options = []
         b = self.marketMap.getBusinessObjectCollection()
         delta = EConstants.DELTA_MARKER_BUILDINGS_STACK.value
         t = b.getStackLengthOfBuilding(EBuilding.MARKET) - 1
-        self.drawFrame(window, EImageObject.BUILDING_STACK_1L, self.pickMarket, t*delta, -t*delta)
+        self.setOption(self.pickMarket, EImageObject.BUILDING_STACK_1L, t * delta, -t * delta)
         t = b.getStackLengthOfBuilding(EBuilding.TEMPLE) - 1
-        self.drawFrame(window, EImageObject.BUILDING_STACK_1R, self.pickTemple, t*delta, -t*delta)
+        self.setOption(self.pickTemple, EImageObject.BUILDING_STACK_1R, t * delta, -t * delta)
         t = b.getStackLengthOfBuilding(EBuilding.GRANARY) - 1
-        self.drawFrame(window, EImageObject.BUILDING_STACK_2L, self.pickGranary, t*delta, -t*delta)
+        self.setOption(self.pickGranary, EImageObject.BUILDING_STACK_2L, t * delta, -t * delta)
         t = b.getStackLengthOfBuilding(EBuilding.LIBRARY) - 1
-        self.drawFrame(window, EImageObject.BUILDING_STACK_2R, self.pickLibrary, t*delta, -t*delta)
+        self.setOption(self.pickLibrary, EImageObject.BUILDING_STACK_2R, t * delta, -t * delta)
         t = b.getStackLengthOfBuilding(EBuilding.BARRACK) - 1
-        self.drawFrame(window, EImageObject.BUILDING_STACK_3L, self.pickBarrack, t*delta, -t*delta)
+        self.setOption(self.pickBarrack, EImageObject.BUILDING_STACK_3L, t * delta, -t * delta)
         t = b.getStackLengthOfBuilding(EBuilding.BLACKSMITH) - 1
-        self.drawFrame(window, EImageObject.BUILDING_STACK_3R, self.pickBlacksmith, t*delta, -t*delta)
+        self.setOption(self.pickBlacksmith, EImageObject.BUILDING_STACK_3R, t * delta, -t * delta)
         t = b.getStackLengthOfBuilding(EBuilding.TRADING_POST) - 1
-        self.drawFrame(window, EImageObject.BUILDING_STACK_4L, self.pickTradingPost, t*delta, -t*delta)
+        self.setOption(self.pickTradingPost, EImageObject.BUILDING_STACK_4L, t * delta, -t * delta)
         t = b.getStackLengthOfBuilding(EBuilding.MARINA) - 1
-        self.drawFrame(window, EImageObject.BUILDING_STACK_4R, self.pickMarina, t*delta, -t*delta)
+        self.setOption(self.pickMarina, EImageObject.BUILDING_STACK_4R, t * delta, -t * delta)
 
         delta = EConstants.DELTA_WONDER_CARDS_STACK.value
         t = b.getStackLengthOfWonder() - 1
-        self.drawFrame(window, EImageObject.WONDER_STACK, self.pickWonderCardStack, t*delta, -t*delta)
-        self.drawFrame(window, EImageObject.WONDER_CARD_POS_1, self.pickWonderCard1, 0, 0)
-        self.drawFrame(window, EImageObject.WONDER_CARD_POS_2, self.pickWonderCard2, 0, 0)
-        self.drawFrame(window, EImageObject.WONDER_CARD_POS_3, self.pickWonderCard3, 0, 0)
-        self.drawFrame(window, EImageObject.WONDER_CARD_POS_4, self.pickWonderCard4, 0, 0)
+        self.setOption(self.pickWonderCardStack, EImageObject.WONDER_STACK, t * delta, -t * delta)
+        self.setOption(self.pickWonderCard1, EImageObject.WONDER_CARD_POS_1, 0, 0)
+        self.setOption(self.pickWonderCard2, EImageObject.WONDER_CARD_POS_2, 0, 0)
+        self.setOption(self.pickWonderCard3, EImageObject.WONDER_CARD_POS_3, 0, 0)
+        self.setOption(self.pickWonderCard4, EImageObject.WONDER_CARD_POS_4, 0, 0)
 
-        self.drawFrame(window, EImageObject.WONDER_MARKER_POS_1, self.pickWonderMarker1, 0, 0)
-        self.drawFrame(window, EImageObject.WONDER_MARKER_POS_2, self.pickWonderMarker2, 0, 0)
-        self.drawFrame(window, EImageObject.WONDER_MARKER_POS_3, self.pickWonderMarker3, 0, 0)
-        self.drawFrame(window, EImageObject.WONDER_MARKER_POS_4, self.pickWonderMarker4, 0, 0)
+        self.setOption(self.pickWonderMarker1, EImageObject.WONDER_MARKER_POS_1, 0, 0)
+        self.setOption(self.pickWonderMarker2, EImageObject.WONDER_MARKER_POS_2, 0, 0)
+        self.setOption(self.pickWonderMarker3, EImageObject.WONDER_MARKER_POS_3, 0, 0)
+        self.setOption(self.pickWonderMarker4, EImageObject.WONDER_MARKER_POS_4, 0, 0)
 
         mi = self.marketMap.getMilitaryUnitCollection()
-        delta = EConstants.DELTA_MILITARY_UNIT_STACK.value - 1
-        t = mi.getStackLengthOfMilUnit(EUnitType.INFANTRY)
-        self.drawFrame(window, EImageObject.INFANTRY_STACK, self.pickInfantry, t*delta, -t*delta)
+        delta = EConstants.DELTA_MILITARY_UNIT_STACK.value
         t = mi.getStackLengthOfMilUnit(EUnitType.INFANTRY) - 1
-        self.drawFrame(window, EImageObject.ARTILLERY_STACK, self.pickArtillery, t*delta, -t*delta)
+        self.setOption(self.pickInfantry, EImageObject.INFANTRY_STACK, t * delta, -t * delta)
+        t = mi.getStackLengthOfMilUnit(EUnitType.INFANTRY) - 1
+        self.setOption(self.pickArtillery, EImageObject.ARTILLERY_STACK, t * delta, -t * delta)
         t = mi.getStackLengthOfMilUnit(EUnitType.CAVALRY) - 1
-        self.drawFrame(window, EImageObject.CAVALRY_STACK, self.pickCavalry, t*delta, -t*delta)
+        self.setOption(self.pickCavalry, EImageObject.CAVALRY_STACK, t * delta, -t * delta)
         t = mi.getStackLengthOfMilUnit(EUnitType.AIR_FORCE) - 1
-        self.drawFrame(window, EImageObject.AIR_FORCE_STACK, self.pickAirForce, t*delta, -t*delta)
+        self.setOption(self.pickAirForce, EImageObject.AIR_FORCE_STACK, t * delta, -t * delta)
 
         c = self.marketMap.getCulturalEventCollection()
         delta = EConstants.DELTA_CULTURE_CARDS_STACK.value
         t = c.getStackLengthOfCultureCards(1) - 1
-        self.drawFrame(window, EImageObject.CULTURE_EVENT_1, self.pickCultureCardI, t*delta, -t*delta)
+        self.setOption(self.pickCultureCardI, EImageObject.CULTURE_EVENT_1, t * delta, -t * delta)
         t = c.getStackLengthOfCultureCards(2) - 1
-        self.drawFrame(window, EImageObject.CULTURE_EVENT_2, self.pickCultureCardII, t*delta, -t*delta)
+        self.setOption(self.pickCultureCardII, EImageObject.CULTURE_EVENT_2, t * delta, -t * delta)
         t = c.getStackLengthOfCultureCards(3) - 1
-        self.drawFrame(window, EImageObject.CULTURE_EVENT_3, self.pickCultureCardIII, t*delta, -t*delta)
+        self.setOption(self.pickCultureCardIII, EImageObject.CULTURE_EVENT_3, t * delta, -t * delta)
 
         m = self.marketMap.getMarkerCollection()
         delta = EConstants.DELTA_TOKENS_STACK.value
         t = m.getStackLengthOfResource(EResource.IRON) - 1
-        self.drawFrame(window, EImageObject.IRON_MARKET_MAP, self.pickIron, t * delta, -t * delta)
+        self.setOption(self.pickIron, EImageObject.IRON_MARKET_MAP, t * delta, -t * delta)
         t = m.getStackLengthOfResource(EResource.INCENSE) - 1
-        self.drawFrame(window, EImageObject.INCENSE_MARKET_MAP, self.pickIncense, t * delta, -t * delta)
+        self.setOption(self.pickIncense, EImageObject.INCENSE_MARKET_MAP, t * delta, -t * delta)
         t = m.getStackLengthOfResource(EResource.WHEAT) - 1
-        self.drawFrame(window, EImageObject.WHEAT_MARKET_MAP, self.pickWheat, t * delta, -t * delta)
+        self.setOption(self.pickWheat, EImageObject.WHEAT_MARKET_MAP, t * delta, -t * delta)
         t = m.getStackLengthOfResource(EResource.SILK) - 1
-        self.drawFrame(window, EImageObject.SILK_MARKET_MAP, self.pickSilk, t * delta, -t * delta)
+        self.setOption(self.pickSilk, EImageObject.SILK_MARKET_MAP, t * delta, -t * delta)
         t = m.getStackLengthOfResource(EResource.COIN) - 1
-        self.drawFrame(window, EImageObject.COIN_MARKET_MAP, self.pickCoin, t * delta, -t * delta)
+        self.setOption(self.pickCoin, EImageObject.COIN_MARKET_MAP, t * delta, -t * delta)
         t = m.getStackLengthOfResource(EResource.CULTURE) - 1
-        self.drawFrame(window, EImageObject.CULTURE_MARKET_MAP, self.pickCulture, t * delta, -t * delta)
+        self.setOption(self.pickCulture, EImageObject.CULTURE_MARKET_MAP, t * delta, -t * delta)
         t = m.getStackLengthOfCottage() - 1
-        self.drawFrame(window, EImageObject.COTTAGE_MARKET_MAP, self.pickCottage, t * delta, -t * delta)
+        self.setOption(self.pickCottage, EImageObject.COTTAGE_MARKET_MAP, t * delta, -t * delta)
         t = m.getStackLengthOfBarbarian() - 1
-        self.drawFrame(window, EImageObject.BARBARIAN_MARKET_MAP, self.pickBarbarian, t * delta, -t * delta)
+        self.setOption(self.pickBarbarian, EImageObject.BARBARIAN_MARKET_MAP, t * delta, -t * delta)
 
         imgObj = EImageObject.CULTURE_LEVEL_MARKER
         for i in range(EConstants.CULTURE_LEVELS.value):
-            self.drawFrame(window, imgObj, self.cultureStepArray[i],  i*imgObj.getSizeX(), 0)
+            self.setOption(self.cultureStepArray[i], EImageObject.CULTURE_LEVEL_MARKER, i * imgObj.getSizeX(), 0)
 
-    def drawFrame(self, window, imgObj, condition, dx, dy):
-        if condition:
-            possible_img = pygame.Surface(imgObj.getRect(), pygame.SRCALPHA)
-            pygame.draw.rect(possible_img, (255, 0, 0), possible_img.get_rect(), 3)
-            window.blit(possible_img, (self.getImgPosOf(imgObj).getX() + dx, self.getImgPosOf(imgObj).getY() + dy))
-
-    def getImgPosOf(self, imgObj):
-        if imgObj is not None:
-            refPos = self.getPosOf(ERefPoint.TOP_LEFT, True)
-            return Position(imgObj.getX() + refPos.getX(), imgObj.getY() + refPos.getY())
-        return None
+    def setOption(self, cond, imgObj, dx, dy):
+        if cond:
+            imgPos = self.getImgPosOf(imgObj, False, False)
+            self.options.append(Option(imgObj, imgPos.getX() + dx, imgPos.getY() + dy, EOptionType.SQUARE,
+                                       self.emphasize, None))

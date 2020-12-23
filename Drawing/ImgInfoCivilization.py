@@ -23,7 +23,7 @@ this class is an image information of each civilization
 class ImgInfoCivilization(ImgInfo):
 
     def __init__(self, i, numPlayer):
-
+        self.civilization = None
         self.selectPolity = False
         self.mouseHighlighting = None
 
@@ -61,35 +61,40 @@ class ImgInfoCivilization(ImgInfo):
                 refPos = Position(1460, 1020)
         super().__init__(width, height, refPos, refPoint)
 
+    def setCivilization(self, civ):
+        self.civilization = civ
+
+    def getValidChoiceWhileMousePressed(self):
+        if self.isLeftMouseButtonPressed():
+            return self.mouseAtPossiblePosition
+        return None
+
     def setMousePosition(self, x, y):
         ImgInfo.setMousePosition(self, x, y)
         self.mouseAtPossiblePosition = None
         for opt in self.options:
             mousePos = self.getMousePosition(False)
-            insideX = opt.getX() < (mousePos.getX() - self.getShiftX()) <= opt.getX() + opt.getWidth()
-            insideY = opt.getY() < (mousePos.getY() - self.getShiftY()) <= opt.getY() + opt.getHeight()
+            insideX = opt.getX() < mousePos.getX()/self.scale - self.getShiftX() <= opt.getX() + opt.getWidth()
+            insideY = opt.getY() < mousePos.getY()/self.scale - self.getShiftY() <= opt.getY() + opt.getHeight()
             if insideX and insideY:
-                self.mouseAtPossiblePosition = Option(opt.getX(), opt.getY(), opt.getWidth(), opt.getHeight(),
-                                                      EOptionType.SQUARE)
-
-    def setOptions(self, selectPolity):
-        self.options = []
-        if selectPolity:
-            imgObj = EImageObject.POLITY
-            imgPos = self.getImgPosOf(imgObj, False)
-            self.options.append(Option(imgPos.getX(), imgPos.getY(), imgObj.getSizeX(), imgObj.getSizeY(),
-                                       EOptionType.SQUARE))
+                self.mouseAtPossiblePosition = Option(opt.getImgObj(), opt.getX(), opt.getY(),
+                                                      opt.getOptionType(), opt.getEmphasize(), opt.getPositionOfMap())
 
     def setWidth(self, level, stackLength):
         pass
 
-    def leftMouseButtonPressed(self, mousePosition):
-        pass
+    def setOptions(self, pol, c1, c2):
+        self.options = []
+        self.setOption(pol, EImageObject.POLITY)
+        self.setOption(c1, EImageObject.CITY_1)
+        self.setOption(c2, EImageObject.CITY_2)
 
-    def getResize(self, imgObj):
-        return imgObj.getResize() * self.scale
+    def setOption(self, cond, imgObj):
+        if cond:
+            imgPos = self.getImgPosOf(imgObj, False, False)
+            self.options.append(Option(imgObj, imgPos.getX(), imgPos.getY(), EOptionType.SQUARE, self.emphasize, None))
 
-    def getImgPosOf(self, imgObj, shift):
+    def getImgPosOf(self, imgObj, shift, scale):
         civDx = EImageObject.CIVILIZATION_SHEET.getX()
         civDy = EImageObject.CIVILIZATION_SHEET.getY()
         figDx = EImageObject.FIGURE.getX()
@@ -97,13 +102,13 @@ class ImgInfoCivilization(ImgInfo):
         cityDx = EImageObject.CITY.getX()
         researchDelta = EImageObject.RESEARCH_CARDS.getX()
         if self.refPoint == ERefPoint.BOTTOM_RIGHT or self.refPoint == ERefPoint.TOP_RIGHT:
-            refPos = self.getPosOf(ERefPoint.BOTTOM_RIGHT, shift)
+            refPos = self.getPosOf(ERefPoint.BOTTOM_RIGHT, shift, scale)
             pos = Position(refPos.getX() - civDx, refPos.getY() - civDy)
             resPos = Position(refPos.getX() - civDx - researchDelta, refPos.getY())
             figPos = Position(refPos.getX() - figDx, refPos.getY() - figDy)
             cityPos = Position(refPos.getX() - cityDx, refPos.getY())
         else:
-            refPos = self.getPosOf(ERefPoint.BOTTOM_LEFT, shift)
+            refPos = self.getPosOf(ERefPoint.BOTTOM_LEFT, shift, scale)
             pos = Position(refPos.getX(), refPos.getY() - civDy)
             resPos = Position(refPos.getX() + civDx + researchDelta, refPos.getY())
             figPos = Position(refPos.getX() + figDx, refPos.getY() - figDy)
@@ -131,8 +136,8 @@ class ImgInfoCivilization(ImgInfo):
             return Position(cityPos.getX(), cityPos.getY() - cityDy)
         return None
 
-    def getImgPosOfFigure(self, figureType, nr, shift):
-        refPos = self.getImgPosOf(EImageObject.FIGURE, shift)
+    def getImgPosOfFigure(self, figureType, nr, shift, scale):
+        refPos = self.getImgPosOf(EImageObject.FIGURE, shift, scale)
         if figureType == EFigure.ARMY and 0 <= nr < 7:
             armyDeltaX = EImageObject.ARMY.getX()
             armyDeltaY = EImageObject.ARMY.getY()
@@ -143,8 +148,8 @@ class ImgInfoCivilization(ImgInfo):
             return Position(refPos.getX() + pioneerDeltaX[nr], refPos.getY() + pioneerDeltaY[nr])
         return None
 
-    def getImgPosOfResearchCard(self, level, cardNr, shift):
-        refPos = self.getImgPosOf(EImageObject.CIVILIZATION_RESEARCH, shift)
+    def getImgPosOfResearchCard(self, level, cardNr, shift, scale):
+        refPos = self.getImgPosOf(EImageObject.CIVILIZATION_RESEARCH, shift, scale)
         researchDx = EImageObject.RESEARCH_CARDS.getSizeX()
         researchDy = EImageObject.RESEARCH_CARDS.getSizeY()
         researchDelta = EImageObject.RESEARCH_CARDS.getX()

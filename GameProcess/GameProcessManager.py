@@ -26,7 +26,7 @@ class GameProcessManager:
 
         self.gameStep.setCivilizations(self.game.getCivilizations())
         self.prepareGame = PrepareGame(self.gameStep, self.game)
-        self.startOfRound = StartOfRound(self.gameStep)
+        self.startOfRound = StartOfRound(self.gameStep, self.game)
         self.trade = Trade(self.gameStep)
         self.cityAdministration = CityAdministration(self.gameStep)
         self.movement = Movement(self.gameStep)

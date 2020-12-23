@@ -28,7 +28,6 @@ class Game:
         militaryUnitCollection = self.marketMap.getMilitaryUnitCollection()
         for i in range(self.numberOfPlayer):
             mt = self.mapTileCollection.popMapTileCiv()
-#            civ = Civilization(imgInfoGame.getCivilization(i), i, mt, playerColor[i], self.gameMap, gameStep)
             civ = Civilization(imgInfoGame.getCivilization(i), i, mt, playerColor[i], self, gameStep)
             self.polityOfCivilizations.addCivPolity(civ.getCivPolity())
             civ.addMilitaryUnit(militaryUnitCollection.getArtillery())
@@ -40,6 +39,12 @@ class Game:
             self.civilizations.append(civ)
 
         self.setGame()
+
+    def getPolityOfCivilizations(self):
+        return self.polityOfCivilizations
+
+    def getMarketMap(self):
+        return self.marketMap
 
     def getBusinessObjectCollection(self):
         return self.marketMap.getBusinessObjectCollection()

@@ -18,5 +18,5 @@ class CulturalEvent:
         self.visibility = EVisibility.FOR_NOBODY
         self.imgCard = ImageHandler.getImageOfCulturalEvent(self.event, False)
 
-    def draw(self, window, rotation, pos, resize):
-        DrawCivObjects.drawImage(self.imgCard, window, rotation, pos, resize, 1)
+    def draw(self, window, rotation, pos, resize, scale):
+        DrawCivObjects.drawImage(self.imgCard, window, rotation, pos, resize, scale)

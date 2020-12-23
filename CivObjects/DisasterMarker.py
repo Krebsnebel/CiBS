@@ -36,8 +36,8 @@ class DisasterMarker(BusinessObject):
         super().__init__(tp, pp, cp, dp, res, s)
         self.img = ImageHandler.getImageOfDisasterMarker(True)
 
-    def draw(self, window, rotation, pos, resize):
-        DrawCivObjects.drawImage(self.img, window, rotation, pos, resize, 1)
+    def draw(self, window, rotation, pos, resize, scale):
+        DrawCivObjects.drawImage(self.img, window, rotation, pos, resize, scale)
 
     def chooseDrought(self):
         self.terrain1active = True

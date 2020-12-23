@@ -27,8 +27,8 @@ class Figure:
         self.permissionTerrain = EPermission.ALL_EXCEPT_WATER
         self.img = ImageHandler.getImageOfFigure(self.fType, self.color)
 
-    def draw(self, window, rotation, pos, resize):
-        DrawCivObjects.drawImage(self.img, window, rotation, pos, resize, 1)
+    def draw(self, window, rotation, pos, resize, scale):
+        DrawCivObjects.drawImage(self.img, window, rotation, pos, resize, scale)
 
     def isPotentialCandidateForFoundingCity(self):
         return self.foundingCity

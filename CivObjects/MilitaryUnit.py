@@ -41,9 +41,9 @@ class MilitaryUnit:
         else:
             return 5
 
-    def draw(self, window, rotation, pos, resize):
+    def draw(self, window, rotation, pos, resize, scale):
         if self.visibility == EVisibility.FOR_NOBODY:
             img = self.imgBack
         else:
             img = self.imgFront
-        DrawCivObjects.drawImage(img, window, rotation, pos, resize, 1)
+        DrawCivObjects.drawImage(img, window, rotation, pos, resize, scale)

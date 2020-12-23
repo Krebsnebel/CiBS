@@ -32,5 +32,5 @@ class Marker:
     def setPositionOnMarketMap(self, imgPosMM):
         self.imgPosMM.setPosition(imgPosMM.getX(), imgPosMM.getY())
 
-    def draw(self, window, rotation, pos, resize):
-        DrawCivObjects.drawImage(self.img, window, rotation, pos, resize, 1)
+    def draw(self, window, rotation, pos, resize, scale):
+        DrawCivObjects.drawImage(self.img, window, rotation, pos, resize, scale)

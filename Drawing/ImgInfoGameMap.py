@@ -52,11 +52,12 @@ class ImgInfoGameMap(ImgInfo):
         posGM = self.getMousePositionInGameMap()
         if self.optionsGameMap is not None and posGM is not None:
             if self.optionsGameMap[posGM.getX()][posGM.getY()]:
-                size = EImageObject.MAP_TILE.getSizeX() / 4.0
-                refPos = self.getPosOf(ERefPoint.TOP_LEFT, False)
+                imgObj = EImageObject.SQUARE
+                size = imgObj.getSizeX()
+                refPos = self.getPosOf(ERefPoint.TOP_LEFT, False, False)
                 posX = refPos.getX() + posGM.getX() * size
                 posY = refPos.getY() + posGM.getY() * size
-                self.mouseAtPossiblePosition = Option(posX, posY, size, size, EOptionType.SQUARE)
+                self.mouseAtPossiblePosition = Option(imgObj, posX, posY, EOptionType.SQUARE, self.emphasize, posGM)
             else:
                 self.mouseAtPossiblePosition = None
         else:
@@ -67,8 +68,8 @@ class ImgInfoGameMap(ImgInfo):
         mousePosRel = self.getMousePosition(True)
         if mousePosRel is None:
             return None
-        x = int(mousePosRel.getX() // (size / 4.0))
-        y = int(mousePosRel.getY() // (size / 4.0))
+        x = int(mousePosRel.getX() // (size * self.getScale() / 4.0))
+        y = int(mousePosRel.getY() // (size * self.getScale() / 4.0))
         if 0 <= x < 16 and 0 <= y < 16:
             return Position(x, y)
         else:
@@ -83,19 +84,17 @@ class ImgInfoGameMap(ImgInfo):
     def setOptions(self, optionsGameMap):
         self.options = []
         if optionsGameMap is not None:
-            size = EImageObject.MAP_TILE.getSizeX() / 4.0
-            refPos = self.getPosOf(ERefPoint.TOP_LEFT, False)
+            imgObj = EImageObject.SQUARE
+            size = imgObj.getSizeX()
+            refPos = self.getPosOf(ERefPoint.TOP_LEFT, False, False)
             for y in range(16):
                 for x in range(16):
                     if optionsGameMap[x][y]:
                         posX = refPos.getX() + x * size
                         posY = refPos.getY() + y * size
-                        self.options.append(Option(posX, posY, size, size, EOptionType.SQUARE))
+                        self.options.append(Option(imgObj, posX, posY, EOptionType.SQUARE,
+                                                   self.emphasize, Position(x, y)))
         self.optionsGameMap = optionsGameMap
-
-    def getPixelOfSquare(self):
-        sizeX = EImageObject.SQUARE_OBJECT.getSizeX()
-        return int(sizeX * self.getScale())
 
     @classmethod
     def getResizeSquareObj(cls):
@@ -105,8 +104,11 @@ class ImgInfoGameMap(ImgInfo):
     def getResizeMapTile(cls):
         return EImageObject.MAP_TILE.getResize()
 
-    def getImgPosOfSquare(self, posGameMap):
+    def getImgPosOfSquare(self, posGameMap, shift, scale):
         size = EImageObject.SQUARE_OBJECT.getSizeX()
-        pixSquareScale = size * self.scale
-        return Position(int(pixSquareScale * posGameMap.getX() + self.getPosOf(ERefPoint.TOP_LEFT, True).getX()),
-                        int(pixSquareScale * posGameMap.getY() + self.getPosOf(ERefPoint.TOP_LEFT, True).getY()))
+        if scale:
+            sc = self.getScale()
+        else:
+            sc = 1
+        return Position(size * posGameMap.getX() * sc + self.getPosOf(ERefPoint.TOP_LEFT, shift, scale).getX(),
+                        size * posGameMap.getY() * sc + self.getPosOf(ERefPoint.TOP_LEFT, shift, scale).getY())

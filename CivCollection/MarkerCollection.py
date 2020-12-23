@@ -89,10 +89,11 @@ class MarkerCollection:
         self.drawStack(window, self.culture, self.imgInfo, EImageObject.CULTURE_MARKET_MAP, delta)
 
     def drawStack(self, window, stack, imgInfo, imgObj, s):
+        scale = self.imgInfo.getScale()
         i = 0
-        stackPos = imgInfo.getImgPosOf(imgObj)
-        resize = self.imgInfo.getResize(imgObj)
+        stackPos = imgInfo.getImgPosOf(imgObj, True, False)
+        resize = imgObj.getResize()
         for obj in stack:
             pos = Position(stackPos.getX() + i, stackPos.getY() - i)
-            obj.draw(window, ERotation.NO_ROTATION, pos, resize)
+            obj.draw(window, ERotation.NO_ROTATION, pos, resize, scale)
             i = i + s

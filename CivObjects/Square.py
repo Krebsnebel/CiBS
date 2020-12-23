@@ -69,19 +69,19 @@ class Square(BusinessObject):
 
         return self.getTradingPoints()
 
-    def drawObjectsOfSquare(self, window, imgInfo):
-        pos = imgInfo.getImgPosOfSquare(self.position)
-        resize = imgInfo.getResizeSquareObj() * imgInfo.getScale()
+    def drawObjectsOfSquare(self, window, imgInfo, scale):
+        pos = imgInfo.getImgPosOfSquare(self.position, True, False)
+        resize = imgInfo.getResizeSquareObj()
         if self.businessObject is not None:
-            self.businessObject.draw(window, ERotation.NO_ROTATION, pos, resize)
+            self.businessObject.draw(window, ERotation.NO_ROTATION, pos, resize, scale)
         if self.city is not None:
-            self.city.draw(window, ERotation.NO_ROTATION, pos, resize)
+            self.city.draw(window, ERotation.NO_ROTATION, pos, resize, scale)
         if self.disasterMarker is not None:
-            self.disasterMarker.draw(window, ERotation.NO_ROTATION, pos, resize)
+            self.disasterMarker.draw(window, ERotation.NO_ROTATION, pos, resize, scale)
         for a in self.army:
-            a.draw(window, ERotation.NO_ROTATION, pos, resize)
+            a.draw(window, ERotation.NO_ROTATION, pos, resize, scale)
         for p in self.pioneer:
-            p.draw(window, ERotation.NO_ROTATION, pos, resize)
+            p.draw(window, ERotation.NO_ROTATION, pos, resize, scale)
 
     def getDisasterMarker(self):
         return self.disasterMarker
