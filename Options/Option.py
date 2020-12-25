@@ -3,12 +3,13 @@ from CivObjects.Position import Position
 
 class Option:
 
-    def __init__(self, imgObj, x, y, oType, emphasize, mapPos):
+    def __init__(self, imgObj, x, y, oStatus, oType, emphasize, mapPos):
         self.position = Position(x, y)
         self.imgObj = imgObj
         self.width = imgObj.getSizeX()
         self.height = imgObj.getSizeY()
         self.emphasize = emphasize
+        self.oStatus = oStatus
         self.oType = oType
         self.mapPos = mapPos
 
@@ -40,4 +41,7 @@ class Option:
         return self.mapPos
 
     def getOptionType(self):
+        return self.oType
+
+    def getOptionStatus(self):
         return self.oType
