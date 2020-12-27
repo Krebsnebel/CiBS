@@ -148,16 +148,18 @@ class ImgInfoCivilization(ImgInfo):
             return Position(refPos.getX() + pioneerDeltaX[nr], refPos.getY() + pioneerDeltaY[nr])
         return None
 
-    def getImgPosOfResearchCard(self, level, cardNr, shift, scale):
+    def getImgPosOfResearchCard(self, level, cardNr, shift, scale, researched):
         refPos = self.getImgPosOf(EImageObject.CIVILIZATION_RESEARCH, shift, scale)
         researchDx = EImageObject.RESEARCH_CARDS.getSizeX()
         researchDy = EImageObject.RESEARCH_CARDS.getSizeY()
         researchDelta = EImageObject.RESEARCH_CARDS.getX()
-        dx = int(cardNr * (researchDx + researchDelta) +
-                 (level-1) * ((researchDx + researchDelta) / 2.0))
+        dy = -researchDy - (level - 1) * (researchDy + researchDelta)
+        if researched:
+            dx = (cardNr+1) * (researchDx + researchDelta) + (level-1) * ((researchDx + researchDelta) / 2.0)
+        else:
+            dx = 0
         if self.refPoint == ERefPoint.BOTTOM_RIGHT or self.refPoint == ERefPoint.TOP_RIGHT:
-            dx = int(-dx - researchDx)
-        dy = int(-researchDy - (level-1) * (researchDy + researchDelta))
+            dx = -dx - researchDx
         return Position(refPos.getX() + dx, refPos.getY() + dy)
 
     @classmethod

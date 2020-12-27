@@ -28,5 +28,8 @@ class Research:
         self.visibility = EVisibility.FOR_NOBODY
         self.img = ImageHandler.getImageOfResearch(self.research, False)
 
+    def getResearch(self):
+        return self.research
+
     def draw(self, window, rotation, pos, resize, scale):
         DrawCivObjects.drawImage(self.img, window, rotation, pos, resize, scale)

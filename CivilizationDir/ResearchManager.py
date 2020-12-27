@@ -1,10 +1,12 @@
 from CivEnums.EArmyStrength import EArmyStrength
 from CivEnums.EBuilding import EBuilding
+from CivEnums.EConstants import EConstants
 from CivEnums.EPolity import EPolity
 from CivEnums.EResearch import EResearch
 from CivEnums.ERotation import ERotation
 from CivEnums.EUnitType import EUnitType
 from CivEnums.EWonder import EWonder
+from CivObjects.Position import Position
 from CivObjects.Research import Research
 from Drawing.EImageObject import EImageObject
 
@@ -148,32 +150,66 @@ class ResearchManager:
                     return False
         return False
 
+    def getResearchCards(self, researched, level):
+        if researched:
+            if level == 1:
+                return self.researchedCards_I
+            elif level == 2:
+                return self.researchedCards_II
+            elif level == 3:
+                return self.researchedCards_III
+            else:       # level == 4
+                return self.researchedCards_IV
+        else:
+            unresCards = []
+            for u in self.unresearchedCards:
+                if u.getResearch().getLevel() == level:
+                    unresCards.append(u)
+            return unresCards
+
     def draw(self, window):
         scale = self.imgInfo.getScale()
         resize = EImageObject.RESEARCH_CARDS.getResize()
+
         i = 0
         for r in self.researchedCards_I:
-            imgPos = self.imgInfo.getImgPosOfResearchCard(1, i, True, False)
+            imgPos = self.imgInfo.getImgPosOfResearchCard(1, i, True, False, True)
             r.draw(window, ERotation.NO_ROTATION, imgPos, resize, scale)
             i = i + 1
 
         i = 0
         for r in self.researchedCards_II:
-            imgPos = self.imgInfo.getImgPosOfResearchCard(2, i, True, False)
+            imgPos = self.imgInfo.getImgPosOfResearchCard(2, i, True, False, True)
             r.draw(window, ERotation.NO_ROTATION, imgPos, resize, scale)
             i = i + 1
 
         i = 0
         for r in self.researchedCards_III:
-            imgPos = self.imgInfo.getImgPosOfResearchCard(3, i, True, False)
+            imgPos = self.imgInfo.getImgPosOfResearchCard(3, i, True, False, True)
             r.draw(window, ERotation.NO_ROTATION, imgPos, resize, scale)
             i = i + 1
 
         i = 0
         for r in self.researchedCards_IV:
-            imgPos = self.imgInfo.getImgPosOfResearchCard(4, i, True, False)
+            imgPos = self.imgInfo.getImgPosOfResearchCard(4, i, True, False, True)
             r.draw(window, ERotation.NO_ROTATION, imgPos, resize, scale)
             i = i + 1
+
+        delta = EConstants.DELTA_RESEARCH_CARDS_STACK.value
+        self.drawStack(window, self.getResearchCards(False, 1), self.imgInfo, EImageObject.RESEARCH_CARDS, 1, delta)
+        self.drawStack(window, self.getResearchCards(False, 2), self.imgInfo, EImageObject.RESEARCH_CARDS, 2, delta)
+        self.drawStack(window, self.getResearchCards(False, 3), self.imgInfo, EImageObject.RESEARCH_CARDS, 3, delta)
+        self.drawStack(window, self.getResearchCards(False, 4), self.imgInfo, EImageObject.RESEARCH_CARDS, 4, delta)
+
+    def drawStack(self, window, stack, imgInfo, imgObj, level, s):
+        scale = self.imgInfo.getScale()
+        i = 0
+        stackPos = imgInfo.getImgPosOfResearchCard(level, 0, True, False, False)
+        resize = imgObj.getResize()
+        for obj in stack:
+            pos = Position(stackPos.getX() + i, stackPos.getY() - i)
+            obj.draw(window, ERotation.NO_ROTATION, pos, resize, scale)
+            i = i + s
 
     def executeResearch(self, research):
         if research is EResearch.CAVALRY:
