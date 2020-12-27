@@ -1,9 +1,8 @@
 from enum import Enum
 
 
-class EOptionStatus(Enum):
+class EStatusPolity(Enum):
     LOCKED = 1
     UNLOCKED_BUT_NOT_AVAILABLE = 2
-    NOT_AVAILABLE = 3
-    AVAILABLE = 4
+    UNLOCKED_AND_AVAILABLE = 4
     ACTIVE = 5

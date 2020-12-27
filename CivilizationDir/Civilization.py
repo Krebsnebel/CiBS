@@ -8,6 +8,7 @@ from CivEnums.EFigure import EFigure
 from CivEnums.EPolity import EPolity
 from CivEnums.EResearch import EResearch
 from CivEnums.ERotation import ERotation
+from CivEnums.EUnitType import EUnitType
 from CivEnums.EVisibility import EVisibility
 from CivObjects.Figure import Figure
 from CivilizationDir.City import City
@@ -39,7 +40,6 @@ class Civilization:
         self.civ = map_tile.getCivilization()
         self.mapTile = map_tile
         self.civPolity = CivPolity(self.civ)
-        self.imgPolity = self.civPolity.getImg()
         self.color = col
         self.cities = []
         self.pioneer = []
@@ -47,8 +47,12 @@ class Civilization:
         self.militaryUnit = []
         self.figureLimit = 2
         self.movingRange = 2
+        self.cultureCardLimit = 2
+        self.computerTechnology = False
         self.thirdCityPossible = False
-        self.researchManager = ResearchManager(imgInfoCiv, pl)
+        self.unlockedBuildings = []
+        self.wonderWithReducedCosts = []
+        self.researchManager = ResearchManager(self, imgInfoCiv, pl)
         self.cavalryStrength = EArmyStrength.FIRST_LEVEL
         self.artilleryStrength = EArmyStrength.FIRST_LEVEL
         self.infantryStrength = EArmyStrength.FIRST_LEVEL
@@ -72,13 +76,10 @@ class Civilization:
 
         if self.civ == ECivilization.ROME:
             self.civPolity.setPolity(EPolity.REPUBLIC)
-            self.imgPolity = self.civPolity.getImg()
             self.researchManager.research(EResearch.LEGISLATION, 1, True)
         elif self.civ == ECivilization.RUSSIA:
-            self.figureLimit += 1
             self.army.append(Figure(EFigure.ARMY, self.civ, EColor.WHITE))
             self.civPolity.setPolity(EPolity.COMMUNISM)
-            self.imgPolity = self.civPolity.getImg()
             self.researchManager.research(EResearch.COMMUNISM, 1, True)
         elif self.civ == ECivilization.AGYPT:
             self.researchManager.research(EResearch.CONSTRUCTION_INDUSTRY, 1, True)
@@ -104,6 +105,9 @@ class Civilization:
 
     def isThirdCityPossible(self):
         return self.thirdCityPossible
+
+    def activateThirdCity(self):
+        self.thirdCityPossible = True
 
     def getImgInfo(self):
         return self.imgInfo
@@ -145,6 +149,44 @@ class Civilization:
 
     def getColor(self):
         return self.color
+
+    def unlockBuilding(self, building):
+        self.unlockedBuildings.append(building)
+
+    def addWonderWithReducedCosts(self, wonder):
+        self.wonderWithReducedCosts.append(wonder)
+
+    def unlockPolity(self, polity):
+        self.civPolity.unlock(polity)
+
+    def setArmyStrength(self, uType, desArmyStr):
+        if uType is EUnitType.ARTILLERY:
+            if self.artilleryStrength.value < desArmyStr.value:
+                self.artilleryStrength = desArmyStr
+        elif uType is EUnitType.CAVALRY:
+            if self.cavalryStrength.value < desArmyStr.value:
+                self.cavalryStrength = desArmyStr
+        elif uType is EUnitType.INFANTRY:
+            if self.infantryStrength.value < desArmyStr.value:
+                self.infantryStrength = desArmyStr
+        elif uType is EUnitType.AIR_FORCE:
+            self.artilleryStrength = desArmyStr.value
+
+    def setMovingRange(self, mr):
+        if mr > self.movingRange:
+            self.movingRange = mr
+
+    def setFigureLimit(self, lim):
+        if lim > self.figureLimit:
+            self.movingRange = lim
+
+    def increaseCultureCardLimit(self):
+        # CERAMICS, PUBLIC_ADMINISTRATION, THEOLOGY
+        self.cultureCardLimit = self.cultureCardLimit + 1
+
+    def setAsResearched(self, research):
+        if research is EResearch.COMPUTER_TECHNOLOGY:
+            self.computerTechnology = True
 
     def setPermissionForFigures_MoveOverWater(self):
         for p in self.pioneer:
@@ -200,7 +242,7 @@ class Civilization:
 
         pos = self.imgInfo.getImgPosOf(EImageObject.POLITY, True, False)
         resize = EImageObject.POLITY.getResize()
-        DrawCivObjects.drawImage(self.imgPolity, window, ERotation.NO_ROTATION, pos, resize, scale)
+        DrawCivObjects.drawImage(self.civPolity.getImg(), window, ERotation.NO_ROTATION, pos, resize, scale)
 
         i = 0
         for p in self.pioneer:

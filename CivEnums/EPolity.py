@@ -18,3 +18,4 @@ class EPolity(Enum):
     COMMUNISM = ("Kommunismus", "Communism")
     DESPOTISM = ("Despotismus", "Despotism")
     REPUBLIC = ("Republik", "Republic")
+    LOCKED = ("Politik gesperrt", "Locked")

@@ -1,12 +1,12 @@
 from CivEnums.EPolity import EPolity
 from CivEnums.ERotation import ERotation
+from CivEnums.EStatusPolity import EStatusPolity
 from CivObjects.Polity import Polity
+from CivObjects.Position import Position
 from Drawing import ImageHandler
 from Drawing.DrawCivObjects import DrawCivObjects
 from Drawing.EImageObject import EImageObject
-from Drawing.ImgInfoPolity import ImgInfoPolity
-from Options.EOptionType import EOptionType
-from Options.Option import Option
+
 
 """
 this class handles the polity of civilizations
@@ -16,11 +16,11 @@ draw functions are implemented
 
 class PolityOfCivilizations:
 
-    def __init__(self):
-        self.imgInfo = ImgInfoPolity()
+    def __init__(self, imgInfoPolity):
+        self.imgInfo = imgInfoPolity
         self.drawPolityOfCiv = None
-        self.drawIdx = 0
-        self.options = []
+        self.idx = 0
+        self.polityArr = []
         self.civPolityArr = []
 
         self.allPolitiesArr = []
@@ -33,74 +33,84 @@ class PolityOfCivilizations:
         self.allPolitiesArr.append(EPolity.MONARCHY)
         self.allPolitiesArr.append(EPolity.REPUBLIC)
 
-    def setOptions(self, pol, c1, c2):
-        self.options = []
-        self.setOption(pol, EImageObject.POLITY)
-        self.setOption(c1, EImageObject.CITY_1)
-        self.setOption(c2, EImageObject.CITY_2)
-
-    def setOption(self, cond, imgObj):
-        if cond:
-            imgPos = self.getImgPosOf(imgObj, False, False)
-            self.options.append(Option(imgObj, imgPos.getX(), imgPos.getY(), EOptionType.SQUARE, self.emphasize, None))
-
-    def setOptions(self, civ):
+    def setPolitiesOfCiv(self, civ, politySwitched):
         self.drawPolityOfCiv = civ
-        self.options = []
+        self.polityArr = []
+        self.imgInfo.clearOptions()
         if civ is None:
             return
+        self.idx = 0
         for pc in self.civPolityArr:
             if pc.getCivilizationEnum() is self.drawPolityOfCiv:
+                pc.setPolitySwitched(politySwitched)
                 self.polityArr.append(Polity(pc.getPolity(), EStatusPolity.ACTIVE))
+                self.idx = self.idx + 1
                 if pc.getPolity() is not EPolity.ANARCHY:
                     polity = pc.getPreviouslyUnlockedPolity()
                     if polity is not None:
                         self.polityArr.append(Polity(polity, EStatusPolity.UNLOCKED_AND_AVAILABLE))
+                        if not pc.isPolitySwitched():
+                            self.setOption()
+                        self.idx = self.idx + 1
                     self.polityArr.append(Polity(EPolity.ANARCHY, EStatusPolity.UNLOCKED_AND_AVAILABLE))
+                    if not pc.isPolitySwitched():
+                        self.setOption()
+                    self.idx = self.idx + 1
                 else:       # polity is ANARCHY
-                    possiblePolities = pc.getPossiblePolities()
+                    possiblePolities = pc.getUnlockedPolities()
                     for polity in possiblePolities:
                         self.polityArr.append(Polity(polity, EStatusPolity.UNLOCKED_AND_AVAILABLE))
+                        if not pc.isPolitySwitched():
+                            self.setOption()
+                        self.idx = self.idx + 1
                 for polity in self.allPolitiesArr:
                     polityIsInArray = False
                     for polObj in self.polityArr:
                         if polity is polObj.getPolity():
                             polityIsInArray = True
                     if not polityIsInArray:
-                        self.polityArr.append(Polity(polity, EStatusPolity.UNLOCKED_BUT_NOT_AVAILABLE))
+                        possiblePolities = pc.getUnlockedPolities()
+                        status = EStatusPolity.LOCKED
+                        for pol in possiblePolities:
+                            if polity is pol:
+                                status = EStatusPolity.UNLOCKED_BUT_NOT_AVAILABLE
+                        self.polityArr.append(Polity(polity, status))
 
     def addCivPolity(self, civPolity):
         self.civPolityArr.append(civPolity)
 
     def draw(self, window):
         if self.drawPolityOfCiv is None:
-            return False
-        self.drawIdx = 0
-        self.polityArr = []
-        for pc in self.polityOfCivilizationsArr:
-            if pc.getCivilizationEnum() is self.drawPolityOfCiv:
-                self.drawPolity(window, pc.getPolity())
-                if pc.getPolity() is not EPolity.ANARCHY:
-                    self.drawPolity(window, EPolity.ANARCHY)
-                    polity = pc.getPreviouslyUnlockedPolity()
-                    if polity is not None:
-                        self.drawPolity(window, polity)
-                else:
-                    possiblePolities = pc.getPossiblePolities()
-                    for polity in possiblePolities:
-                        self.drawPolity(window, polity)
-                for polity in self.allPolitiesArr:
-                    polityIsDrawn = False
-                    for drawnPol in self.polityArr:
-                        if polity is drawnPol:
-                            polityIsDrawn = True
-                    if not polityIsDrawn:
-                        self.drawPolity(window, polity)
+            return
+        self.idx = 0
+        for polObj in self.polityArr:
+            self.drawPolity(window, polObj)
 
-    def drawPolity(self, window, polity):
-        pos = self.imgInfo.getImgPosOf(EImageObject.POLITY_ZOOMED, self.drawIdx % 4, self.drawIdx // 4)
+        self.imgInfo.draw(window)
+
+    def drawPolity(self, window, polObj):
+        posPol = Position(self.idx % 4, self.idx // 4)
+        pos = self.imgInfo.getImgPosOf(EImageObject.POLITY_ZOOMED, posPol)
         resize = EImageObject.POLITY_ZOOMED.getResize()
-        DrawCivObjects.drawImage(ImageHandler.getImageOfPolity(polity), window,
+        DrawCivObjects.drawImage(ImageHandler.getImageOfPolity(polObj.getPolity()), window,
                                  ERotation.NO_ROTATION, pos, resize, 1)
-        self.drawIdx = self.drawIdx + 1
-        self.polityArr.append(polity)
+        if polObj.getStatusOfPolity() is EStatusPolity.LOCKED:
+            DrawCivObjects.drawImage(ImageHandler.getImageOfPolity(EPolity.LOCKED), window,
+                                     ERotation.NO_ROTATION, pos, resize, 1)
+        self.idx = self.idx + 1
+
+    def setOption(self):
+        self.imgInfo.setOption(EImageObject.POLITY_ZOOMED, self.idx)
+
+    def getValidChoiceWhileMousePressed(self):
+        return self.imgInfo.getValidChoiceWhileMousePressed()
+
+    def isLeftMouseButtonPressed(self):
+        return self.imgInfo.isLeftMouseButtonPressed()
+
+    def setNewPolity(self, posPol):
+        polity = self.polityArr[posPol.getX() + posPol.getY() * 4].getPolity()
+        for pc in self.civPolityArr:
+            if pc.getCivilizationEnum() is self.drawPolityOfCiv:
+                pc.setPolity(polity)
+                pc.setPolitySwitched(True)

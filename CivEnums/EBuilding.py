@@ -102,3 +102,17 @@ class EBuilding(Enum):
               7, 10, "T", "C", "Tempel", "Kathedrale", "Temple", "Cathedral")
     BARRACK = (EPermission.ALL_EXCEPT_WATER, True, True, 2, 2, 0, 0, 0, 0, 2, 4, EResource.NONE, EResource.NONE,
                7, 10, "B", "A", "Kaserne", "Akademie", "Barrack", "Academy")
+
+    # only implemented due to building type
+    AQUEDUCT = (EPermission.ONLY_GRASSLAND, True, False, 1, 2, 1, 2, 0, 0, 0, 0, EResource.NONE, EResource.NONE,
+               5, 8, "K", "A", "Kornspeicher", "Aquädukt", "Granary", "Aqueduct")
+    BANK = (EPermission.ALL_EXCEPT_WATER, True, True, 1, 1, 1, 1, 1, 1, 0, 0, EResource.NONE, EResource.COIN,
+              7, 10, "R", "B", "Markt", "Bank", "Market", "Bank")
+    CATHEDRAL = (EPermission.ALL_EXCEPT_WATER, True, True, 0, 0, 0, 0, 2, 3, 0, 0, EResource.NONE, EResource.NONE,
+              7, 10, "T", "C", "Tempel", "Kathedrale", "Temple", "Cathedral")
+    UNIVERSITY = (EPermission.ONLY_GRASSLAND, True, False, 1, 2, 0, 0, 1, 2, 0, 0, EResource.NONE, EResource.NONE,
+               5, 8, "L", "U", "Bibliothek", "Universität", "Library", "University")
+    ACADEMY = (EPermission.ALL_EXCEPT_WATER, True, True, 2, 2, 0, 0, 0, 0, 2, 4, EResource.NONE, EResource.NONE,
+               7, 10, "B", "A", "Kaserne", "Akademie", "Barrack", "Academy")
+    IRONMINE = (EPermission.ONLY_MOUNTAIN, True, False, 0, 0, 3, 4, 0, 0, 0, 0, EResource.NONE, EResource.NONE,
+                  7, 10, "S", "E", "Schmiede", "Eisenmine", "Blacksmith", "Ironmine")

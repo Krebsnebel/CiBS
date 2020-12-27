@@ -342,6 +342,7 @@ class ImageHandler:
                                                 EPolity.FUNDAMENTALISM.getImgName() + ".jpg")
     imgPolityMonarchy = pygame.image.load("Material/Civilizations/Polity_" + EPolity.MONARCHY.getImgName() + ".jpg")
     imgPolityRepublic = pygame.image.load("Material/Civilizations/Polity_" + EPolity.REPUBLIC.getImgName() + ".jpg")
+    imgPolityLocked = pygame.image.load("Material/Civilizations/Polity_" + EPolity.LOCKED.getImgName() + ".png")
 
     # process
     imgNextButton = pygame.image.load("Material/Process/NextButton.png")
@@ -411,8 +412,10 @@ def getImageOfPolity(polity):
         return ImageHandler.imgPolityMonarchy
     elif polity is EPolity.REPUBLIC:
         return ImageHandler.imgPolityRepublic
-    else:
+    elif polity is EPolity.ANARCHY:
         return ImageHandler.imgPolityAnarchy
+    else:
+        return ImageHandler.imgPolityLocked
 
 
 def getImageOfWonder(wType, card, front):

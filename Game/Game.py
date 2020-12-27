@@ -23,7 +23,7 @@ class Game:
         self.civilizations = []
         self.imgInfo = imgInfoGame
         self.gameMap = GameMap(imgInfoGame.getGameMap())
-        self.polityOfCivilizations = PolityOfCivilizations()
+        self.polityOfCivilizations = PolityOfCivilizations(imgInfoGame.getPolity())
 
         militaryUnitCollection = self.marketMap.getMilitaryUnitCollection()
         for i in range(self.numberOfPlayer):

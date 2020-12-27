@@ -9,7 +9,7 @@ from Drawing.ImgInfoGameMap import ImgInfoGameMap
 from Drawing.ImgInfo import ImgInfo
 from Drawing.ImgInfoMarketMap import ImgInfoMarketMap
 from Drawing.DrawCivObjects import DrawCivObjects
-
+from Drawing.ImgInfoPolity import ImgInfoPolity
 
 """
 this class is an image information of the whole game
@@ -47,6 +47,8 @@ class ImgInfoGame(ImgInfo):
         posTopLeft = self.setTopLeft()
         posBottomRight = self.setBottomRight()
 
+        self.imgInfoPolity = ImgInfoPolity()
+
         width = posBottomRight.getX() - posTopLeft.getX()
         height = posBottomRight.getY() - posTopLeft.getY()
         super().__init__(width, height, posTopLeft, ERefPoint.TOP_LEFT)
@@ -64,10 +66,12 @@ class ImgInfoGame(ImgInfo):
     def setLeftMouseButtonPressed(self):
         for imgInfo in self.imgInfoArray:
             imgInfo.setLeftMouseButtonPressed()
+        self.imgInfoPolity.setLeftMouseButtonPressed()
 
     def clearMouseButtons(self):
         for imgInfo in self.imgInfoArray:
             imgInfo.clearMouseButtons()
+        self.imgInfoPolity.clearMouseButtons()
 
     def setTopLeft(self):
         topLefts = [self.imgInfoGameMap.getPosOf(ERefPoint.TOP_LEFT, False, False),
@@ -123,6 +127,8 @@ class ImgInfoGame(ImgInfo):
         for imgInfo in self.imgInfoArray:
             imgInfo.setMousePosition(mousePos.getX(), mousePos.getY())
 
+        self.imgInfoPolity.setMousePosition(mousePos.getX(), mousePos.getY())
+
     def shiftRight(self, window, dx):
         max_shift = -self.posTopLeft.getX() * self.getScale()
         if self.shiftX + dx < max_shift:
@@ -151,6 +157,9 @@ class ImgInfoGame(ImgInfo):
 
     def getMarketMap(self):
         return self.imgInfoMarketMap
+
+    def getPolity(self):
+        return self.imgInfoPolity
 
     def draw(self, window):
         if self.nextButton:

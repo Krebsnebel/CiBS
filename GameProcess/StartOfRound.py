@@ -1,4 +1,3 @@
-from CivilizationDir.PolityOfCivilizations import PolityOfCivilizations
 from Drawing.EImageObject import EImageObject
 from GameProcess.EGameStep import EGameStep
 
@@ -14,6 +13,7 @@ class StartOfRound:
         self.gameStep = gameStep
         self.game = game
         self.polityOfCivilizations = self.game.getPolityOfCivilizations()
+        self.politySwitched = False
 
     def execute(self):
         civ = self.gameStep.getCivilization()
@@ -23,11 +23,16 @@ class StartOfRound:
             if opt is not None:
                 if opt.getImgObj() == EImageObject.POLITY:
                     self.gameStep.setStep(EGameStep.SELECT_POLITY)
+                    self.polityOfCivilizations.setPolitiesOfCiv(civEnum, self.politySwitched)
         elif self.isInStep(EGameStep.SELECT_POLITY):
-            print("here")
-            self.polityOfCivilizations.setCivForDrawing(civEnum)
-        elif self.isInStep(EGameStep.POLITY_SELECTED):
-            pass
+            if self.polityOfCivilizations.isLeftMouseButtonPressed():
+                opt = self.polityOfCivilizations.getValidChoiceWhileMousePressed()
+                if opt is not None:
+                    polPos = opt.getPositionOfMap()
+                    self.polityOfCivilizations.setNewPolity(polPos)
+                    self.politySwitched = True
+                self.polityOfCivilizations.setPolitiesOfCiv(None, self.politySwitched)
+                self.gameStep.setStep(EGameStep.GENERAL_SELECT)
         elif self.isInStep(EGameStep.WONDER_SKILL_SELECTED):
             pass
         elif self.isInStep(EGameStep.CULTURE_SKILL_SELECTED):

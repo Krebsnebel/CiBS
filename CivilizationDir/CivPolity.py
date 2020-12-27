@@ -15,9 +15,15 @@ class CivPolity:
         self.polity = EPolity.DESPOTISM
         self.armyCanBuildCity = False
         self.previouslyUnlockedPolity = None
-        self.imgPolity = ImageHandler.getImageOfPolity(self.polity)
-        self.possiblePolities = []
-        self.addPossiblePolity(EPolity.DESPOTISM)
+        self.unlockedPolities = []
+        self.unlock(EPolity.DESPOTISM)
+        self.politySwitched = False
+
+    def isPolitySwitched(self):
+        return self.politySwitched
+
+    def setPolitySwitched(self, switched):
+        self.politySwitched = switched
 
     def getCivilizationEnum(self):
         return self.civ
@@ -37,23 +43,22 @@ class CivPolity:
             self.armyCanBuildCity = True
         else:
             self.armyCanBuildCity = False
-        self.imgPolity = ImageHandler.getImageOfPolity(self.polity)
 
     def getImg(self):
-        return self.imgPolity
+        return ImageHandler.getImageOfPolity(self.polity)
 
     def armyCanBuildCity(self):
         return self.armyCanBuildCity
 
-    def addPossiblePolity(self, polity):
-        for p in self.possiblePolities:
+    def unlock(self, polity):
+        for p in self.unlockedPolities:
             if p is polity:
                 return False
-        self.possiblePolities.append(polity)
+        self.unlockedPolities.append(polity)
         return True
 
-    def getPossiblePolities(self):
-        return self.possiblePolities
+    def getUnlockedPolities(self):
+        return self.unlockedPolities
 
     def previouslyUnlockedPolity(self, polity):
         self.previouslyUnlockedPolity = polity

@@ -87,6 +87,9 @@ class ImgInfo:
     def clearMouseButtons(self):
         self.leftMouseButtonPressed = False
 
+    def clearOptions(self):
+        self.options = []
+
     def getScale(self):
         return self.scale
 

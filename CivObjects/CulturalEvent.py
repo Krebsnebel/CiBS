@@ -20,3 +20,5 @@ class CulturalEvent:
 
     def draw(self, window, rotation, pos, resize, scale):
         DrawCivObjects.drawImage(self.imgCard, window, rotation, pos, resize, scale)
+
+
