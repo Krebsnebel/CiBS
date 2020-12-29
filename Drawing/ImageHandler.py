@@ -446,9 +446,11 @@ def getImageOfWonder(wType, card, front):
             else:       # EWonder.UNITED_NATIONS:
                 return ImageHandler.imgUnitedNationsCard
         else:       # back
-            if wType is EWonder.STONEHENGE or EWonder.THE_HANGING_GARDENS or EWonder.THE_COLOSSUS or EWonder.THE_ORACLE:
+            if wType is EWonder.STONEHENGE or wType is EWonder.THE_HANGING_GARDENS \
+                    or wType is EWonder.THE_COLOSSUS or wType is EWonder.THE_ORACLE:
                 return ImageHandler.imgAncientCard
-            elif wType is EWonder.THE_LOUVRE or EWonder.CASTLE_HIMEJI or EWonder.ANGKOR_WAT or EWonder.PORCELAIN_TOWER:
+            elif wType is EWonder.THE_LOUVRE or wType is EWonder.CASTLE_HIMEJI \
+                    or wType is EWonder.ANGKOR_WAT or wType is EWonder.PORCELAIN_TOWER:
                 return ImageHandler.imgMiddleAgeCard
             else:
                 # EWonder.PANAMA_CANAL, EWonder.OPERA_HOUSE_OF_SIDNEY, EWonder.STATUE_OF_LIBERTY, EWonder.UNITED_NATIONS

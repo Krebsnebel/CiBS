@@ -35,10 +35,10 @@ class EWonder(Enum):
         return self.imgNameMarker
 
     def getCardImgName(self, visible):
-        if visible is EVisibility.FOR_NOBODY:
-            return self.imgNameCardBack
-        else:
+        if visible:
             return self.imgNameCardFront
+        else:
+            return self.imgNameCardBack
 
     STONEHENGE = (1, 10, 10, EResearch.NONE, EEra.ANCIENT, "S", "Stonehenge", "Stonehenge")
     THE_HANGING_GARDENS = (1, 15, 10, EResearch.STOCK_BREEDING, EEra.ANCIENT, "H", "Die hängenden Gärten",

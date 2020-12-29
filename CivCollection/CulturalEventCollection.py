@@ -73,7 +73,7 @@ class CulturalEventCollection:
 
     def draw(self, window):
         scale = self.imgInfo.getScale()
-        resize = EImageObject.CULTURE_CARDS.getResize()
+        resize = EImageObject.CULTURE_EVENT_1.getResize()
 
         dx = EConstants.DELTA_CULTURE_CARDS_STACK.value
         delta = 0

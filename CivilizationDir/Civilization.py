@@ -13,6 +13,7 @@ from CivEnums.EVisibility import EVisibility
 from CivObjects.Figure import Figure
 from CivilizationDir.City import City
 from CivilizationDir.CivPolity import CivPolity
+from CivilizationDir.CultureWonderAndGreatPersons import CultureWonderAndGreatPersons
 from CivilizationDir.ResearchManager import ResearchManager
 from Drawing.DrawCivObjects import DrawCivObjects
 from Drawing.EImageObject import EImageObject
@@ -53,6 +54,7 @@ class Civilization:
         self.unlockedBuildings = []
         self.wonderWithReducedCosts = []
         self.researchManager = ResearchManager(self, imgInfoCiv, pl)
+        self.cultureWonderAndGreatPersons = CultureWonderAndGreatPersons(self, imgInfoCiv)
         self.cavalryStrength = EArmyStrength.FIRST_LEVEL
         self.artilleryStrength = EArmyStrength.FIRST_LEVEL
         self.infantryStrength = EArmyStrength.FIRST_LEVEL
@@ -270,4 +272,5 @@ class Civilization:
             i = i - 1
 
         self.researchManager.draw(window)
+        self.cultureWonderAndGreatPersons.draw(window)
         self.imgInfo.draw(window)

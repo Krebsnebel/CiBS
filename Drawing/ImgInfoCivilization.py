@@ -100,17 +100,21 @@ class ImgInfoCivilization(ImgInfo):
         figDx = EImageObject.FIGURE.getX()
         figDy = EImageObject.FIGURE.getY()
         cityDx = EImageObject.CITY.getX()
-        researchDelta = EImageObject.RESEARCH_CARDS.getX()
+        researchDx = (EImageObject.CULTURE_CARDS_CIV.getX() + EImageObject.CULTURE_CARDS_CIV.getSizeX()) * 2
+        researchDx = researchDx + EImageObject.RESEARCH_CARDS.getX()
+        cultureDx = EImageObject.CULTURE_CARDS_CIV.getX()
         if self.refPoint == ERefPoint.BOTTOM_RIGHT or self.refPoint == ERefPoint.TOP_RIGHT:
             refPos = self.getPosOf(ERefPoint.BOTTOM_RIGHT, shift, scale)
             pos = Position(refPos.getX() - civDx, refPos.getY() - civDy)
-            resPos = Position(refPos.getX() - civDx - researchDelta, refPos.getY())
+            culPos = Position(refPos.getX() - civDx - cultureDx, refPos.getY())
+            resPos = Position(refPos.getX() - civDx - researchDx, refPos.getY())
             figPos = Position(refPos.getX() - figDx, refPos.getY() - figDy)
             cityPos = Position(refPos.getX() - cityDx, refPos.getY())
         else:
             refPos = self.getPosOf(ERefPoint.BOTTOM_LEFT, shift, scale)
             pos = Position(refPos.getX(), refPos.getY() - civDy)
-            resPos = Position(refPos.getX() + civDx + researchDelta, refPos.getY())
+            culPos = Position(refPos.getX() + civDx + cultureDx, refPos.getY())
+            resPos = Position(refPos.getX() + civDx + researchDx, refPos.getY())
             figPos = Position(refPos.getX() + figDx, refPos.getY() - figDy)
             cityPos = Position(refPos.getX(), refPos.getY())
         if imgObj == EImageObject.CIVILIZATION_SHEET:
@@ -129,11 +133,21 @@ class ImgInfoCivilization(ImgInfo):
             return Position(pos.getX() + polDx, pos.getY() + polDy)
         elif imgObj == EImageObject.CIVILIZATION_RESEARCH:
             return resPos
+        elif imgObj == EImageObject.CULTURE_CARDS_CIV:
+            return culPos
         elif imgObj == EImageObject.FIGURE:
             return figPos
         elif imgObj == EImageObject.KAPITOL or imgObj == EImageObject.CITY_1 or imgObj == EImageObject.CITY_2:
             cityDy = imgObj.getY()
             return Position(cityPos.getX(), cityPos.getY() - cityDy)
+        elif imgObj == EImageObject.WONDER_CARD_CIV_POS_1 or imgObj == EImageObject.WONDER_CARD_CIV_POS_2 \
+                or imgObj == EImageObject.WONDER_CARD_CIV_POS_3 or imgObj == EImageObject.ARTIST_MARKER_CIV \
+                or imgObj == EImageObject.BUILDER_MARKER_CIV or imgObj == EImageObject.INDUSTRIALIST_MARKER_CIV \
+                or imgObj == EImageObject.GENERAL_MARKER_CIV or imgObj == EImageObject.HUMANITARIAN_MARKER_CIV \
+                or imgObj == EImageObject.SCIENTIST_MARKER_CIV:
+            dx = imgObj.getX()
+            dy = imgObj.getY()
+            return Position(pos.getX() + dx, pos.getY() + dy)
         return None
 
     def getImgPosOfFigure(self, figureType, nr, shift, scale):
@@ -147,6 +161,22 @@ class ImgInfoCivilization(ImgInfo):
             pioneerDeltaY = EImageObject.ARMY.getY()
             return Position(refPos.getX() + pioneerDeltaX[nr], refPos.getY() + pioneerDeltaY[nr])
         return None
+
+    def getImgPosOfCultureCard(self, shift, scale, cardNr):
+        culPos = self.getImgPosOf(EImageObject.CULTURE_CARDS_CIV, shift, scale)
+        culSizeX = EImageObject.CULTURE_CARDS_CIV.getSizeX()
+        culSizeY = EImageObject.CULTURE_CARDS_CIV.getSizeY()
+        culDX = EImageObject.CULTURE_CARDS_CIV.getX()
+        culDY = EImageObject.CULTURE_CARDS_CIV.getY()
+        x = cardNr // 4
+        y = cardNr % 4
+        if x > 2 or y > 4:
+            return None
+        dy = - culSizeY - y * (culSizeY + culDY)
+        dx = x * (culSizeX + culDX)
+        if self.refPoint == ERefPoint.BOTTOM_RIGHT or self.refPoint == ERefPoint.TOP_RIGHT:
+            dx = -dx - culSizeX
+        return Position(culPos.getX() + dx, culPos.getY() + dy)
 
     def getImgPosOfResearchCard(self, level, cardNr, shift, scale, researched):
         refPos = self.getImgPosOf(EImageObject.CIVILIZATION_RESEARCH, shift, scale)

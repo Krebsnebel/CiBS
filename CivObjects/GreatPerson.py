@@ -38,5 +38,13 @@ class GreatPerson(BusinessObject):
     def getPermissionTerrain(self):
         return self.permissionTerrain
 
+    def setVisible(self, visible):
+        if visible:
+            self.visibility = EVisibility.FOR_ALL
+            self.img = ImageHandler.getImageOfGreatPerson(self.gpType, True)
+        else:
+            self.visibility = EVisibility.FOR_NOBODY
+            self.img = ImageHandler.getImageOfGreatPerson(self.gpType, False)
+
     def draw(self, window, rotation, pos, resize, scale):
         DrawCivObjects.drawImage(self.img, window, rotation, pos, resize, scale)

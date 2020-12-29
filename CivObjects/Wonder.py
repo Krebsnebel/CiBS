@@ -37,9 +37,13 @@ class Wonder(BusinessObject):
         self.imgMarker = ImageHandler.getImageOfWonder(self.wonder, False, True)
         self.imgCard = ImageHandler.getImageOfWonder(self.wonder, True, False)
 
-    def isVisible(self):
-        self.visibility = EVisibility.FOR_ALL
-        self.imgCard = ImageHandler.getImageOfWonder(self.wonder, True, True)
+    def setVisible(self, visible):
+        if visible:
+            self.visibility = EVisibility.FOR_ALL
+            self.imgCard = ImageHandler.getImageOfWonder(self.wonder, True, True)
+        else:
+            self.visibility = EVisibility.FOR_NOBODY
+            self.imgCard = ImageHandler.getImageOfWonder(self.wonder, True, False)
 
     def getCosts(self, alternative):
         if alternative:

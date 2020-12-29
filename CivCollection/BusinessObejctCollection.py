@@ -21,6 +21,7 @@ depending of move of each player business objects can be lifted off the stacks
 there is a function to draw the stacks on market place
 """
 
+
 class BusinessObjectCollection:
 
     def __init__(self, imgInfoMarketMap):
@@ -71,7 +72,7 @@ class BusinessObjectCollection:
         self.wonderVisible.append(Wonder(EWonder.THE_COLOSSUS))
         self.wonderVisible.append(Wonder(EWonder.THE_ORACLE))
         for w in self.wonderVisible:
-            w.isVisible()
+            w.setVisible(True)
 
         shuffle(self.wonderVisible)
 
@@ -117,11 +118,11 @@ class BusinessObjectCollection:
             w = self.wonderVisible.pop(idx)
             if len(self.wonderCovered_L2) > 0:
                 n = self.wonderCovered_L2.pop(0)
-                n.isVisible()
+                n.setVisible(True)
                 self.wonderVisible.insert(idx, n)
             elif len(self.wonderCovered_L3) > 0:
                 n = self.wonderCovered_L3.pop(0)
-                n.isVisible()
+                n.setVisible(True)
                 self.wonderVisible.insert(idx, n)
             return w
         return None

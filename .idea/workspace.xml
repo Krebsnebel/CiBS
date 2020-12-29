@@ -21,10 +21,15 @@
   <component name="ChangeListManager">
     <list default="true" id="effe2213-13fd-4f81-9707-808e4e0988ad" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CivEnums/EConstants.py" beforeDir="false" afterPath="$PROJECT_DIR$/CivEnums/EConstants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CivObjects/Research.py" beforeDir="false" afterPath="$PROJECT_DIR$/CivObjects/Research.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CivilizationDir/ResearchManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/CivilizationDir/ResearchManager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CivCollection/BusinessObejctCollection.py" beforeDir="false" afterPath="$PROJECT_DIR$/CivCollection/BusinessObejctCollection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CivCollection/CulturalEventCollection.py" beforeDir="false" afterPath="$PROJECT_DIR$/CivCollection/CulturalEventCollection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CivEnums/EWonder.py" beforeDir="false" afterPath="$PROJECT_DIR$/CivEnums/EWonder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CivObjects/CulturalEvent.py" beforeDir="false" afterPath="$PROJECT_DIR$/CivObjects/CulturalEvent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CivObjects/GreatPerson.py" beforeDir="false" afterPath="$PROJECT_DIR$/CivObjects/GreatPerson.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CivObjects/Wonder.py" beforeDir="false" afterPath="$PROJECT_DIR$/CivObjects/Wonder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CivilizationDir/Civilization.py" beforeDir="false" afterPath="$PROJECT_DIR$/CivilizationDir/Civilization.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Drawing/EImageObject.py" beforeDir="false" afterPath="$PROJECT_DIR$/Drawing/EImageObject.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Drawing/ImageHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/Drawing/ImageHandler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Drawing/ImgInfoCivilization.py" beforeDir="false" afterPath="$PROJECT_DIR$/Drawing/ImgInfoCivilization.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -113,5 +118,16 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/CivilizationDir/CultureWonderAndGreatPersons.py</url>
+          <line>122</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
