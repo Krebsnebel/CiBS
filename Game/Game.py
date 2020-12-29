@@ -1,4 +1,5 @@
 from CivCollection.MapTileCollection import MapTileCollection
+from CivEnums.EUnitType import EUnitType
 from CivilizationDir.Civilization import Civilization
 from Game.GameMap import GameMap
 from CivilizationDir.PolityOfCivilizations import PolityOfCivilizations
@@ -30,12 +31,12 @@ class Game:
             mt = self.mapTileCollection.popMapTileCiv()
             civ = Civilization(imgInfoGame.getCivilization(i), i, mt, playerColor[i], self, gameStep)
             self.polityOfCivilizations.addCivPolity(civ.getCivPolity())
-            civ.addMilitaryUnit(militaryUnitCollection.getArtillery())
-            civ.addMilitaryUnit(militaryUnitCollection.getCavalry())
-            civ.addMilitaryUnit(militaryUnitCollection.getInfantry())
+            civ.addMilitaryUnit(militaryUnitCollection.getCard(EUnitType.ARTILLERY))
+            civ.addMilitaryUnit(militaryUnitCollection.getCard(EUnitType.CAVALRY))
+            civ.addMilitaryUnit(militaryUnitCollection.getCard(EUnitType.INFANTRY))
             if civ.getCivilizationEnum() == ECivilization.GERMANY:
-                civ.addMilitaryUnit(militaryUnitCollection.getInfantry())
-                civ.addMilitaryUnit(militaryUnitCollection.getInfantry())
+                civ.addMilitaryUnit(militaryUnitCollection.getCard(EUnitType.INFANTRY))
+                civ.addMilitaryUnit(militaryUnitCollection.getCard(EUnitType.INFANTRY))
             self.civilizations.append(civ)
 
         self.setGame()

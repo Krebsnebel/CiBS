@@ -7,9 +7,9 @@ class ERotation(Enum):
         self.rotation = rot
 
     NO_ROTATION = 0
-    CLOCKWISE_90 = 1
-    CLOCKWISE_180 = 2
-    CLOCKWISE_270 = 3
+    CLOCKWISE_90 = 270
+    CLOCKWISE_180 = 180
+    CLOCKWISE_270 = 90
 
     def getRotation(self):
         return self.rotation

@@ -213,7 +213,7 @@ class Civilization:
         return self.mapTile
 
     def addMilitaryUnit(self, unit):
-        unit.changeVisibility(EVisibility.FOR_OWNER)
+        unit.setVisibility(True)
         self.militaryUnit.append(unit)
 
     def getCity(self, idx):

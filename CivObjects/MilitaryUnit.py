@@ -1,9 +1,11 @@
 from CivEnums.EArmyStrength import EArmyStrength
 from CivEnums.EUnitType import EUnitType
 from CivEnums.EVisibility import EVisibility
+from CivObjects.Position import Position
 from Drawing import ImageHandler
 from Drawing.DrawCivObjects import DrawCivObjects
-
+from Drawing.Drawable import Drawable
+from Drawing.EImgConst import EImgConst
 
 """
 with it all properties of military unit can be defined
@@ -14,20 +16,24 @@ with it all properties of military unit can be defined
 """
 
 
-class MilitaryUnit:
+class MilitaryUnit(Drawable):
 
-    def __init__(self, uType, strength):
+    def __init__(self, uType, strength, imgDetail, cardNr):
+        img = ImageHandler.getImageOfMilitaryUnit(uType, strength, False)
+        if uType is EUnitType.INFANTRY:
+            mapPos = Position(0, 0)
+        elif uType is EUnitType.CAVALRY:
+            mapPos = Position(0, 1)
+        elif uType is EUnitType.ARTILLERY:
+            mapPos = Position(1, 0)
+        else:       # AIR_FORCE
+            mapPos = Position(1, 1)
+        super().__init__(img, EImgConst.MMAP_MILITARY_UNIT, imgDetail, cardNr, mapPos)
         self.uType = uType
         self.unitStrength = strength
-        self.visibility = EVisibility.FOR_NOBODY
-        self.imgFront = ImageHandler.getImageOfMilitaryUnit(uType, strength, True)
-        self.imgBack = ImageHandler.getImageOfMilitaryUnit(uType, strength, False)
 
     def getFightValue(self, rank):
         return self.unitStrength.getFightValue(rank)
-
-    def changeVisibility(self, vis):
-        self.visibility = vis
 
     def getCosts(self, rank):
         if self.uType == EUnitType.AIR_FORCE:
@@ -41,9 +47,9 @@ class MilitaryUnit:
         else:
             return 5
 
-    def draw(self, window, rotation, pos, resize, scale):
-        if self.visibility == EVisibility.FOR_NOBODY:
-            img = self.imgBack
+    def setVisible(self, visible):
+        Drawable.setVisible(self, visible)
+        if visible:
+            self.setImg(ImageHandler.getImageOfMilitaryUnit(self.uType, self.unitStrength, True))
         else:
-            img = self.imgFront
-        DrawCivObjects.drawImage(img, window, rotation, pos, resize, scale)
+            self.setImg(ImageHandler.getImageOfMilitaryUnit(self.uType, self.unitStrength, True))
